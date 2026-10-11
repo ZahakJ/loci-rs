@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loci</title>
+<meta name="description" content="Loci is a local-first spaced-repetition app that imports your Anki collection with its history intact, schedules it with FSRS-6, and runs on Linux, Windows, macOS and Android.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#10141b" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Loci">
+<meta property="og:description" content="Your Anki years, scheduled by FSRS-6, in one app for desk and phone. Local-first, open source, MIT licence.">
+<meta property="og:image" content="captures/home-desktop-light.png">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="./" aria-label="Loci, home"><img src="icon.svg" alt="" width="28" height="28">Loci</a>
+    <nav aria-label="Site">
+      <ul>
+        <li><a href="./manual/">Manual</a></li>
+        <li><a href="https://github.com/ZahakJ/loci-rs">GitHub</a></li>
+        <li><a href="#download">Download</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap">
+    <h1 id="hero-title">Your Anki years, scheduled by FSRS-6, in one app for desk and phone.</h1>
+    <p class="lede">Loci imports your Anki collection with every review and due date intact, runs natively on Linux, Windows, macOS and Android, and keeps everything in one SQLite file on your own device.</p>
+    <div class="actions">
+      <a class="button primary" href="#download">Download</a>
+      <a class="button" href="./manual/">Read the manual</a>
+    </div>
+    <figure class="shot">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="captures/home-desktop-dark.png">
+        <img src="captures/home-desktop-light.png" width="1440" height="900" alt="The Home screen on a desktop: about how many minutes today will take, a strip of insights, the deck tree with new, learning and due counts, and the momentum panel.">
+      </picture>
+    </figure>
+    <p class="small provenance">The captures show the synthetic fixture collection (402 notes, 590 cards, three years of simulated history) rendered by the app's own interface against the Rust engine; no real deck was used. The first-run picture is the native Linux build.</p>
+  </div>
+</section>
+
+<section aria-labelledby="tour-title">
+  <div class="wrap">
+    <h2 id="tour-title" class="visually-hidden">Three screens</h2>
+
+    <article class="feature">
+      <figure class="shot">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="captures/study-back-desktop-dark.png">
+          <img src="captures/study-back-desktop-light.png" width="1440" height="900" loading="lazy" alt="The study screen with the answer revealed: the card in the centre and four grade buttons along the bottom, Again, Hard, Good and Easy, each labelled with the interval it would give.">
+        </picture>
+      </figure>
+      <div>
+        <p class="eyebrow">Study</p>
+        <h3>Four buttons that never move</h3>
+        <ul>
+          <li>Again, Hard, Good and Easy sit in fixed positions, and each shows the interval it would give before you press it.</li>
+          <li>Keys <code>1</code>–<code>4</code> grade; space shows the answer, then means Good.</li>
+          <li>Press <code>i</code> on any card for <em>Why this interval?</em>: the chance you would recall it now, its stability, its difficulty and its last reviews.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="feature">
+      <figure class="shot">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="captures/backlog-desktop-dark.png">
+          <img src="captures/backlog-desktop-light.png" width="1440" height="900" loading="lazy" alt="The catch-up screen: the backlog stated in minutes, with four plans to choose from.">
+        </picture>
+      </figure>
+      <div>
+        <p class="eyebrow">Catch-up and workload</p>
+        <h3>A backlog becomes a plan</h3>
+        <ul>
+          <li>Catch-up states the debt in minutes and offers four plans: spread it over several days, just today's share, lower retention for a week, or study everything. Each can be undone.</li>
+          <li>Each preset has a daily time budget in minutes instead of card caps.</li>
+          <li>Momentum, the days studied in the last 30, replaces streaks: a missed day is shown and nothing resets.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="feature">
+      <figure class="shot">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="captures/browse-desktop-dark.png">
+          <img src="captures/browse-desktop-light.png" width="1440" height="900" loading="lazy" alt="The Browse screen in three panes: a sidebar of decks and searches, a table of cards with several rows selected and the bulk-action toolbar above it, and the note editor on the right.">
+        </picture>
+      </figure>
+      <div>
+        <p class="eyebrow">Browse and add</p>
+        <h3>Anki's search, in a table that stays fast</h3>
+        <ul>
+          <li>The search box reads Anki's syntax: <code>deck:</code>, <code>tag:</code>, <code>is:due</code>, <code>prop:r&lt;0.8</code>, <code>rated:7</code>, phrases, <code>OR</code> and parentheses.</li>
+          <li>Bulk actions on a selection: change deck, tags, suspend, flag, set due date, forget, find and replace. All undoable.</li>
+          <li>The Add sheet (<code>a</code> from anywhere) writes cloze notes and draws image occlusions in Anki's own format.</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section aria-labelledby="phones-title">
+  <div class="wrap">
+    <h2 id="phones-title">One app on every platform</h2>
+    <p>The same engine and the same interface run on a phone, with the study screen laid out for the thumb: one wide button for the answer, four grade buttons within reach.</p>
+    <ul class="phones">
+      <li>
+        <figure class="shot"><img src="captures/study-front-phone-light.png" width="780" height="1688" loading="lazy" alt="Study on a phone, light theme: the question side of a card with the Show answer button at the bottom."></figure>
+        <p class="label">Question</p>
+      </li>
+      <li>
+        <figure class="shot"><img src="captures/study-back-phone-dark.png" width="780" height="1688" loading="lazy" alt="Study on a phone, dark theme: the answer side with the four grade buttons."></figure>
+        <p class="label">Answer, dark theme</p>
+      </li>
+      <li>
+        <figure class="shot"><img src="captures/home-phone-light.png" width="780" height="1688" loading="lazy" alt="Home on a phone, light theme: today's estimate and the deck tree."></figure>
+        <p class="label">Home</p>
+      </li>
+      <li>
+        <figure class="shot"><img src="captures/stats-phone-dark.png" width="780" height="1688" loading="lazy" alt="Statistics on a phone, dark theme: insights and the review forecast."></figure>
+        <p class="label">Statistics, dark theme</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section aria-labelledby="what-title">
+  <div class="wrap">
+    <h2 id="what-title">What it is</h2>
+    <ul class="facts">
+      <li><strong>A real Anki replacement</strong>Imports <code>.apkg</code> and <code>.colpkg</code> from every Anki version, legacy and current layouts, with notes, note types, templates, media, tags, decks, review history and scheduling state. A card due tomorrow in Anki is due tomorrow here. Exports back to an <code>.apkg</code> that Anki 2.1 through 26.x and AnkiDroid read.</li>
+      <li><strong>FSRS-6 by default</strong>Ported from the reference implementation (fsrs-rs v6.6.2) and tested against its published vectors. <em>Optimise</em>, in each preset's settings, fits the parameters to your own reviews. Anki's SM-2 is one switch away.</li>
+      <li><strong>One app on four platforms</strong>Native builds for Linux, Windows, macOS and Android from one Rust engine and one interface. Light and dark themes are each designed, not inverted, and cards render Arabic, mathematics and code well.</li>
+      <li><strong>Humane about workload</strong>A catch-up mode for backlogs, a daily time budget instead of card caps, a workload forecast before you change new cards per day or desired retention, and momentum instead of streaks.</li>
+      <li><strong>Data you own</strong>A real SQLite file in your app-data folder, rotating automatic backups, restore, an integrity check on open, and a full-backup zip of collection and media. No account, no server, nothing leaves the device.</li>
+    </ul>
+
+    <div class="first-run">
+      <div>
+        <h3>The first screen</h3>
+        <p>An empty collection opens on one screen with three choices: <em>Import from Anki</em>, <em>Try a sample deck</em> (thirty cards about memory itself, with cloze, image, maths and Arabic cards) and <em>Start empty</em>. No account, no tour. <a href="./manual/getting-started.html">Getting started</a> walks through each.</p>
+      </div>
+      <figure class="shot">
+        <img src="captures/first-run-desktop-dark.png" width="1280" height="820" loading="lazy" alt="The first-run screen of the native Linux build in the dark theme: the Loci wordmark, one sentence, and three cards for importing from Anki, trying a sample deck and starting empty.">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="download" data-release="ZahakJ/loci-rs" aria-labelledby="download-title">
+  <div class="wrap">
+    <h2 id="download-title">Download</h2>
+    <div class="actions">
+      <a class="button primary" data-release-primary data-release-verb="Download" href="https://github.com/ZahakJ/loci-rs/releases/latest">Download from the latest release</a>
+      <span data-release-primary-size></span>
+    </div>
+    <p class="release-line">Latest release <span data-release-tag>v0.1.0</span>, <time data-release-date datetime="2026-10-11">11 October 2026</time></p>
+
+    <ul class="assets" data-release-assets>
+      <li><a href="https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/Loci_0.1.0_amd64.AppImage">Linux AppImage</a> <code>Loci_0.1.0_amd64.AppImage</code></li>
+      <li><a href="https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/Loci_0.1.0_amd64.deb">Linux .deb</a> <code>Loci_0.1.0_amd64.deb</code></li>
+      <li><a href="https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/Loci-0.1.0-1.x86_64.rpm">Linux .rpm</a> <code>Loci-0.1.0-1.x86_64.rpm</code></li>
+      <li><a href="https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/Loci_0.1.0_x64_en-US.msi">Windows .msi</a> <code>Loci_0.1.0_x64_en-US.msi</code></li>
+      <li><a href="https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/Loci_0.1.0_x64-setup.exe">Windows setup .exe</a> <code>Loci_0.1.0_x64-setup.exe</code></li>
+      <li><a href="https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/Loci_0.1.0_aarch64.dmg">macOS, Apple silicon</a> <code>Loci_0.1.0_aarch64.dmg</code></li>
+      <li><a href="https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/Loci_0.1.0_x64.dmg">macOS, Intel</a> <code>Loci_0.1.0_x64.dmg</code></li>
+      <li><a href="https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/loci-v0.1.0-android-arm64.apk">Android, arm64</a> <code>loci-v0.1.0-android-arm64.apk</code></li>
+      <li><a href="https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/loci-v0.1.0-android-universal.apk">Android, universal</a> <code>loci-v0.1.0-android-universal.apk</code></li>
+    </ul>
+
+    <div class="install">
+      <div>
+        <h3>Linux (AppImage)</h3>
+        <pre><code>curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/Loci_0.1.0_amd64.AppImage &amp;&amp; chmod +x Loci_0.1.0_amd64.AppImage &amp;&amp; ./Loci_0.1.0_amd64.AppImage</code></pre>
+        <p>The <code>.deb</code> and <code>.rpm</code> packages are in the list above.</p>
+      </div>
+      <div>
+        <h3>Windows (PowerShell)</h3>
+        <pre><code>Invoke-WebRequest https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/Loci_0.1.0_x64_en-US.msi -OutFile Loci.msi; Start-Process .\Loci.msi</code></pre>
+        <p>Or run the <code>-setup.exe</code> installer instead.</p>
+      </div>
+      <div>
+        <h3>macOS (Apple silicon)</h3>
+        <pre><code>curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/Loci_0.1.0_aarch64.dmg &amp;&amp; open Loci_0.1.0_aarch64.dmg</code></pre>
+        <p>On Intel, replace <code>aarch64</code> with <code>x64</code>. The macOS build is not notarised: after dragging Loci to Applications, run <code>xattr -d com.apple.quarantine /Applications/Loci.app</code> once, or right-click and choose Open.</p>
+      </div>
+      <div>
+        <h3>Android (arm64)</h3>
+        <pre><code>curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/loci-v0.1.0-android-arm64.apk &amp;&amp; adb install loci-v0.1.0-android-arm64.apk</code></pre>
+        <p>Or open the APK link on the phone and allow installs from your browser. Android 7.0 (API 24) or newer; the universal APK covers every ABI.</p>
+      </div>
+      <div>
+        <h3>From source</h3>
+        <pre><code>git clone git@github.com:ZahakJ/loci-rs.git &amp;&amp; cd loci-rs/apps/loci &amp;&amp; pnpm install &amp;&amp; pnpm tauri build</code></pre>
+        <p>Needs the pinned Rust toolchain, Node and pnpm; see <a href="./manual/getting-started.html">Getting started</a>.</p>
+      </div>
+    </div>
+
+    <p class="licence">Open source, free. MIT licence.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <ul>
+      <li><a href="./manual/">Manual</a></li>
+      <li><a href="https://github.com/ZahakJ/loci-rs">Repository</a></li>
+      <li><a href="./manual/changelog.html">Changelog</a></li>
+      <li><a href="./manual/roadmap.html">Roadmap</a></li>
+    </ul>
+    <p>Loci started as a TypeScript web app (ZahakJ/loci); this is the Rust edition.</p>
+  </div>
+</footer>
+
+<script>
+window.releaseAssets = [
+  { test: /\.AppImage$/, os: 'linux', label: 'Linux AppImage' },
+  { test: /\.deb$/, os: 'linux', label: 'Linux .deb' },
+  { test: /\.rpm$/, os: 'linux', label: 'Linux .rpm' },
+  { test: /\.msi$/, os: 'windows', label: 'Windows .msi' },
+  { test: /-setup\.exe$/, os: 'windows', label: 'Windows setup .exe' },
+  { test: /aarch64\.dmg$/, os: 'mac', label: 'macOS, Apple silicon' },
+  { test: /x64\.dmg$/, os: 'mac', label: 'macOS, Intel' },
+  { test: /android-arm64\.apk$/, os: 'android', label: 'Android, arm64' },
+  { test: /android-universal\.apk$/, os: 'android', label: 'Android, universal' }
+];
+</script>
+<script src="release.js"></script>
+</body>
+</html>

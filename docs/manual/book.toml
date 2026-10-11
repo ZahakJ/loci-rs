@@ -1,0 +1,13 @@
+[book]
+title = "Loci manual"
+authors = ["ZahakJ"]
+language = "en"
+src = "src"
+
+[output.html]
+site-url = "/loci-rs/manual/"
+git-repository-url = "https://github.com/ZahakJ/loci-rs"
+default-theme = "light"
+preferred-dark-theme = "navy"
+additional-css = ["theme/manual.css"]
+additional-js = ["theme/manual.js"]

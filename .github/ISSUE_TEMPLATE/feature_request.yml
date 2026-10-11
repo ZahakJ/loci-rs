@@ -1,0 +1,19 @@
+name: Feature request
+description: Something Loci should do
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What you are trying to do and where Loci gets in the way. Check the roadmap in the manual first; some things are deferred on purpose.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you would like instead
+  - type: input
+    id: anki
+    attributes:
+      label: How Anki handles it, if it does

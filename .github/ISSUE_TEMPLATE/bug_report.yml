@@ -1,0 +1,28 @@
+name: Bug report
+description: Something behaves differently from what the manual says
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, what happened instead. One bug per report.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Loci version and platform
+      placeholder: "v0.1.0, Linux AppImage / Windows msi / macOS dmg / Android apk"
+    validations:
+      required: true
+  - type: textarea
+    id: deck
+    attributes:
+      label: The deck, if it matters
+      description: If the bug involves an Anki package, which Anki version exported it, and whether a small example package reproduces it. Do not attach private decks.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Output or screenshots
+      render: text

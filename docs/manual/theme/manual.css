@@ -1,0 +1,232 @@
+/* Loci manual theme: warm stone and paper by day (.light), deep slate at night (.navy),
+   one brass accent. Only the light and navy themes are restyled; the others stay stock.
+   Tokens follow DESIGN.md §17. No web fonts, no gradients, no external requests. */
+
+html.light {
+    --bg: oklch(97.5% .006 85);
+    --fg: oklch(22% .02 260);
+    --muted: oklch(50% .02 260);
+    --line: oklch(88% .01 85);
+    --accent: oklch(62% .13 70);
+    --code-bg: oklch(94% .008 85);
+    --surface: oklch(99% .004 85);
+
+    --sidebar-bg: oklch(95% .008 85);
+    --sidebar-fg: oklch(22% .02 260);
+    --sidebar-non-existant: oklch(50% .02 260);
+    --sidebar-active: oklch(62% .13 70);
+    --sidebar-spacer: oklch(88% .01 85);
+    --sidebar-header-border-color: oklch(62% .13 70);
+
+    --scrollbar: oklch(50% .02 260);
+    --icons: oklch(50% .02 260);
+    --icons-hover: oklch(22% .02 260);
+    --links: oklch(62% .13 70);
+    --inline-code-color: oklch(22% .02 260);
+
+    --theme-popup-bg: oklch(99% .004 85);
+    --theme-popup-border: oklch(88% .01 85);
+    --theme-hover: oklch(94% .008 85);
+
+    --quote-bg: oklch(95% .008 85);
+    --quote-border: oklch(88% .01 85);
+    --warning-border: oklch(62% .13 70);
+
+    --table-border-color: oklch(88% .01 85);
+    --table-header-bg: oklch(94% .008 85);
+    --table-alternate-bg: oklch(96% .007 85);
+
+    --searchbar-border-color: oklch(88% .01 85);
+    --searchbar-bg: oklch(99% .004 85);
+    --searchbar-fg: oklch(22% .02 260);
+    --searchbar-shadow-color: oklch(88% .01 85);
+    --searchresults-header-fg: oklch(50% .02 260);
+    --searchresults-border-color: oklch(88% .01 85);
+    --searchresults-li-bg: oklch(95% .008 85);
+    --search-mark-bg: oklch(86% .08 80);
+
+    --footnote-highlight: oklch(62% .13 70);
+    --overlay-bg: oklch(22% .02 260 / .25);
+    --copy-button-filter: invert(45%);
+    --copy-button-filter-hover: invert(15%);
+
+    --blockquote-note-color: oklch(50% .02 260);
+    --blockquote-tip-color: oklch(52% .12 150);
+    --blockquote-important-color: oklch(62% .13 70);
+    --blockquote-warning-color: oklch(58% .13 65);
+    --blockquote-caution-color: oklch(55% .17 20);
+}
+
+html.navy {
+    --bg: oklch(17% .015 260);
+    --fg: oklch(93% .01 85);
+    --muted: oklch(68% .015 260);
+    --line: oklch(30% .015 260);
+    --accent: oklch(78% .12 75);
+    --code-bg: oklch(21% .015 260);
+    --surface: oklch(21% .015 260);
+
+    --sidebar-bg: oklch(21% .015 260);
+    --sidebar-fg: oklch(93% .01 85);
+    --sidebar-non-existant: oklch(68% .015 260);
+    --sidebar-active: oklch(78% .12 75);
+    --sidebar-spacer: oklch(30% .015 260);
+    --sidebar-header-border-color: oklch(78% .12 75);
+
+    --scrollbar: oklch(68% .015 260);
+    --icons: oklch(68% .015 260);
+    --icons-hover: oklch(93% .01 85);
+    --links: oklch(78% .12 75);
+    --inline-code-color: oklch(93% .01 85);
+
+    --theme-popup-bg: oklch(21% .015 260);
+    --theme-popup-border: oklch(30% .015 260);
+    --theme-hover: oklch(25% .015 260);
+
+    --quote-bg: oklch(21% .015 260);
+    --quote-border: oklch(30% .015 260);
+    --warning-border: oklch(78% .12 75);
+
+    --table-border-color: oklch(30% .015 260);
+    --table-header-bg: oklch(24% .015 260);
+    --table-alternate-bg: oklch(19% .015 260);
+
+    --searchbar-border-color: oklch(30% .015 260);
+    --searchbar-bg: oklch(21% .015 260);
+    --searchbar-fg: oklch(93% .01 85);
+    --searchbar-shadow-color: oklch(30% .015 260);
+    --searchresults-header-fg: oklch(68% .015 260);
+    --searchresults-border-color: oklch(30% .015 260);
+    --searchresults-li-bg: oklch(24% .015 260);
+    --search-mark-bg: oklch(45% .08 75);
+
+    --footnote-highlight: oklch(78% .12 75);
+    --overlay-bg: oklch(12% .015 260 / .5);
+    --copy-button-filter: invert(70%);
+    --copy-button-filter-hover: invert(90%);
+
+    --blockquote-note-color: oklch(68% .015 260);
+    --blockquote-tip-color: oklch(74% .14 150);
+    --blockquote-important-color: oklch(78% .12 75);
+    --blockquote-warning-color: oklch(80% .14 65);
+    --blockquote-caution-color: oklch(70% .17 20);
+}
+
+/* Type: the system stack, no web fonts. */
+html.light, html.navy {
+    --mono-font: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+html.light body, html.navy body {
+    font-family: inherit;
+}
+html.light .content h1, html.light .content h2, html.light .content h3, html.light .content h4,
+html.navy .content h1, html.navy .content h2, html.navy .content h3, html.navy .content h4 {
+    font-family: inherit;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+}
+html.light .menu-title, html.navy .menu-title {
+    font-weight: 600;
+    font-size: 1.8rem;
+}
+
+/* Code: a quiet stone (light) or slate (dark) panel with a hairline border. */
+html.light pre > code.hljs, html.light pre > .hljs,
+html.navy pre > code.hljs, html.navy pre > .hljs {
+    background: var(--code-bg);
+}
+html.light pre, html.navy pre {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+}
+html.light :not(pre) > code, html.navy :not(pre) > code,
+html.light :not(pre) > .hljs, html.navy :not(pre) > .hljs {
+    background: var(--code-bg);
+    color: var(--inline-code-color);
+    border-radius: 4px;
+}
+html.light a > .hljs, html.navy a > .hljs,
+html.light a > code, html.navy a > code {
+    color: var(--links);
+}
+
+/* Links in the accent, underlined on hover only. */
+html.light .content a:link, html.light .content a:visited,
+html.navy .content a:link, html.navy .content a:visited {
+    color: var(--links);
+}
+html.light .content a:hover, html.navy .content a:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* Tables: hairlines, no heavy header block. */
+html.light .content table, html.navy .content table {
+    border-collapse: collapse;
+}
+html.light .content table td, html.light .content table th,
+html.navy .content table td, html.navy .content table th {
+    border: 1px solid var(--line);
+}
+html.light .content table thead th, html.navy .content table thead th {
+    background: var(--table-header-bg);
+    font-weight: 600;
+}
+
+/* Block quotes. */
+html.light blockquote, html.navy blockquote {
+    border-block-start: none;
+    border-block-end: none;
+    border-inline-start: 3px solid var(--accent);
+    background: var(--quote-bg);
+}
+
+/* Captures and other images: responsive, with a hairline and the 10px radius. */
+.content img {
+    max-width: 100%;
+    height: auto;
+}
+html.light .content img.capture, html.navy .content img.capture {
+    display: block;
+    margin: 1.5em 0;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+}
+
+/* Long code lines scroll inside their block, never the page. */
+.content pre {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+/* The "Loci" link back to the landing page (inserted by manual.js). */
+.loci-home {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 10px;
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: var(--menu-bar-height);
+    text-decoration: none;
+    white-space: nowrap;
+}
+html.light .loci-home, html.navy .loci-home {
+    color: var(--accent);
+}
+.loci-home:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.loci-home:focus-visible {
+    outline: 2px solid var(--links);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+@media only screen and (max-width: 420px) {
+    .loci-home {
+        padding: 0 6px;
+        font-size: 1.5rem;
+    }
+}

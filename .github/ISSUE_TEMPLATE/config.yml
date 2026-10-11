@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Manual
+    url: https://zahakj.github.io/loci-rs/manual/
+    about: Getting started, Anki compatibility, FSRS-6 explained, the CLI, the data format.
+  - name: Security
+    url: https://github.com/ZahakJ/loci-rs/security/advisories/new
+    about: Report a vulnerability privately.
