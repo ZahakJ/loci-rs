@@ -618,7 +618,7 @@ mod tests {
 
     #[test]
     fn extend_by_10_on_a_preset_with_no_new_cards_a_day_serves_new_cards_and_counters_carry_today() {
-        let h = make_collection();
+        let mut h = make_collection();
         let basic = h.notetype_by_name("Basic");
         let mut cfg = h.col.get_preset(1).unwrap().config;
         cfg.new_per_day = 0;
@@ -672,7 +672,7 @@ mod tests {
 
     #[test]
     fn counters_from_an_earlier_day_are_reset_not_extended() {
-        let h = make_collection();
+        let mut h = make_collection();
         let basic = h.notetype_by_name("Basic");
         let deck = h.col.create_deck("Days", None).unwrap();
         for i in 0..30 {

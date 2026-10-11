@@ -74,7 +74,13 @@ fn parse_args(argv: &[String]) -> Args {
     Args { command, positional, flags }
 }
 
-fn call(engine: &mut Engine, method: &str, args: &[Value], bytes: Option<&[u8]>, show_progress: bool) -> Result<Payload, loci_core::LociError> {
+fn call(
+    engine: &mut Engine,
+    method: &str,
+    args: &[Value],
+    bytes: Option<&[u8]>,
+    show_progress: bool,
+) -> Result<Payload, loci_core::LociError> {
     let mut last = String::new();
     let mut sink = |p: Progress| {
         if show_progress {
@@ -142,8 +148,14 @@ fn run(args: Args) -> Result<i32, String> {
     };
     let report = json_call(&mut engine, "open", &[], None, false)?;
     if report["ok"] != Value::Bool(true) && args.command != "integrity" {
-        let problems: Vec<String> = report["problems"].as_array().map(|a| a.iter().filter_map(|p| p.as_str().map(String::from)).collect()).unwrap_or_default();
-        eprintln!("The collection failed its integrity check:\n  {}\nRun \"integrity\" to repair, or restore a backup.", problems.join("\n  "));
+        let problems: Vec<String> = report["problems"]
+            .as_array()
+            .map(|a| a.iter().filter_map(|p| p.as_str().map(String::from)).collect())
+            .unwrap_or_default();
+        eprintln!(
+            "The collection failed its integrity check:\n  {}\nRun \"integrity\" to repair, or restore a backup.",
+            problems.join("\n  ")
+        );
         return Ok(2);
     }
     let code = match args.command.as_str() {
@@ -156,7 +168,10 @@ fn run(args: Args) -> Result<i32, String> {
                 "conflict": "newer",
             });
             let r = json_call(&mut engine, "importPackage", &[options], Some(&bytes), !json && tty)?;
-            let warnings: Vec<String> = r["warnings"].as_array().map(|a| a.iter().filter_map(|w| w.as_str().map(String::from)).collect()).unwrap_or_default();
+            let warnings: Vec<String> = r["warnings"]
+                .as_array()
+                .map(|a| a.iter().filter_map(|w| w.as_str().map(String::from)).collect())
+                .unwrap_or_default();
             out(
                 format!(
                     "Imported {} notes ({} updated, {} skipped), {} cards, {} reviews, {} media files, {} decks in {} ms.{}",
@@ -221,7 +236,11 @@ fn run(args: Args) -> Result<i32, String> {
             0
         }
         "study" => {
-            let n: i64 = args.get("auto").and_then(|v| v.parse().ok()).filter(|n| *n >= 1).ok_or("study: use --auto <N> to answer N cards with Good")?;
+            let n: i64 = args
+                .get("auto")
+                .and_then(|v| v.parse().ok())
+                .filter(|n| *n >= 1)
+                .ok_or("study: use --auto <N> to answer N cards with Good")?;
             let deck_id = deck_id_by_name(&mut engine, args.get("deck"))?;
             let mut card = json_call(&mut engine, "startStudy", &[deck_id], None, false)?;
             let mut answered = 0;
@@ -235,7 +254,8 @@ fn run(args: Args) -> Result<i32, String> {
                 card = json_call(&mut engine, "nextCard", &[], None, false)?;
             }
             let summary = json_call(&mut engine, "endStudy", &[], None, false)?;
-            let lines: Vec<String> = log.iter().map(|l| format!("  {} → {}", l["card"], l["next"].as_str().unwrap_or(""))).collect();
+            let lines: Vec<String> =
+                log.iter().map(|l| format!("  {} → {}", l["card"], l["next"].as_str().unwrap_or(""))).collect();
             out(
                 format!(
                     "Answered {} card{} with Good{}.\n{}",
@@ -256,9 +276,14 @@ fn run(args: Args) -> Result<i32, String> {
                 None => "—".to_string(),
             };
             let cc = &s["cardCounts"];
-            let retention: Vec<String> =
-                s["retention"].as_array().into_iter().flatten().map(|r| format!("{} {} ({})", r["label"].as_str().unwrap_or(""), pct(&r["trueRetention"]), r["reviews"])).collect();
-            let forecast: Vec<String> = s["forecast"].as_array().into_iter().flatten().take(7).map(|f| f["due"].to_string()).collect();
+            let retention: Vec<String> = s["retention"]
+                .as_array()
+                .into_iter()
+                .flatten()
+                .map(|r| format!("{} {} ({})", r["label"].as_str().unwrap_or(""), pct(&r["trueRetention"]), r["reviews"]))
+                .collect();
+            let forecast: Vec<String> =
+                s["forecast"].as_array().into_iter().flatten().take(7).map(|f| f["due"].to_string()).collect();
             let mut lines = vec![
                 format!(
                     "Today: {} answers in {} min, {} correct",
@@ -299,12 +324,17 @@ fn run(args: Args) -> Result<i32, String> {
         }
         "integrity" => {
             let r = json_call(&mut engine, "checkIntegrity", &[], None, false)?;
-            let list = |k: &str| -> Vec<String> { r[k].as_array().map(|a| a.iter().filter_map(|p| p.as_str().map(String::from)).collect()).unwrap_or_default() };
+            let list = |k: &str| -> Vec<String> {
+                r[k].as_array().map(|a| a.iter().filter_map(|p| p.as_str().map(String::from)).collect()).unwrap_or_default()
+            };
             let ok = r["ok"] == Value::Bool(true);
             let repaired = list("repaired");
             out(
                 if ok {
-                    format!("OK{}", if repaired.is_empty() { String::new() } else { format!("; repaired:\n  {}", repaired.join("\n  ")) })
+                    format!(
+                        "OK{}",
+                        if repaired.is_empty() { String::new() } else { format!("; repaired:\n  {}", repaired.join("\n  ")) }
+                    )
                 } else {
                     format!("Problems:\n  {}", list("problems").join("\n  "))
                 },

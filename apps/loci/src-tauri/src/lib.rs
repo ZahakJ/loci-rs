@@ -9,7 +9,7 @@
 //! internal storage on Android): `collection.sqlite`, `media/`, `backups/`. Closing the window
 //! writes an automatic backup if anything changed.
 
-use loci_core::rpc::{Engine, Payload};
+use loci_core::rpc::Engine;
 use loci_core::types::Progress;
 use loci_core::LociError;
 use serde_json::Value;
@@ -60,7 +60,13 @@ fn stage_bytes(state: State<'_, Shared>, request: Request<'_>) -> Result<String,
 
 /// One JSON method call; `token` names staged bytes for the byte-taking methods.
 #[tauri::command]
-async fn rpc(state: State<'_, Shared>, method: String, args: Vec<Value>, token: Option<String>, on_progress: Channel<Progress>) -> Result<Value, LociError> {
+async fn rpc(
+    state: State<'_, Shared>,
+    method: String,
+    args: Vec<Value>,
+    token: Option<String>,
+    on_progress: Channel<Progress>,
+) -> Result<Value, LociError> {
     let state = Arc::clone(&state);
     tauri::async_runtime::spawn_blocking(move || {
         let bytes = take_staged(&state, token.as_deref())?;
@@ -77,7 +83,12 @@ async fn rpc(state: State<'_, Shared>, method: String, args: Vec<Value>, token: 
 
 /// One method call returning raw bytes (empty body = the engine returned null).
 #[tauri::command]
-async fn rpc_bytes(state: State<'_, Shared>, method: String, args: Vec<Value>, on_progress: Channel<Progress>) -> Result<Response, LociError> {
+async fn rpc_bytes(
+    state: State<'_, Shared>,
+    method: String,
+    args: Vec<Value>,
+    on_progress: Channel<Progress>,
+) -> Result<Response, LociError> {
     let state = Arc::clone(&state);
     let bytes = tauri::async_runtime::spawn_blocking(move || {
         with_engine(&state, |e| {
@@ -101,7 +112,7 @@ async fn save_bytes(app: tauri::AppHandle, request: Request<'_>) -> Result<Optio
         .headers()
         .get("x-loci-filename")
         .and_then(|v| v.to_str().ok())
-        .map(|s| percent_decode(s))
+        .map(percent_decode)
         .filter(|s| !s.is_empty())
         .unwrap_or_else(|| "loci-export.bin".to_string());
     let safe = filename.replace(['/', '\\', '\0'], "_");
@@ -132,7 +143,8 @@ fn save_file(app: &tauri::AppHandle, filename: &str, bytes: &[u8]) -> Result<Opt
     let mut n = 1;
     while path.exists() {
         let stem = std::path::Path::new(filename).file_stem().and_then(|s| s.to_str()).unwrap_or("export");
-        let ext = std::path::Path::new(filename).extension().and_then(|s| s.to_str()).map(|e| format!(".{e}")).unwrap_or_default();
+        let ext =
+            std::path::Path::new(filename).extension().and_then(|s| s.to_str()).map(|e| format!(".{e}")).unwrap_or_default();
         path = dir.join(format!("{stem} ({n}){ext}"));
         n += 1;
     }

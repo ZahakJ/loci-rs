@@ -12,7 +12,7 @@ rust-version = "1.85"
 [workspace.dependencies]
 loci-core = { path = "crates/loci-core" }
 serde = { version = "1", features = ["derive"] }
-serde_json = { version = "1", features = ["preserve_order"] }
+serde_json = { version = "1", features = ["preserve_order", "float_roundtrip"] }
 serde_repr = "0.1"
 thiserror = "2"
 rusqlite = { version = "0.40", features = ["bundled", "serialize", "backup", "functions", "collation"] }

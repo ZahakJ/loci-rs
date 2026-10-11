@@ -16,7 +16,6 @@ use loci_core::rpc::{Engine, Payload};
 use loci_core::LociError;
 use serde_json::{json, Value};
 use std::collections::HashMap;
-use std::io::Read;
 use std::path::PathBuf;
 use tiny_http::{Header, Method, Request, Response, Server};
 
@@ -68,7 +67,11 @@ fn json_response(status: u16, v: &Value) -> Response<std::io::Cursor<Vec<u8>>> {
 fn error_response(e: &LociError) -> Response<std::io::Cursor<Vec<u8>>> {
     let status = match e.code {
         loci_core::ErrorCode::NotFound => 404,
-        loci_core::ErrorCode::Invalid | loci_core::ErrorCode::UnsupportedPackage | loci_core::ErrorCode::Corrupt | loci_core::ErrorCode::Template | loci_core::ErrorCode::Media => 400,
+        loci_core::ErrorCode::Invalid
+        | loci_core::ErrorCode::UnsupportedPackage
+        | loci_core::ErrorCode::Corrupt
+        | loci_core::ErrorCode::Template
+        | loci_core::ErrorCode::Media => 400,
         loci_core::ErrorCode::Conflict | loci_core::ErrorCode::Busy => 409,
         loci_core::ErrorCode::Io | loci_core::ErrorCode::Internal => 500,
     };
@@ -146,7 +149,10 @@ fn handle(sessions: &mut Sessions, req: &mut Request) -> Response<std::io::Curso
             }
             ("/rpc-bytes", Payload::Bytes(None)) => cors(Response::from_data(Vec::new()).with_status_code(404)),
             (_, Payload::Json(v)) => json_response(200, &v),
-            (_, Payload::Bytes(_)) => json_response(500, &json!({ "error": { "code": "internal", "message": "bytes result on a JSON route; use /rpc-bytes" } })),
+            (_, Payload::Bytes(_)) => json_response(
+                500,
+                &json!({ "error": { "code": "internal", "message": "bytes result on a JSON route; use /rpc-bytes" } }),
+            ),
         })
     })();
     match result {
@@ -161,7 +167,10 @@ pub fn serve(dir: PathBuf, port: u16, multi: bool) -> Result<(), String> {
     if !multi {
         sessions.engine(None).map_err(|e| e.to_string())?;
     }
-    eprintln!("loci serve: http://127.0.0.1:{port} ({})", if multi { "fresh collection per x-loci-session" } else { dir.display().to_string() });
+    eprintln!(
+        "loci serve: http://127.0.0.1:{port} ({})",
+        if multi { "fresh collection per x-loci-session".to_string() } else { dir.display().to_string() }
+    );
     for mut req in server.incoming_requests() {
         let resp = handle(&mut sessions, &mut req);
         let _ = req.respond(resp);

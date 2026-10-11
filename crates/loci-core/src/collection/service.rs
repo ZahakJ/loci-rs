@@ -8,7 +8,7 @@
 //! (render.rs); `backlog_report`, `apply_catch_up` (backlog.rs); `browse`, `search_ids`, `sidebar`,
 //! `bulk` (browse.rs); `preview_import`, `import_package` (import.rs); `export_package` (export.rs);
 //! `optimise`, `evaluate`, `maintenance`, `forecast_workload` (optimise.rs); `stats`, `insights`
-//! (stats). Two session hooks are marked `E-HOOK` below.
+//! (stats).
 
 use crate::backup::integrity::sqlite_integrity;
 use crate::blobs::BlobStore;
@@ -442,11 +442,12 @@ impl Collection {
     pub fn unbury_deck(&self, deck_id: Option<DeckId>) -> Result<i64> {
         cards::unbury_deck(&self.core, deck_id)
     }
-    /// E-HOOK: after this returns, a running non-custom session should be refilled
-    /// (`study::fill_session`), as collection.ts:339 does.
-    pub fn extend_today_limits(&self, deck_id: DeckId, extra_new: i64, extra_review: i64) -> Result<StudyCounts> {
+    /// Raises today's limits, then refills a running non-custom session (collection.ts:339).
+    pub fn extend_today_limits(&mut self, deck_id: DeckId, extra_new: i64, extra_review: i64) -> Result<StudyCounts> {
         self.rollover()?;
-        decks::extend_today_limits(&self.core, self.counter(), deck_id, extra_new, extra_review)
+        let counts = decks::extend_today_limits(&self.core, self.counter(), deck_id, extra_new, extra_review)?;
+        self.refill_session()?;
+        Ok(counts)
     }
     pub fn resolve_leech(&self, card_id: CardId, action: LeechResolution) -> Result<()> {
         cards::resolve_leech(&self.core, card_id, action)
@@ -454,13 +455,13 @@ impl Collection {
 
     // ───────────────────────── undo ─────────────────────────
 
-    /// E-HOOK: when a session is active, `study::after_undo(core, session)` must run after a
-    /// successful undo (collection.ts:356).
+    /// Reverts the last operation; a running session is re-synced (collection.ts:356).
     pub fn undo(&mut self) -> Result<Option<UndoResult>> {
         let label = undo::undo(self.core.db())?;
         if let Some(label) = label {
             self.core.invalidate_caches();
             self.core.mark_changed()?;
+            self.session_after_undo()?;
             return Ok(Some(UndoResult { label }));
         }
         Ok(None)
