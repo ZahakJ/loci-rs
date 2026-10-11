@@ -43,7 +43,24 @@ git clone git@github.com:ZahakJ/loci-rs.git && cd loci-rs/apps/loci && pnpm inst
 
 ## Screenshots
 
-TODO-RELEASE
+All captures show the synthetic fixture collection (`fixtures/`, 402 notes, 590 cards, three years of simulated history) imported into the Rust engine and rendered by the app's own interface; no real deck was used. More in `docs/captures/`.
+
+<p align="center"><img src="docs/captures/home-desktop-light.png" width="800" alt="Home: today's estimate, insights, the deck tree and momentum, light theme"></p>
+<p align="center"><img src="docs/captures/study-back-desktop-dark.png" width="800" alt="Study screen in the dark theme: an Arabic card with its answer revealed and four fixed grade buttons"></p>
+<p align="center">
+  <img src="docs/captures/study-front-phone-light.png" width="196" alt="Study on a phone, question side">
+  <img src="docs/captures/study-back-phone-dark.png" width="196" alt="Study on a phone, answer side, dark theme">
+  <img src="docs/captures/home-phone-light.png" width="196" alt="Home on a phone">
+  <img src="docs/captures/stats-phone-dark.png" width="196" alt="Statistics on a phone, dark theme">
+</p>
+<p align="center">
+  <img src="docs/captures/browse-desktop-light.png" width="400" alt="Browse: sidebar, virtualised table with a selection and the bulk toolbar, editor pane">
+  <img src="docs/captures/stats-desktop-dark.png" width="400" alt="Statistics with insights and a forecast, dark theme">
+</p>
+<p align="center">
+  <img src="docs/captures/add-cloze-desktop-light.png" width="400" alt="Add sheet with a cloze note and live preview">
+  <img src="docs/captures/backlog-desktop-light.png" width="400" alt="Catch-up: the backlog in minutes and four plans">
+</p>
 
 ## What it is
 
@@ -82,14 +99,21 @@ Data lives in the platform app-data directory (`~/.local/share/space.avicenna.lo
 
 ## Performance
 
-Measured on the development desktop (16 cores, 30 GB) with the release build. TODO-RELEASE
+Measured on the development desktop (16 cores, 30 GB, Linux) with release builds, while another build job was running on the machine. The engine numbers come from `cargo test --release -p loci-core --test integration -- --ignored perf --nocapture` on a generated 100,000-card legacy `.apkg` (18 MB: 100,000 notes and cards, 437,735 review-log rows after de-duplication).
 
 | Measurement | Result |
 |---|---|
-| Cold start to a usable Home screen | TODO |
-| Import of a generated 100,000-card `.apkg` | TODO |
-| Browse table with 100,000 rows | TODO |
-| Study answer round-trip (`answerCard`, engine side) | TODO |
+| Cold start (process start to the Home screen interactive, release AppImage) | COLDSTART |
+| Import of the 100,000-card `.apkg` | 4.6 s |
+| Deck tree with counts on 100,000 cards | 37 ms |
+| Browse page of 100 rows sorted by due, offset 0 / offset 99,900 | 91 ms / 86 ms (the table is virtualised; scrolling only ever asks for one page) |
+| Browse page sorted by retrievability (`prop:r<0.95`) | 134 ms |
+| Study answer round-trip (`answerCard`, engine side, mean of 50) | 0.4 ms |
+| Start of a study session on 100,000 cards | 34 ms |
+| Statistics for the whole collection | 847 ms |
+| Export of the whole collection to `.apkg` | 1.7 s |
+
+Reading the 590-card fixture package takes 7 ms.
 
 ## Development
 
