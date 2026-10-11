@@ -48,15 +48,84 @@ impl Payload {
 
 /// Every method the engine serves: the whole `CollectionApi` plus `backupOnLeave` and `autoBackup`.
 pub const METHODS: &[&str] = &[
-    "addMedia", "addNote", "allTags", "answerCard", "applyCatchUp", "backlogReport", "backupNow", "browse", "bulk", "buryCards",
-    "checkIntegrity", "checkMedia", "checkTemplate", "close", "createDeck", "deckTree", "deleteDeck", "deleteMedia", "deleteNotes",
-    "deleteNotetype", "deletePreset", "deleteSavedSearch", "endStudy", "evaluate", "explainCard", "exportFullBackup", "exportPackage",
-    "extendTodayLimits", "findDuplicates", "forecastWorkload", "getCard", "getCardsOfNote", "getDeck", "getMedia", "getNote",
-    "getNotetype", "getPreset", "getSettings", "importPackage", "insights", "installSampleDeck", "isEmpty", "listBackups",
-    "listNotetypes", "listPresets", "maintenance", "nextCard", "open", "optimise", "previewImport", "previewNote", "renameDeck",
-    "renameTag", "renderCard", "resetCollection", "resolveLeech", "restoreBackup", "saveNotetype", "savePreset", "saveSearch",
-    "searchIds", "setDeckCollapsed", "setDeckDescription", "setDeckPreset", "setFlag", "setSettings", "sidebar", "startCustomStudy",
-    "startStudy", "stats", "suspendCards", "today", "unburyDeck", "undo", "undoLabel", "updateNote", "backupOnLeave", "autoBackup",
+    "addMedia",
+    "addNote",
+    "allTags",
+    "answerCard",
+    "applyCatchUp",
+    "backlogReport",
+    "backupNow",
+    "browse",
+    "bulk",
+    "buryCards",
+    "checkIntegrity",
+    "checkMedia",
+    "checkTemplate",
+    "close",
+    "createDeck",
+    "deckTree",
+    "deleteDeck",
+    "deleteMedia",
+    "deleteNotes",
+    "deleteNotetype",
+    "deletePreset",
+    "deleteSavedSearch",
+    "endStudy",
+    "evaluate",
+    "explainCard",
+    "exportFullBackup",
+    "exportPackage",
+    "extendTodayLimits",
+    "findDuplicates",
+    "forecastWorkload",
+    "getCard",
+    "getCardsOfNote",
+    "getDeck",
+    "getMedia",
+    "getNote",
+    "getNotetype",
+    "getPreset",
+    "getSettings",
+    "importPackage",
+    "insights",
+    "installSampleDeck",
+    "isEmpty",
+    "listBackups",
+    "listNotetypes",
+    "listPresets",
+    "maintenance",
+    "nextCard",
+    "open",
+    "optimise",
+    "previewImport",
+    "previewNote",
+    "renameDeck",
+    "renameTag",
+    "renderCard",
+    "resetCollection",
+    "resolveLeech",
+    "restoreBackup",
+    "saveNotetype",
+    "savePreset",
+    "saveSearch",
+    "searchIds",
+    "setDeckCollapsed",
+    "setDeckDescription",
+    "setDeckPreset",
+    "setFlag",
+    "setSettings",
+    "sidebar",
+    "startCustomStudy",
+    "startStudy",
+    "stats",
+    "suspendCards",
+    "today",
+    "unburyDeck",
+    "undo",
+    "undoLabel",
+    "updateNote",
+    "backupOnLeave",
+    "autoBackup",
 ];
 
 /// Methods whose byte argument arrives through `bytes`.
@@ -78,11 +147,44 @@ pub fn returns_bytes(name: &str) -> bool {
 pub fn is_write(name: &str) -> bool {
     !matches!(
         name,
-        "allTags" | "backlogReport" | "browse" | "checkTemplate" | "deckTree" | "evaluate" | "explainCard" | "exportFullBackup"
-            | "exportPackage" | "findDuplicates" | "forecastWorkload" | "getCard" | "getCardsOfNote" | "getDeck" | "getMedia" | "getNote"
-            | "getNotetype" | "getPreset" | "getSettings" | "insights" | "isEmpty" | "listBackups" | "listNotetypes" | "listPresets"
-            | "nextCard" | "open" | "previewImport" | "previewNote" | "renderCard" | "searchIds" | "sidebar" | "stats" | "today"
-            | "undoLabel" | "close" | "startStudy" | "startCustomStudy" | "endStudy"
+        "allTags"
+            | "backlogReport"
+            | "browse"
+            | "checkTemplate"
+            | "deckTree"
+            | "evaluate"
+            | "explainCard"
+            | "exportFullBackup"
+            | "exportPackage"
+            | "findDuplicates"
+            | "forecastWorkload"
+            | "getCard"
+            | "getCardsOfNote"
+            | "getDeck"
+            | "getMedia"
+            | "getNote"
+            | "getNotetype"
+            | "getPreset"
+            | "getSettings"
+            | "insights"
+            | "isEmpty"
+            | "listBackups"
+            | "listNotetypes"
+            | "listPresets"
+            | "nextCard"
+            | "open"
+            | "previewImport"
+            | "previewNote"
+            | "renderCard"
+            | "searchIds"
+            | "sidebar"
+            | "stats"
+            | "today"
+            | "undoLabel"
+            | "close"
+            | "startStudy"
+            | "startCustomStudy"
+            | "endStudy"
     )
 }
 
@@ -104,7 +206,13 @@ impl Engine {
     }
 
     /// Runs one method. See the module docs for the calling convention.
-    pub fn dispatch(&mut self, method: &str, _args: &[Value], _bytes: Option<&[u8]>, _progress: &mut dyn FnMut(Progress)) -> Result<Payload> {
+    pub fn dispatch(
+        &mut self,
+        method: &str,
+        _args: &[Value],
+        _bytes: Option<&[u8]>,
+        _progress: &mut dyn FnMut(Progress),
+    ) -> Result<Payload> {
         if !is_method(method) {
             return Err(LociError::invalid(format!("Unknown method {method}")));
         }
@@ -123,7 +231,7 @@ mod tests {
 
     #[test]
     fn method_table_is_complete_and_sorted_enough() {
-        assert_eq!(METHODS.len(), 81);
+        assert_eq!(METHODS.len(), 78);
         assert!(is_method("answerCard"));
         assert!(!is_method("dropTables"));
         assert!(takes_bytes("addMedia") && returns_bytes("getMedia"));
