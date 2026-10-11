@@ -49,11 +49,7 @@ pub struct LociError {
 
 impl LociError {
     pub fn new(code: ErrorCode, message: impl Into<String>) -> Self {
-        LociError {
-            code,
-            message: message.into(),
-            detail: None,
-        }
+        LociError { code, message: message.into(), detail: None }
     }
     pub fn with_detail(mut self, detail: impl ToString) -> Self {
         self.detail = Some(detail.to_string());
@@ -95,18 +91,12 @@ impl From<rusqlite::Error> for LociError {
     fn from(e: rusqlite::Error) -> Self {
         match &e {
             rusqlite::Error::SqliteFailure(ffi, _)
-                if matches!(
-                    ffi.code,
-                    rusqlite::ErrorCode::DatabaseCorrupt | rusqlite::ErrorCode::NotADatabase
-                ) =>
+                if matches!(ffi.code, rusqlite::ErrorCode::DatabaseCorrupt | rusqlite::ErrorCode::NotADatabase) =>
             {
                 LociError::corrupt(format!("The collection database is damaged: {e}"))
             }
             rusqlite::Error::SqliteFailure(ffi, _)
-                if matches!(
-                    ffi.code,
-                    rusqlite::ErrorCode::DatabaseBusy | rusqlite::ErrorCode::DatabaseLocked
-                ) =>
+                if matches!(ffi.code, rusqlite::ErrorCode::DatabaseBusy | rusqlite::ErrorCode::DatabaseLocked) =>
             {
                 LociError::busy(format!("The collection is in use: {e}"))
             }

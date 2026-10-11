@@ -62,10 +62,7 @@ pub struct Db {
 
 impl std::fmt::Debug for Db {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("Db")
-            .field("path", &self.path)
-            .field("depth", &self.depth.get())
-            .finish()
+        f.debug_struct("Db").field("path", &self.path).field("depth", &self.depth.get()).finish()
     }
 }
 
@@ -86,25 +83,15 @@ impl Db {
         }
         let conn = Connection::open_with_flags(
             &path,
-            OpenFlags::SQLITE_OPEN_READ_WRITE
-                | OpenFlags::SQLITE_OPEN_CREATE
-                | OpenFlags::SQLITE_OPEN_NO_MUTEX,
+            OpenFlags::SQLITE_OPEN_READ_WRITE | OpenFlags::SQLITE_OPEN_CREATE | OpenFlags::SQLITE_OPEN_NO_MUTEX,
         )?;
-        Ok(Db {
-            conn: Self::configure(conn)?,
-            depth: Cell::new(0),
-            path: Some(path),
-        })
+        Ok(Db { conn: Self::configure(conn)?, depth: Cell::new(0), path: Some(path) })
     }
 
     /// A private in-memory database.
     pub fn memory() -> Result<Db> {
         let conn = Connection::open_in_memory()?;
-        Ok(Db {
-            conn: Self::configure(conn)?,
-            depth: Cell::new(0),
-            path: None,
-        })
+        Ok(Db { conn: Self::configure(conn)?, depth: Cell::new(0), path: None })
     }
 
     /// Opens a private, writable, in-memory copy of a database image.
@@ -116,11 +103,7 @@ impl Db {
         let mut conn = Connection::open_in_memory()?;
         conn.deserialize_read_exact(MAIN_DB, Cursor::new(&fixed[..]), fixed.len(), false)
             .map_err(|e| LociError::corrupt(format!("Cannot open database image: {e}")))?;
-        Ok(Db {
-            conn: Self::configure(conn)?,
-            depth: Cell::new(0),
-            path: None,
-        })
+        Ok(Db { conn: Self::configure(conn)?, depth: Cell::new(0), path: None })
     }
 
     pub fn path(&self) -> Option<&Path> {
@@ -177,11 +160,7 @@ impl Db {
     }
 
     /// A single scalar (first column of the first row).
-    pub fn scalar<T: rusqlite::types::FromSql, P: rusqlite::Params>(
-        &self,
-        sql: &str,
-        params: P,
-    ) -> Result<Option<T>> {
+    pub fn scalar<T: rusqlite::types::FromSql, P: rusqlite::Params>(&self, sql: &str, params: P) -> Result<Option<T>> {
         self.get(sql, params, |r| r.get(0))
     }
 
@@ -224,9 +203,7 @@ impl Db {
     /// Serialises the whole database to bytes (for backups and export), WAL flag cleared.
     pub fn serialize(&self) -> Result<Vec<u8>> {
         if self.depth.get() > 0 {
-            return Err(LociError::busy(
-                "Cannot serialise the database inside a transaction",
-            ));
+            return Err(LociError::busy("Cannot serialise the database inside a transaction"));
         }
         let data = self.conn.serialize(MAIN_DB)?;
         Ok(without_wal_header(&data).into_owned())
@@ -248,11 +225,7 @@ impl Db {
                 std::fs::create_dir_all(parent)?;
             }
         }
-        let tmp = path.with_extension(format!(
-            "tmp-{}-{}",
-            std::process::id(),
-            chrono::Utc::now().timestamp_millis()
-        ));
+        let tmp = path.with_extension(format!("tmp-{}-{}", std::process::id(), chrono::Utc::now().timestamp_millis()));
         std::fs::write(&tmp, without_wal_header(bytes))?;
         for suffix in ["-journal", "-wal", "-shm"] {
             let mut side = path.as_os_str().to_owned();
@@ -281,23 +254,18 @@ mod tests {
         });
         assert!(r.is_err());
         assert_eq!(db.count("SELECT count(*) FROM t", []).unwrap(), 0);
-        db.transaction(|| db.run("INSERT INTO t VALUES (3)", []).map(|_| ()))
-            .unwrap();
+        db.transaction(|| db.run("INSERT INTO t VALUES (3)", []).map(|_| ())).unwrap();
         assert_eq!(db.count("SELECT count(*) FROM t", []).unwrap(), 1);
     }
 
     #[test]
     fn serialize_round_trips_through_open_from_bytes() {
         let db = Db::memory().unwrap();
-        db.execute_batch("CREATE TABLE t (x); INSERT INTO t VALUES (42)")
-            .unwrap();
+        db.execute_batch("CREATE TABLE t (x); INSERT INTO t VALUES (42)").unwrap();
         let bytes = db.serialize().unwrap();
         assert!(is_sqlite_image(&bytes));
         let copy = Db::open_from_bytes(&bytes).unwrap();
-        assert_eq!(
-            copy.scalar::<i64, _>("SELECT x FROM t", []).unwrap(),
-            Some(42)
-        );
+        assert_eq!(copy.scalar::<i64, _>("SELECT x FROM t", []).unwrap(), Some(42));
         copy.run("INSERT INTO t VALUES (43)", []).unwrap();
         assert_eq!(copy.count("SELECT count(*) FROM t", []).unwrap(), 2);
         assert!(Db::open_from_bytes(b"not a database at all, far too short").is_err());
@@ -306,18 +274,10 @@ mod tests {
     #[test]
     fn fts5_and_unicase_are_available() {
         let db = Db::memory().unwrap();
-        db.execute_batch(
-            "CREATE VIRTUAL TABLE f USING fts5(a, tokenize='trigram case_sensitive 0')",
-        )
-        .unwrap();
-        db.execute_batch("CREATE TABLE u (name TEXT COLLATE unicase)")
-            .unwrap();
+        db.execute_batch("CREATE VIRTUAL TABLE f USING fts5(a, tokenize='trigram case_sensitive 0')").unwrap();
+        db.execute_batch("CREATE TABLE u (name TEXT COLLATE unicase)").unwrap();
         db.run("INSERT INTO u VALUES ('Straße')", []).unwrap();
-        assert_eq!(
-            db.count("SELECT count(*) FROM u WHERE name = 'STRASSE'", [])
-                .unwrap(),
-            1
-        );
+        assert_eq!(db.count("SELECT count(*) FROM u WHERE name = 'STRASSE'", []).unwrap(), 1);
     }
 
     #[test]

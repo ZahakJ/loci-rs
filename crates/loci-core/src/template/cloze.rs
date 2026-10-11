@@ -7,8 +7,7 @@
 use regex::Regex;
 use std::sync::LazyLock;
 
-static CLOZE: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"(?is)\{\{c(\d+)::(.*?)(?:::(.*?))?\}\}").unwrap());
+static CLOZE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?is)\{\{c(\d+)::(.*?)(?:::(.*?))?\}\}").unwrap());
 
 /// Cloze markup rendered as its text (`{{c1::a::hint}}` → `a`); image-occlusion clozes become ''.
 pub fn cloze_to_text(text: &str) -> String {

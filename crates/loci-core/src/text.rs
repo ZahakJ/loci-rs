@@ -5,8 +5,7 @@ use regex::Regex;
 use sha1::{Digest, Sha1};
 use std::sync::LazyLock;
 
-const B91: &[u8] =
-    b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&()*+,-./:;<=>?@[]^_`{|}~";
+const B91: &[u8] = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&()*+,-./:;<=>?@[]^_`{|}~";
 
 pub fn base91(mut n: u64) -> String {
     let mut out = Vec::new();
@@ -43,16 +42,12 @@ pub fn field_checksum(stripped: &str) -> u32 {
 static MEDIA_TAGS: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r#"(?is)<\b(?:img|audio|video|object|source)\b(?:[^>]|"[^"]+?"|'[^']+?')+?\b(?:src|data)\b=(?:"([^"]+?)"[^>]*>|'([^']+?)'[^>]*>|([^ >]+?)(?: [^>]*>|>))"#).unwrap()
 });
-static HTML_TAGS: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?is)(<!--.*?-->)|(<style.*?>.*?</style>)|(<script.*?>.*?</script>)|(<.*?>)")
-        .unwrap()
-});
-static ENTITY: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"(?i)&(#x[0-9a-f]+|#\d+|[a-z][a-z0-9]*);").unwrap());
+static HTML_TAGS: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?is)(<!--.*?-->)|(<style.*?>.*?</style>)|(<script.*?>.*?</script>)|(<.*?>)").unwrap());
+static ENTITY: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?i)&(#x[0-9a-f]+|#\d+|[a-z][a-z0-9]*);").unwrap());
 static SOUND_TAG: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\[sound:[^\]]*\]").unwrap());
 static WS: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\s+").unwrap());
-static EMPTY_FIELD: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"(?i)^(?:[ \t\n\x0b\x0c\r]|</?(?:br|div) ?/?>)*$").unwrap());
+static EMPTY_FIELD: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?i)^(?:[ \t\n\x0b\x0c\r]|</?(?:br|div) ?/?>)*$").unwrap());
 static CLOZE_NUM: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?i)\{\{c(\d+)::").unwrap());
 
 /// Decodes `&name;`, `&#123;` and `&#x1F;` entities; unknown names are left as written.
@@ -137,11 +132,7 @@ pub fn join_fields(fields: &[String]) -> String {
 
 /// Anki tag string: ' a b ' with surrounding spaces; empty string when none.
 pub fn join_tags(tags: &[String]) -> String {
-    let t: Vec<&str> = tags
-        .iter()
-        .map(|x| x.trim())
-        .filter(|x| !x.is_empty())
-        .collect();
+    let t: Vec<&str> = tags.iter().map(|x| x.trim()).filter(|x| !x.is_empty()).collect();
     if t.is_empty() {
         String::new()
     } else {
@@ -155,11 +146,7 @@ pub fn split_tags(s: &str) -> Vec<String> {
 
 /// Cloze ordinals (1-based) present in a string, nested included, sorted.
 pub fn cloze_numbers(text: &str) -> Vec<i64> {
-    let mut out: Vec<i64> = CLOZE_NUM
-        .captures_iter(text)
-        .filter_map(|c| c[1].parse::<i64>().ok())
-        .filter(|n| *n > 0)
-        .collect();
+    let mut out: Vec<i64> = CLOZE_NUM.captures_iter(text).filter_map(|c| c[1].parse::<i64>().ok()).filter(|n| *n > 0).collect();
     out.sort_unstable();
     out.dedup();
     out
@@ -177,14 +164,8 @@ mod tests {
 
     #[test]
     fn strips_html_like_anki() {
-        assert_eq!(
-            strip_html("a<b>b</b> &amp; c&nbsp;d <!-- x --> <style>p{}</style>e"),
-            "ab & c d  e"
-        );
-        assert_eq!(
-            strip_html_preserving_media(r#"x <img src="pic.png"> y"#),
-            "x  pic.png  y"
-        );
+        assert_eq!(strip_html("a<b>b</b> &amp; c&nbsp;d <!-- x --> <style>p{}</style>e"), "ab & c d  e");
+        assert_eq!(strip_html_preserving_media(r#"x <img src="pic.png"> y"#), "x  pic.png  y");
         assert_eq!(strip_html("&#x41;&#66;&Aacute;&bogus;"), "ABÁ&bogus;");
     }
 
@@ -199,18 +180,12 @@ mod tests {
 
     #[test]
     fn cloze_numbers_sorted_unique() {
-        assert_eq!(
-            cloze_numbers("{{c3::a}} {{c1::b}} {{c1::c}} {{c0::d}}"),
-            vec![1, 3]
-        );
+        assert_eq!(cloze_numbers("{{c3::a}} {{c1::b}} {{c1::c}} {{c0::d}}"), vec![1, 3]);
     }
 
     #[test]
     fn plain_text_collapses_and_strips() {
-        assert_eq!(
-            plain_text("<b>Hello</b>  {{c1::world::hint}} [sound:x.mp3]"),
-            "Hello world"
-        );
+        assert_eq!(plain_text("<b>Hello</b>  {{c1::world::hint}} [sound:x.mp3]"), "Hello world");
     }
 
     #[test]
@@ -218,6 +193,6 @@ mod tests {
         assert_eq!(base91(0), "");
         assert_eq!(base91(90), "~");
         assert_eq!(base91(91), "ba");
-        assert_eq!(new_guid().len() <= 10, true);
+        assert!(new_guid().len() <= 10);
     }
 }

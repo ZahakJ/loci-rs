@@ -27,19 +27,7 @@ pub type CollectionDay = i64;
 pub const FIELD_SEPARATOR: char = '\u{1f}';
 
 // ───────────────────────── enums (Anki values) ─────────────────────────
-#[derive(
-    Debug,
-    Clone,
-    Copy,
-    PartialEq,
-    Eq,
-    Hash,
-    PartialOrd,
-    Ord,
-    Serialize_repr,
-    Deserialize_repr,
-    Default,
-)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize_repr, Deserialize_repr, Default)]
 #[repr(i32)]
 pub enum CardType {
     #[default]
@@ -49,19 +37,7 @@ pub enum CardType {
     Relearn = 3,
 }
 
-#[derive(
-    Debug,
-    Clone,
-    Copy,
-    PartialEq,
-    Eq,
-    Hash,
-    PartialOrd,
-    Ord,
-    Serialize_repr,
-    Deserialize_repr,
-    Default,
-)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize_repr, Deserialize_repr, Default)]
 #[repr(i32)]
 pub enum CardQueue {
     UserBuried = -3,
@@ -75,9 +51,7 @@ pub enum CardQueue {
     Preview = 4,
 }
 
-#[derive(
-    Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize_repr, Deserialize_repr,
-)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize_repr, Deserialize_repr)]
 #[repr(i32)]
 pub enum Rating {
     Again = 1,
@@ -102,19 +76,7 @@ impl Rating {
     }
 }
 
-#[derive(
-    Debug,
-    Clone,
-    Copy,
-    PartialEq,
-    Eq,
-    Hash,
-    PartialOrd,
-    Ord,
-    Serialize_repr,
-    Deserialize_repr,
-    Default,
-)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize_repr, Deserialize_repr, Default)]
 #[repr(i32)]
 pub enum RevlogType {
     #[default]
@@ -148,6 +110,7 @@ pub type Flag = u8;
 // ───────────────────────── note types ─────────────────────────
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", default)]
+#[derive(Default)]
 pub struct FieldConfig {
     pub sticky: bool,
     pub rtl: bool,
@@ -160,20 +123,6 @@ pub struct FieldConfig {
     /// edit as plain text (no HTML)
     pub plain_text: bool,
     pub collapsed: bool,
-}
-
-impl Default for FieldConfig {
-    fn default() -> Self {
-        FieldConfig {
-            sticky: false,
-            rtl: false,
-            font: String::new(),
-            size: 0,
-            description: String::new(),
-            plain_text: false,
-            collapsed: false,
-        }
-    }
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -696,12 +645,7 @@ impl<T> RatingMap<T> {
         }
     }
     pub fn from_fn(mut f: impl FnMut(Rating) -> T) -> Self {
-        RatingMap {
-            again: f(Rating::Again),
-            hard: f(Rating::Hard),
-            good: f(Rating::Good),
-            easy: f(Rating::Easy),
-        }
+        RatingMap { again: f(Rating::Again), hard: f(Rating::Hard), good: f(Rating::Good), easy: f(Rating::Easy) }
     }
 }
 
@@ -771,11 +715,7 @@ pub struct SessionSummary {
 
 /// Custom study kinds (`startCustomStudy`).
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(
-    tag = "kind",
-    rename_all = "kebab-case",
-    rename_all_fields = "camelCase"
-)]
+#[serde(tag = "kind", rename_all = "kebab-case", rename_all_fields = "camelCase")]
 pub enum CustomStudyKind {
     Ahead { days: i64 },
     Forgotten { days: i64 },
@@ -805,11 +745,7 @@ pub struct BacklogReport {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(
-    tag = "kind",
-    rename_all = "kebab-case",
-    rename_all_fields = "camelCase"
-)]
+#[serde(tag = "kind", rename_all = "kebab-case", rename_all_fields = "camelCase")]
 pub enum CatchUpPlan {
     Spread { days: i64 },
     TodayShare,
@@ -919,11 +855,7 @@ pub struct SidebarItem {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(
-    tag = "kind",
-    rename_all = "camelCase",
-    rename_all_fields = "camelCase"
-)]
+#[serde(tag = "kind", rename_all = "camelCase", rename_all_fields = "camelCase")]
 pub enum BulkAction {
     ChangeDeck {
         deck_id: DeckId,
@@ -1170,11 +1102,7 @@ pub struct ImportOptions {
 
 impl Default for ImportOptions {
     fn default() -> Self {
-        ImportOptions {
-            mode: ImportMode::Merge,
-            keep_scheduling: true,
-            conflict: ConflictPolicy::Newer,
-        }
+        ImportOptions { mode: ImportMode::Merge, keep_scheduling: true, conflict: ConflictPolicy::Newer }
     }
 }
 
@@ -1363,56 +1291,26 @@ mod tests {
 
     #[test]
     fn string_unions_match_the_typescript_literals() {
-        assert_eq!(
-            serde_json::to_string(&NewCardGather::DeckRandomNotes).unwrap(),
-            "\"deck-random-notes\""
-        );
-        assert_eq!(
-            serde_json::to_string(&BrowseColumn::SortField).unwrap(),
-            "\"sortField\""
-        );
-        assert_eq!(
-            serde_json::to_string(&BackupKind::PreRestore).unwrap(),
-            "\"pre-restore\""
-        );
-        assert_eq!(
-            serde_json::to_string(&BuiltinKind::ImageOcclusion).unwrap(),
-            "\"image-occlusion\""
-        );
+        assert_eq!(serde_json::to_string(&NewCardGather::DeckRandomNotes).unwrap(), "\"deck-random-notes\"");
+        assert_eq!(serde_json::to_string(&BrowseColumn::SortField).unwrap(), "\"sortField\"");
+        assert_eq!(serde_json::to_string(&BackupKind::PreRestore).unwrap(), "\"pre-restore\"");
+        assert_eq!(serde_json::to_string(&BuiltinKind::ImageOcclusion).unwrap(), "\"image-occlusion\"");
     }
 
     #[test]
     fn tagged_unions_use_kind() {
         let a: BulkAction = serde_json::from_str(r#"{"kind":"changeDeck","deckId":5}"#).unwrap();
         assert_eq!(a, BulkAction::ChangeDeck { deck_id: 5 });
-        let p: CatchUpPlan =
-            serde_json::from_str(r#"{"kind":"lower-retention","retention":0.85,"days":7}"#)
-                .unwrap();
-        assert_eq!(
-            p,
-            CatchUpPlan::LowerRetention {
-                retention: 0.85,
-                days: 7
-            }
-        );
-        let k: CustomStudyKind =
-            serde_json::from_str(r#"{"kind":"search","query":"deck:x","limit":50}"#).unwrap();
-        assert_eq!(
-            k,
-            CustomStudyKind::Search {
-                query: "deck:x".into(),
-                limit: 50
-            }
-        );
+        let p: CatchUpPlan = serde_json::from_str(r#"{"kind":"lower-retention","retention":0.85,"days":7}"#).unwrap();
+        assert_eq!(p, CatchUpPlan::LowerRetention { retention: 0.85, days: 7 });
+        let k: CustomStudyKind = serde_json::from_str(r#"{"kind":"search","query":"deck:x","limit":50}"#).unwrap();
+        assert_eq!(k, CustomStudyKind::Search { query: "deck:x".into(), limit: 50 });
     }
 
     #[test]
     fn rating_map_keys_are_strings_1_to_4() {
         let m = RatingMap::from_fn(|r| r.as_i64() * 10);
-        assert_eq!(
-            serde_json::to_string(&m).unwrap(),
-            r#"{"1":10,"2":20,"3":30,"4":40}"#
-        );
+        assert_eq!(serde_json::to_string(&m).unwrap(), r#"{"1":10,"2":20,"3":30,"4":40}"#);
     }
 
     #[test]
@@ -1420,10 +1318,7 @@ mod tests {
         let d: CardData = serde_json::from_str(r#"{"s":12.5,"d":5.2,"foo":1}"#).unwrap();
         assert_eq!(d.s, Some(12.5));
         assert_eq!(d.extra.get("foo"), Some(&serde_json::json!(1)));
-        assert_eq!(
-            serde_json::to_string(&d).unwrap(),
-            r#"{"s":12.5,"d":5.2,"foo":1}"#
-        );
+        assert_eq!(serde_json::to_string(&d).unwrap(), r#"{"s":12.5,"d":5.2,"foo":1}"#);
         assert_eq!(serde_json::to_string(&CardData::default()).unwrap(), "{}");
     }
 

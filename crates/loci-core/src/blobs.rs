@@ -116,23 +116,15 @@ impl BlobStore {
     }
 
     fn walk(&self, rel: &str, prefix: &str, out: &mut Vec<BlobEntry>) -> Result<()> {
-        let abs = if rel.is_empty() {
-            self.root.clone()
-        } else {
-            self.root
-                .join(rel.replace('/', std::path::MAIN_SEPARATOR_STR))
-        };
+        let abs =
+            if rel.is_empty() { self.root.clone() } else { self.root.join(rel.replace('/', std::path::MAIN_SEPARATOR_STR)) };
         let entries = match std::fs::read_dir(&abs) {
             Ok(e) => e,
             Err(_) => return Ok(()),
         };
         for ent in entries.flatten() {
             let name = ent.file_name().to_string_lossy().into_owned();
-            let child_rel = if rel.is_empty() {
-                name.clone()
-            } else {
-                format!("{rel}/{name}")
-            };
+            let child_rel = if rel.is_empty() { name.clone() } else { format!("{rel}/{name}") };
             let ft = match ent.file_type() {
                 Ok(t) => t,
                 Err(_) => continue,
@@ -149,11 +141,7 @@ impl BlobStore {
                         .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
                         .map(|d| d.as_millis() as i64)
                         .unwrap_or(0);
-                    out.push(BlobEntry {
-                        path: child_rel,
-                        bytes: md.len(),
-                        mtime,
-                    });
+                    out.push(BlobEntry { path: child_rel, bytes: md.len(), mtime });
                 }
             }
         }
@@ -162,14 +150,8 @@ impl BlobStore {
 }
 
 fn temp_sibling(target: &Path) -> PathBuf {
-    let mut name = target
-        .file_name()
-        .map(|n| n.to_string_lossy().into_owned())
-        .unwrap_or_default();
-    let nanos = std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .map(|d| d.as_nanos())
-        .unwrap_or(0);
+    let mut name = target.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
+    let nanos = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_nanos()).unwrap_or(0);
     name.push_str(TEMP_MARKER);
     name.push_str(&format!("{:x}-{:x}", std::process::id(), nanos));
     target.with_file_name(name)
@@ -184,10 +166,7 @@ mod tests {
         for bad in ["", "/abs", "a/../b", "a//b", "./x", "a\\b", "media/."] {
             assert!(blob_segments(bad).is_err(), "{bad}");
         }
-        assert_eq!(
-            blob_segments("media/a.png").unwrap(),
-            vec!["media", "a.png"]
-        );
+        assert_eq!(blob_segments("media/a.png").unwrap(), vec!["media", "a.png"]);
     }
 
     #[test]
@@ -197,19 +176,10 @@ mod tests {
         store.put("media/a.png", b"aaa").unwrap();
         store.put("media/b.mp3", b"bb").unwrap();
         store.put("backups/x.sqlite", b"c").unwrap();
-        std::fs::write(
-            dir.path().join("media").join(format!("junk{TEMP_MARKER}1")),
-            b"t",
-        )
-        .unwrap();
+        std::fs::write(dir.path().join("media").join(format!("junk{TEMP_MARKER}1")), b"t").unwrap();
         assert_eq!(store.get("media/a.png").unwrap().unwrap(), b"aaa");
         assert!(store.get("media/none").unwrap().is_none());
-        let names: Vec<String> = store
-            .list("media/")
-            .unwrap()
-            .into_iter()
-            .map(|e| e.path)
-            .collect();
+        let names: Vec<String> = store.list("media/").unwrap().into_iter().map(|e| e.path).collect();
         assert_eq!(names, vec!["media/a.png", "media/b.mp3"]);
         assert_eq!(store.list("backups/").unwrap().len(), 1);
         assert_eq!(store.list("").unwrap().len(), 3);
