@@ -14,7 +14,7 @@
   --_hard: var(--loci-hard, oklch(72% .14 65));
 }
 .card {
-  font-family: var(--loci-card-font, "Newsreader Variable", "Newsreader", "Noto Naskh Arabic", Georgia, "Times New Roman", serif);
+  font-family: var(--loci-card-font, "Newsreader Variable", "Newsreader", Georgia, var(--loci-arabic-font, "Noto Naskh Arabic", serif));
   font-size: var(--loci-card-size, 1.375rem);
   line-height: 1.45;
   color: var(--_ink);
@@ -30,7 +30,7 @@
 .card :where([dir]) { unicode-bidi: isolate; }
 .card[dir="rtl"], .card :where([dir="rtl"], :lang(ar), :lang(fa), :lang(ur)) { line-height: 1.7; }
 .card[dir="rtl"] { font-size: calc(var(--loci-card-size, 1.375rem) * 1.15); }
-.card :where(:lang(ar), :lang(fa), :lang(ur)) { font-family: "Noto Naskh Arabic", var(--loci-card-font, serif); font-size: 1.15em; }
+.card :where(:lang(ar), :lang(fa), :lang(ur)) { font-family: var(--loci-arabic-font, "Noto Naskh Arabic", serif); font-size: 1.15em; }
 .card :where(p) { margin: 0 0 .75em; }
 .card :where(p:last-child) { margin-block-end: 0; }
 .card :where(h1, h2, h3, h4) { font-weight: 600; line-height: 1.2; margin: .4em 0 .5em; }
@@ -127,6 +127,6 @@
 .card .loci-io-label { fill: var(--_ink); font-family: inherit; }
 
 /* template problems */
-.card .loci-template-error { font-family: system-ui, sans-serif; font-size: .8em; color: var(--_muted); border: 1px dashed var(--_line); border-radius: 10px; padding: .75em 1em; text-align: start; }
+.card .loci-template-error { font-family: var(--loci-ui-font, system-ui, sans-serif); font-size: .8em; color: var(--_muted); border: 1px dashed var(--_line); border-radius: 10px; padding: .75em 1em; text-align: start; }
 
 @media (prefers-reduced-motion: reduce) { .card .loci-audio { transition: none; } }

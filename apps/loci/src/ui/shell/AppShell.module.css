@@ -62,8 +62,7 @@
     display: flex; align-items: center; gap: var(--s-4);
     block-size: 60px;
     padding-inline: var(--s-5) var(--s-4);
-    background: color-mix(in oklab, var(--bg) 92%, transparent);
-    backdrop-filter: saturate(1.2) blur(8px);
+    background: var(--bg);
     border-block-end: 1px solid var(--line);
   }
   .topbar .brand { padding: 0; }
@@ -82,15 +81,14 @@
     display: grid; grid-template-columns: repeat(5, 1fr); align-items: stretch;
     block-size: calc(64px + env(safe-area-inset-bottom));
     padding-block-end: env(safe-area-inset-bottom);
-    background: color-mix(in oklab, var(--surface) 94%, transparent);
-    backdrop-filter: saturate(1.2) blur(10px);
+    background: var(--surface);
     border-block-start: 1px solid var(--line);
   }
   .tab {
     display: grid; justify-items: center; align-content: center; gap: 3px;
     min-block-size: 48px;
     color: var(--muted);
-    font-size: 11px; font-weight: 550; letter-spacing: 0.01em;
+    font-size: var(--text-2xs); font-weight: 550; letter-spacing: 0.01em;
     text-decoration: none;
     -webkit-tap-highlight-color: transparent;
   }
@@ -101,7 +99,7 @@
   .addButton {
     display: grid; place-items: center;
     inline-size: 48px; block-size: 48px; border-radius: 50%;
-    background: var(--accent-strong); color: var(--on-accent);
+    background: var(--accent-fill); color: var(--on-accent-fill);
     transition: transform var(--d-fast) var(--ease);
   }
   .addButton:active { transform: scale(0.96); }

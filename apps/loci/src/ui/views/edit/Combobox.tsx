@@ -8,6 +8,7 @@ import { createPortal } from 'react-dom';
 import { t } from '@core/i18n/i18n';
 import { Icon, type IconName } from '@ui/design/icons';
 import { cx } from '@ui/design/primitives/layer';
+import { floorY } from '@ui/design/primitives/bottomBar';
 import s from './Combobox.module.css';
 
 export interface ComboOption<V extends string | number> {
@@ -89,7 +90,7 @@ export function Combobox<V extends string | number>({
     if (!open || !trigger.current) return;
     const place = () => {
       const r = trigger.current!.getBoundingClientRect();
-      const vh = window.innerHeight, vw = window.innerWidth;
+      const vh = floorY() + 12, vw = window.innerWidth; // keep above the phone tab bar
       const width = Math.min(Math.max(r.width, 280), vw - 16);
       const left = Math.max(8, Math.min(r.left, vw - width - 8));
       const below = vh - r.bottom - 12;

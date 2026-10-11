@@ -78,7 +78,7 @@ export const useUi = create<UiState>((set, get) => ({
 const CARD_FONTS: Record<CollectionSettings['cardFont'], string> = {
   serif: 'var(--font-card)',
   sans: 'var(--font-card-sans)',
-  system: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Naskh Arabic', sans-serif",
+  system: 'var(--font-card-system)',
 };
 
 /** Mirrors collection settings onto <html> (card font/size, motion, keyboard hints). */

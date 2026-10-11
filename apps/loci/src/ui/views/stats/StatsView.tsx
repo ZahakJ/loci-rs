@@ -123,11 +123,11 @@ function TodayPanel({ data }: { data: Stats }) {
       <div className={s.today}>
         <Ring value={td.studied ? td.correctPct : 0} label={t('stats.correctToday', { pct: formatPercent(td.correctPct) })} center={td.studied ? formatPercent(td.correctPct) : '–'} tone="good" />
         <dl className={s.tiles}>
-          <div className={s.tile}><dt>{t('stats.tile.studied')}</dt><dd>{formatCount(td.studied)}</dd></div>
-          <div className={s.tile}><dt>{t('stats.tile.time')}</dt><dd>{minutes}</dd></div>
-          <div className={s.tile}><dt>{t('stats.tile.again')}</dt><dd>{formatCount(td.again)}</dd></div>
-          <div className={s.tile}><dt>{t('stats.tile.learned')}</dt><dd>{formatCount(td.learned)}</dd></div>
-          <div className={s.tile}><dt>{t('stats.tile.relearned')}</dt><dd>{formatCount(td.relearned)}</dd></div>
+          <div className={s.tile}><dt>{t('stats.tile.studied')}</dt><dd><span className="num-lg">{formatCount(td.studied)}</span></dd></div>
+          <div className={s.tile}><dt>{t('stats.tile.time')}</dt><dd><span className="num-lg">{minutes}</span></dd></div>
+          <div className={s.tile}><dt>{t('stats.tile.again')}</dt><dd><span className="num-lg">{formatCount(td.again)}</span></dd></div>
+          <div className={s.tile}><dt>{t('stats.tile.learned')}</dt><dd><span className="num-lg">{formatCount(td.learned)}</span></dd></div>
+          <div className={s.tile}><dt>{t('stats.tile.relearned')}</dt><dd><span className="num-lg">{formatCount(td.relearned)}</span></dd></div>
         </dl>
       </div>
     </Panel>
@@ -180,7 +180,7 @@ function RetentionPanel({ data }: { data: Stats }) {
                 <span className={s.target} style={{ insetInlineStart: `${r.desired * 100}%` }} />
               </span>
               <span className={s.bulletValue}>
-                {v === null ? '–' : formatPercent(v)}
+                <span className="num">{v === null ? '–' : formatPercent(v)}</span>
                 <span className="sr-only"> {t('stats.retentionRowSr', { target: formatPercent(r.desired), reviews: r.reviews })}</span>
               </span>
             </li>
@@ -307,7 +307,7 @@ function CountsPanel({ data }: { data: Stats }) {
   return (
     <Panel id="counts" title={t('stats.cardCounts')} className={s.half}
       sentence={t('stats.countsSentence', { total: tot.total, mature: formatPercent(tot.matureShare) })}>
-      <p className={s.bigFigure}>{formatCount(tot.total)}<span>{t('stats.cardsTotal')}</span></p>
+      <p className={s.bigFigure}><span className="num-lg">{formatCount(tot.total)}</span><span>{t('stats.cardsTotal')}</span></p>
       <StackedBar
         segments={[
           { key: 'new', label: t('stats.new'), value: c.new, tone: 'new' },
@@ -334,7 +334,7 @@ function MomentumPanel({ data }: { data: Stats }) {
   return (
     <Panel id="momentum" title={t('stats.momentum')} className={s.half} sentence={t('stats.momentumSentence', { days: m.daysStudiedLast30 })}>
       <div className={s.momentum}>
-        <p className={s.bigFigure}>{m.daysStudiedLast30}<span>{t('stats.ofLast30')}</span></p>
+        <p className={s.bigFigure}><span className="num-lg">{m.daysStudiedLast30}</span><span>{t('stats.ofLast30')}</span></p>
         <dl className={s.runs}>
           <div><dt>{t('stats.currentRunLabel')}</dt><dd>{t('stats.daysCount', { count: m.currentRun })}</dd></div>
           <div><dt>{t('stats.longestRunLabel')}</dt><dd>{t('stats.daysCount', { count: m.longestRun })}</dd></div>

@@ -15,8 +15,8 @@
   background: var(--surface);
   transition: transform var(--d-base) var(--ease);
 }
-.switch[aria-checked='true'] { background: var(--accent-strong); }
-.switch[aria-checked='true'] .thumb { transform: translateX(16px); background: var(--on-accent); }
+.switch[aria-checked='true'] { background: var(--accent-fill); }
+.switch[aria-checked='true'] .thumb { transform: translateX(16px); background: var(--on-accent-fill); }
 [dir='rtl'] .switch[aria-checked='true'] .thumb { transform: translateX(-16px); }
 .switch:disabled { opacity: 0.5; }
 .row { display: inline-flex; align-items: center; gap: var(--s-3); cursor: pointer; min-block-size: var(--tap); }

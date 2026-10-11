@@ -89,7 +89,7 @@ export function Legend({ items, className }: { items: LegendItem[]; className?: 
         <li key={it.label} className={s.legendItem}>
           <span className={cx(s.swatch, s[`tone-${it.tone}`], it.line && s.keyLine)} />
           <span>{it.label}</span>
-          {it.value && <span className={s.legendValue}>{it.value}</span>}
+          {it.value && <span className={cx(s.legendValue, 'num')}>{it.value}</span>}
         </li>
       ))}
     </ul>

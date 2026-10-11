@@ -9,6 +9,7 @@ import { Icon } from '@ui/design/icons';
 import { Kbd } from '@ui/design/primitives/Kbd';
 import { cx } from '@ui/design/primitives/layer';
 import s from './SearchBar.module.css';
+import { Tooltip } from '@ui/design/primitives/Tooltip';
 
 /** Delay between the last keystroke and the live search. */
 export const SEARCH_DEBOUNCE_MS = 300;
@@ -121,22 +122,25 @@ export function SearchBar({ value, onSearch, onEscape, onSave, busy, placeholder
         {(busy || pending) && <span className={s.spinner} aria-hidden />}
         {!text && <span className={s.slash} aria-hidden><Kbd>/</Kbd></span>}
         {onSave && value.trim() && (
-          <button type="button" className={s.iconBtn} aria-label={t('browse.saveSearch')} title={t('browse.saveSearch')} onClick={onSave}>
-            <Icon name="star" size={16} />
-          </button>
+          <Tooltip content={t('browse.saveSearch')}>
+            <button type="button" className={s.iconBtn} aria-label={t('browse.saveSearch')} onClick={onSave}>
+              <Icon name="star" size={16} />
+            </button>
+          </Tooltip>
         )}
-        <button
-          ref={helpBtn}
-          type="button"
-          className={s.iconBtn}
-          aria-label={t('browse.searchHelp')}
-          title={t('browse.searchHelp')}
-          aria-expanded={help}
-          aria-controls={help ? popId : undefined}
-          onClick={() => setHelp((h) => !h)}
-        >
-          <Icon name="help" size={16} />
-        </button>
+        <Tooltip content={help ? null : t('browse.searchHelp')}>
+          <button
+            ref={helpBtn}
+            type="button"
+            className={s.iconBtn}
+            aria-label={t('browse.searchHelp')}
+            aria-expanded={help}
+            aria-controls={help ? popId : undefined}
+            onClick={() => setHelp((h) => !h)}
+          >
+            <Icon name="help" size={16} />
+          </button>
+        </Tooltip>
       </div>
       {help && (
         <div ref={pop} id={popId} className={s.pop} role="dialog" aria-label={t('browse.searchHelp')}>

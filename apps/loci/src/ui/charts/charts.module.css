@@ -6,9 +6,9 @@
 
 .grid { stroke: var(--line); stroke-width: 1px; shape-rendering: crispEdges; }
 .axis { stroke: var(--line-strong); stroke-width: 1px; shape-rendering: crispEdges; }
-.yTick, .xTick { fill: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+.yTick, .xTick { fill: var(--muted); font-size: var(--text-2xs); font-variant-numeric: tabular-nums; }
 .ref line { stroke: var(--ink-2); stroke-width: 1.5px; stroke-dasharray: none; opacity: 0.55; }
-.ref text { fill: var(--ink-2); font-size: 11px; font-weight: 550; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; }
+.ref text { fill: var(--ink-2); font-size: var(--text-2xs); font-weight: 550; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; }
 
 .bar { transition: opacity var(--d-fast) var(--ease); }
 .col.dim .bar { opacity: 0.45; }

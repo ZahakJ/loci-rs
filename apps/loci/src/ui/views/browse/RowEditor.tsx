@@ -10,6 +10,7 @@ import { api, errorMessage, useQuery } from '@ui/api';
 import { Icon } from '@ui/design/icons';
 import { IconButton, LinkButton } from '@ui/design/primitives/Button';
 import { Skeleton } from '@ui/design/primitives/Skeleton';
+import { Tooltip } from '@ui/design/primitives/Tooltip';
 import { cx } from '@ui/design/primitives/layer';
 import { NoteEditor } from '@ui/editor/NoteEditor';
 import { CardPreview } from '../edit/CardPreview';
@@ -99,15 +100,19 @@ export function RowEditor({ noteId, cardId, deckName, onBack, onInfo, className 
         <div className={s.titles}>
           <p className={s.kind}>{nt?.name ?? ' '}</p>
           {meta.length > 0 && (
-            <p className={s.deck} title={meta.join(' · ')} aria-label={`${t('browse.meta.label')}: ${meta.join(', ')}`}>
-              <Icon name="deck" size={13} />
-              <span className={s.metaText}>{meta.join(' · ')}</span>
-            </p>
+            <Tooltip content={meta.join(' · ')}>
+              <p className={s.deck} aria-label={`${t('browse.meta.label')}: ${meta.join(', ')}`}>
+                <Icon name="deck" size={13} />
+                <span className={s.metaText}>{meta.join(' · ')}</span>
+              </p>
+            </Tooltip>
           )}
         </div>
         <span className={cx(s.status, status === 'error' && s.statusError)} role="status" aria-live="polite">{statusText}</span>
-        {onInfo && <IconButton size="sm" variant="ghost" icon="info" label={t('browse.cardInfo')} title={`${t('browse.cardInfo')} (I)`} onClick={onInfo} className={s.full} />}
-        <LinkButton size="sm" variant="ghost" icon="external" href={`#/note/${noteId}`} onClick={() => void flush()} aria-label={t('browse.editor.openFull')} title={t('browse.editor.openFull')} className={s.full} />
+        {onInfo && <IconButton size="sm" variant="ghost" icon="info" label={t('browse.cardInfo')} tooltip={`${t('browse.cardInfo')} (I)`} onClick={onInfo} className={s.full} />}
+        <Tooltip content={t('browse.editor.openFull')}>
+          <LinkButton size="sm" variant="ghost" icon="external" href={`#/note/${noteId}`} onClick={() => void flush()} aria-label={t('browse.editor.openFull')} className={s.full} />
+        </Tooltip>
       </header>
       <div className={s.scroll}>
         {error && <p className={s.error} role="alert">{error}</p>}

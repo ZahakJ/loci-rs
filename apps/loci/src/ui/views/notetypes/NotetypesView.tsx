@@ -151,7 +151,7 @@ export default function NotetypesView() {
                   <span className={s.itemName}>{n.name}</span>
                   <span className={s.itemMeta}>{t('notetypes.meta', { fields: n.fields.length, cards: n.templates.length })}</span>
                 </span>
-                <span className={s.itemCount} title={t('notetypes.notesCount', { count: c ?? 0 })}>{c === undefined ? '' : formatCount(c)}</span>
+                <span className={cx(s.itemCount, 'num')}>{c === undefined ? '' : <><span aria-hidden>{formatCount(c)}</span><span className="sr-only">{t('notetypes.notesCount', { count: c })}</span></>}</span>
               </button>
             </li>
           );

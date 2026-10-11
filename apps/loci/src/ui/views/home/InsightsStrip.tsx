@@ -19,7 +19,7 @@ export function InsightsStrip({ insights }: { insights: Insight[] }) {
         {insights.slice(0, 3).map((ins, i) => (
           <Card as="li" key={ins.id} padding="none" className={cx(s.insight, s[ins.severity])} style={{ '--i': i } as CSSProperties}>
             <div className={s.insightTop}>
-              <span className={s.insightIcon} aria-hidden><Icon name={ICON[ins.severity]} size={16} /></span>
+              <span className={s.insightIcon} aria-hidden><Icon name={ICON[ins.severity]} size={20} /></span>
               <p className={s.insightText}>{ins.text}</p>
             </div>
             {ins.action && (

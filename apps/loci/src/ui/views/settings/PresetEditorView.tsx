@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode } from 'react';
+import { useEffect, useId, useMemo, useRef, useState, type MouseEvent, type ReactNode } from 'react';
 import { t } from '@core/i18n/i18n';
 import type { DeckConfig, DeckConfigPreset, OptimiseResult } from '@core/types';
 import { api, errorMessage, useQuery } from '../../api';
@@ -298,13 +298,17 @@ function StepsInput({ label, value, onChange }: { label: string; value: number[]
     setError(false);
     if (formatSteps(parsed) !== formatSteps(value)) onChange(parsed);
   };
+  const errorId = useId();
   return (
-    <Input
-      className={ps.stepsInput} mono aria-label={label} aria-invalid={error || undefined}
-      title={error ? t('preset.stepsInvalid') : undefined}
-      value={text} onChange={(e) => setText(e.target.value)} onBlur={commit} onKeyDown={(e) => { if (e.key === 'Enter') commit(); }}
-      placeholder="1m 10m"
-    />
+    <span className={ps.steps}>
+      <Input
+        className={ps.stepsInput} mono aria-label={label} aria-invalid={error || undefined}
+        aria-describedby={error ? errorId : undefined}
+        value={text} onChange={(e) => setText(e.target.value)} onBlur={commit} onKeyDown={(e) => { if (e.key === 'Enter') commit(); }}
+        placeholder="1m 10m"
+      />
+      {error && <span id={errorId} className={ps.stepsError} role="alert">{t('preset.stepsInvalid')}</span>}
+    </span>
   );
 }
 
@@ -353,7 +357,7 @@ function ParamsEditor({ presetId, params, onChange, onOptimised }: { presetId: n
           {params.map((p, i) => (
             <div role="listitem" key={i} className={cx(ps.param, before && Math.abs((before[i] ?? p) - p) > 1e-9 && ps.changed)}>
               <span className={ps.paramKey}>w{i}</span>
-              <span className={ps.paramVal}>{p.toFixed(4)}</span>
+              <span className={cx(ps.paramVal, 'num')}>{p.toFixed(4)}</span>
             </div>
           ))}
         </div>

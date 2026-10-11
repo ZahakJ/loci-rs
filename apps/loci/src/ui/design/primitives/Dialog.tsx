@@ -57,8 +57,10 @@ export function Dialog({
         noValidate
       >
         <div className={s.content}>
-          {(icon || destructive) && <div className={s.icon} aria-hidden><Icon name={icon ?? 'warning'} /></div>}
-          <h2 id={titleId} className={s.title}>{title}</h2>
+          <div className={s.head}>
+            {(icon || destructive) && <span className={s.icon} aria-hidden><Icon name={icon ?? 'warning'} size={20} /></span>}
+            <h2 id={titleId} className={s.title}>{title}</h2>
+          </div>
           {description && <div id={descId} className={s.description}>{description}</div>}
           {children && <div className={s.body}>{children}</div>}
         </div>

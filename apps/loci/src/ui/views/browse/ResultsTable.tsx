@@ -10,7 +10,7 @@ import { t } from '@core/i18n/i18n';
 import type { BrowseColumn, BrowseRow } from '@core/types';
 import { Icon } from '@ui/design/icons';
 import { cx } from '@ui/design/primitives/layer';
-import { NUMERIC, WIDTH } from './columns';
+import { DATA_COLUMNS, NUMERIC, WIDTH } from './columns';
 import type { SelectionAction, SelectionState } from './selection';
 import type { BrowseData } from './useBrowseData';
 import s from './ResultsTable.module.css';
@@ -146,7 +146,7 @@ export function ResultsTable({ data, columns, sort, onSort, selection, dispatch,
                     </span>
                     {columns.map((c) => (
                       <span key={c} role="gridcell" className={cx(s.cell, NUMERIC.has(c) && s.num, c === 'sortField' && s.primary)} dir={c === 'sortField' || c === 'question' || c === 'answer' ? 'auto' : undefined}>
-                        {r ? r.cells[c] ?? '' : <span className={s.ghost} />}
+                        {r ? (DATA_COLUMNS.has(c) ? <span className="num">{r.cells[c] ?? ''}</span> : r.cells[c] ?? '') : <span className={s.ghost} />}
                       </span>
                     ))}
                   </>

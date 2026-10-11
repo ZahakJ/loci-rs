@@ -12,6 +12,7 @@ import { navigate } from '../../routes';
 import { ExportDialog } from '../edit/ExportDialog';
 import { DeckDialogs, type DeckDialogState } from './DeckDialogs';
 import s from './DeckTree.module.css';
+import { Tooltip } from '../../design/primitives/Tooltip';
 
 export interface DeckTreeProps {
   root: DeckTreeNode;
@@ -23,7 +24,7 @@ const leaf = (name: string) => name.split('::').pop() ?? name;
 function Count({ n, tone, label }: { n: number; tone: 'new' | 'learn' | 'due'; label: string }) {
   return (
     <span className={cx(s.n, n === 0 ? s.zero : s[tone])} aria-label={label}>
-      {n === 0 ? '–' : formatCount(n)}
+      <span className="num">{n === 0 ? '–' : formatCount(n)}</span>
     </span>
   );
 }
@@ -88,20 +89,21 @@ export function DeckTree({ root, onToggle }: DeckTreeProps) {
                 <Icon name="chevron-down" size={16} />
               </button>
             ) : <span className={s.spacer} aria-hidden />}
-            <a
-              href={`#/study/${node.deck.id}`}
-              className={s.link}
-              data-deck-link
-              title={stripHtml(node.deck.description).trim() || node.deck.name}
-              aria-label={t('deck.rowLabel', { name, new: node.newCount, learn: node.learnCount, due: node.reviewCount })}
-            >
-              {name}
-            </a>
+            <Tooltip content={stripHtml(node.deck.description).trim() || (node.deck.name !== name ? node.deck.name : null)}>
+              <a
+                href={`#/study/${node.deck.id}`}
+                className={s.link}
+                data-deck-link
+                aria-label={t('deck.rowLabel', { name, new: node.newCount, learn: node.learnCount, due: node.reviewCount })}
+              >
+                {name}
+              </a>
+            </Tooltip>
           </div>
           <Count n={node.newCount} tone="new" label={t('counts.new', { count: node.newCount })} />
           <Count n={node.learnCount} tone="learn" label={t('counts.learn', { count: node.learnCount })} />
           <Count n={node.reviewCount} tone="due" label={t('counts.due', { count: node.reviewCount })} />
-          <span className={s.time}>{node.estimatedMinutes > 0 ? t('time.short', { m: node.estimatedMinutes }) : ''}</span>
+          <span className={s.time}>{node.estimatedMinutes > 0 ? <span className="num">{t('time.short', { m: node.estimatedMinutes })}</span> : ''}</span>
           <div className={s.actions}>
             <Button size="sm" variant="ghost" className={s.study} onClick={() => navigate(`#/study/${node.deck.id}`)} aria-label={t('deck.studyNamed', { name })}>
               {t('deck.study')}

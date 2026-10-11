@@ -31,7 +31,7 @@ export function Slider({ value, onChange, min, max, step = 1, format = String, s
     <div className={cx(s.wrap, className)}>
       {showValue && (
         <div className={s.top}>
-          <output htmlFor={a11y.id} className={s.value}>{format(value)}</output>
+          <output htmlFor={a11y.id} className={cx(s.value, 'num')}>{format(value)}</output>
         </div>
       )}
       <input

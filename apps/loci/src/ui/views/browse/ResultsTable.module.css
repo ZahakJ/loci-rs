@@ -66,5 +66,5 @@
 .phoneMain { font-size: var(--text-md); color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
 .phoneMeta { display: flex; align-items: center; gap: 4px; font-size: var(--text-sm); color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .chev { color: var(--faint); flex-shrink: 0; }
-.check { display: grid; place-items: center; inline-size: 22px; block-size: 22px; border-radius: 6px; border: 1.5px solid var(--line-strong); flex-shrink: 0; color: var(--on-accent); }
-.checked { background: var(--accent-strong); border-color: var(--accent-strong); }
+.check { display: grid; place-items: center; inline-size: 22px; block-size: 22px; border-radius: 6px; border: 1.5px solid var(--line-strong); flex-shrink: 0; color: var(--on-accent-fill); }
+.checked { background: var(--accent-fill); border-color: var(--accent-fill); }

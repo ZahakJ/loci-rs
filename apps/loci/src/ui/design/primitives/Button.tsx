@@ -1,6 +1,7 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 import { Icon, type IconName } from '../icons';
 import { Kbd } from './Kbd';
+import { Tooltip } from './Tooltip';
 import { cx } from './layer';
 import s from './Button.module.css';
 
@@ -20,7 +21,7 @@ interface CommonProps {
   children?: ReactNode;
 }
 
-export interface ButtonProps extends CommonProps, Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'className'> {
+export interface ButtonProps extends CommonProps, Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'className' | 'title'> {
   ref?: Ref<HTMLButtonElement>;
 }
 
@@ -50,7 +51,7 @@ export function Button({ variant = 'secondary', size = 'md', kbd, icon, iconEnd,
   );
 }
 
-export interface LinkButtonProps extends CommonProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'children' | 'className'> {
+export interface LinkButtonProps extends CommonProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'children' | 'className' | 'title'> {
   href: string;
   ref?: Ref<HTMLAnchorElement>;
 }
@@ -64,26 +65,31 @@ export function LinkButton({ variant = 'secondary', size = 'md', kbd, icon, icon
   );
 }
 
-export interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+export interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'title'> {
   icon: IconName;
-  /** accessible name (required) */
+  /** accessible name (required); also the tooltip text */
   label: string;
   size?: ButtonSize;
   variant?: 'ghost' | 'secondary' | 'primary';
   iconSize?: number;
+  /** tooltip text (default: the label, plus the shortcut when given); false for none */
+  tooltip?: ReactNode | false;
+  tooltipPlacement?: 'top' | 'bottom';
   ref?: Ref<HTMLButtonElement>;
 }
 
-export function IconButton({ icon, label, size = 'md', variant = 'ghost', iconSize, className, type = 'button', ...rest }: IconButtonProps) {
-  return (
+/** Icon-only button. Always named (`label`) and, by default, explained by the Tooltip primitive, never by `title`. */
+export function IconButton({ icon, label, size = 'md', variant = 'ghost', iconSize, className, type = 'button', tooltip, tooltipPlacement, ...rest }: IconButtonProps) {
+  const button = (
     <button
       type={type}
       aria-label={label}
-      title={rest.title ?? label}
       className={cx(s['icon-button'], s[size], variant !== 'ghost' && s[variant], className)}
       {...rest}
     >
       <Icon name={icon} size={iconSize ?? (size === 'sm' ? 18 : 20)} />
     </button>
   );
+  if (tooltip === false) return button;
+  return <Tooltip content={tooltip ?? label} placement={tooltipPlacement}>{button}</Tooltip>;
 }

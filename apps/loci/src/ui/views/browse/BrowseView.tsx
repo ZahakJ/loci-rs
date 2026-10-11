@@ -160,8 +160,8 @@ export default function BrowseView({ initialQuery }: { initialQuery?: string }) 
   const showSidebar = wide && layout.sidebar;
   const status = (
     <p className={s.status} aria-live="polite">
-      <span className="tabular">{data.loading ? t('browse.searching') : t(mode === 'notes' ? 'browse.totalNotes' : 'browse.totalCards', { count: data.total })}</span>
-      {count > 0 && <span className="tabular"> · {t('browse.selectedShort', { count })}</span>}
+      <span className="num">{data.loading ? t('browse.searching') : t(mode === 'notes' ? 'browse.totalNotes' : 'browse.totalCards', { count: data.total })}</span>
+      {count > 0 && <span className="num"> · {t('browse.selectedShort', { count })}</span>}
     </p>
   );
 

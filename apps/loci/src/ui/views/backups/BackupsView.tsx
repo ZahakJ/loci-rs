@@ -104,13 +104,13 @@ export default function BackupsView() {
                     <td>
                       <div className={s.when}>
                         <span className={s.whenRel}>{capitalise(formatRelative(b.at))}{i === 0 && <Pill tone="good" className={s.latest}>{t('backups.latest')}</Pill>}</span>
-                        <span className={s.whenAbs}>{formatDateTime(b.at)}</span>
+                        <span className={s.whenAbs}><span className="num">{formatDateTime(b.at)}</span></span>
                         <span className={s.metaPhone}>{t(`backups.kind.${b.kind}`)} · {b.cards === null ? '–' : t('backups.cards', { n: formatCount(b.cards) })} · {formatBytes(b.bytes)}</span>
                       </div>
                     </td>
                     <td><Pill tone={TONE[b.kind]} outline={b.kind === 'pre-restore'}>{t(`backups.kind.${b.kind}`)}</Pill></td>
-                    <td className={s.num}>{b.cards === null ? '–' : t('backups.cards', { n: formatCount(b.cards) })}</td>
-                    <td className={s.num}>{formatBytes(b.bytes)}</td>
+                    <td className={s.num}><span className="num">{b.cards === null ? '–' : t('backups.cards', { n: formatCount(b.cards) })}</span></td>
+                    <td className={s.num}><span className="num">{formatBytes(b.bytes)}</span></td>
                     <td className={s.act}>
                       <Button size="sm" variant="secondary" icon="history" onClick={() => setRestore(b)} aria-label={t('backups.restoreNamed', { when: formatDateTime(b.at) })}>
                         {t('backups.restore')}

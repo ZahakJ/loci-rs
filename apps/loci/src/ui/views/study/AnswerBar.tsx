@@ -7,6 +7,7 @@ import { cx } from '../../design/primitives/layer';
 import { useRef } from 'react';
 import { GRADE_KEYS, RATINGS, gradeLabel, gradeName } from './format';
 import s from './Study.module.css';
+import { Tooltip } from '../../design/primitives/Tooltip';
 
 export type BarMode =
   | { kind: 'front'; typing?: boolean }
@@ -65,7 +66,7 @@ export function AnswerBar({ mode, showKeys, busy, onShow, onRevealNext, onGrade,
                     {gradeName(r)}
                     {showKeys && <Kbd className={s.gradeKbd}>{String(r)}</Kbd>}
                   </span>
-                  <span className={s.gradeInterval} aria-hidden>{interval || ' '}</span>
+                  <span className={cx(s.gradeInterval, 'num')} aria-hidden>{interval || ' '}</span>
                 </button>
               );
             })}
@@ -75,9 +76,11 @@ export function AnswerBar({ mode, showKeys, busy, onShow, onRevealNext, onGrade,
         {explainer && (
           <p className={s.explainer}>
             <span>{t('studyScreen.explainer')}</span>
-            <button type="button" className={s.explainerDismiss} onClick={explainer.onDismiss} aria-label={t('studyScreen.explainerDismissAria')} title={t('studyScreen.explainerDismissAria')}>
-              <Icon name="close" size={14} />
-            </button>
+            <Tooltip content={t('studyScreen.explainerDismissAria')}>
+              <button type="button" className={s.explainerDismiss} onClick={explainer.onDismiss} aria-label={t('studyScreen.explainerDismissAria')}>
+                <Icon name="close" size={14} />
+              </button>
+            </Tooltip>
           </p>
         )}
       </div>

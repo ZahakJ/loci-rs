@@ -285,6 +285,13 @@ phone. Radii 6 / 10 / 16. Spacing 4-point grid. Shadows: none in light theme bey
 `cubic-bezier(.2,.8,.2,1)`. Icons: inline SVG, 1.5px stroke, 20px. Theme switch is
 instant with a 200ms colour cross-fade on `html`.
 
+Additions in 0.2 **[changed in 0.2]**:
+- `--accent-fill` / `--on-accent-fill` (and `--accent-fill-hover`): the fill of primary buttons, switches and checked marks. Light = `oklch(54% .14 70)` with white; dark = `oklch(55% .12 70)` with `oklch(98% .006 85)`, a brass block on slate rather than a pale slab. `--accent-strong` stays for text, icons and rules. **[changed in 0.2]**
+- `--text-2xs` 0.6875rem (11) and `--text-3xs` 0.625rem (10, keycaps and chart axes only); no `px` font sizes. **[changed in 0.2]**
+- `.num` / `.num-lg`: JetBrains Mono, tabular, weight 500, for numbers read as data. **[changed in 0.2]**
+- One Arabic stack, `--font-arabic: 'Noto Naskh Arabic', serif`, referenced by every other stack and by the card (`--loci-arabic-font`). **[changed in 0.2]**
+- Contrast (`pnpm contrast`, `docs/design/contrast-0.2.md`): light counts darkened to new `oklch(54% .15 250)`, learn `oklch(55% .16 50)`, due `oklch(52% .14 150)`; light grades to hard `oklch(66% .14 65)`, good `oklch(63% .14 150)`, easy `oklch(64% .12 230)`; light danger `oklch(56% .19 25)`; pill text mixes 68% tone into ink (was 82%). Hues unchanged. **[changed in 0.2]**
+
 Theme follows the system by default; both themes are designed (not inverted): the
 dark theme lowers chroma on large surfaces and raises it on the accent.
 

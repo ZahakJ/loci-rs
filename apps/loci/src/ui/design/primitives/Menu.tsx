@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { Icon, type IconName } from '../icons';
+import { floorY } from './bottomBar';
 import { Kbd } from './Kbd';
 import { cx } from './layer';
 import s from './Menu.module.css';
@@ -58,15 +59,16 @@ export function Menu({ label, items, trigger, align = 'end', className, onOpenCh
     if (!open || !triggerEl.current || !menuEl.current) return;
     const r = triggerEl.current.getBoundingClientRect();
     const m = menuEl.current.getBoundingClientRect();
-    const vw = window.innerWidth, vh = window.innerHeight;
+    const vw = window.innerWidth;
+    const floor = floorY(); // above the phone tab bar / study answer bar, never over it
     const rtl = document.documentElement.dir === 'rtl';
     const alignEnd = (align === 'end') !== rtl;
     let left = alignEnd ? r.right - m.width : r.left;
     left = Math.max(8, Math.min(left, vw - m.width - 8));
-    const below = vh - r.bottom - 8;
+    const below = floor - r.bottom;
     const above = r.top - 8;
     const placeAbove = below < Math.min(m.height, 240) && above > below;
-    const maxHeight = Math.max(160, (placeAbove ? above : below) - 4);
+    const maxHeight = Math.max(120, (placeAbove ? above : below) - 4);
     const top = placeAbove ? Math.max(8, r.top - Math.min(m.height, maxHeight) - 4) : r.bottom + 4;
     setPos({ top, left, maxHeight });
   }, [open, align]);

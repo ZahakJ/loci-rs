@@ -18,6 +18,7 @@ import { toast } from '@ui/design/primitives/Toast';
 import { storeMediaFile } from '@ui/editor/media';
 import { hitTest, initialOcclusionState, occlusionReducer, serializeShapes, type EditShape, type Handle, type Tool } from './model';
 import s from './OcclusionEditor.module.css';
+import { Tooltip } from '@ui/design/primitives/Tooltip';
 
 export interface OcclusionEditorProps {
   occlusion: string;
@@ -260,18 +261,18 @@ export function OcclusionEditor({ occlusion, image, defaultMode, onChange, error
       <div className={s.toolbar} role="toolbar" aria-label={t('editor.occlusion.tools')}>
         <div className={s.tools} role="radiogroup" aria-label={t('editor.occlusion.tool')}>
           {(['select', 'rect', 'ellipse', 'polygon', 'text'] as Tool[]).map((tool) => (
-            <button
-              key={tool}
-              type="button"
-              role="radio"
-              aria-checked={state.tool === tool}
-              className={s.tool}
-              title={`${t(`editor.occlusion.${tool === 'rect' ? 'rectangle' : tool}`)} (${({ select: 'V', rect: 'R', ellipse: 'E', polygon: 'P', text: 'T' } as const)[tool]})`}
-              aria-label={t(`editor.occlusion.${tool === 'rect' ? 'rectangle' : tool}`)}
-              onClick={() => { dispatch({ type: 'tool', tool }); setDraft(null); }}
-            >
-              <Icon name={TOOL_ICON[tool]} size={18} />
-            </button>
+            <Tooltip key={tool} content={`${t(`editor.occlusion.${tool === 'rect' ? 'rectangle' : tool}`)} (${({ select: 'V', rect: 'R', ellipse: 'E', polygon: 'P', text: 'T' } as const)[tool]})`}>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={state.tool === tool}
+                className={s.tool}
+                aria-label={t(`editor.occlusion.${tool === 'rect' ? 'rectangle' : tool}`)}
+                onClick={() => { dispatch({ type: 'tool', tool }); setDraft(null); }}
+              >
+                <Icon name={TOOL_ICON[tool]} size={18} />
+              </button>
+            </Tooltip>
           ))}
         </div>
         <span className={s.sep} aria-hidden />

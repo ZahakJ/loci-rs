@@ -13,6 +13,7 @@ import { ThemeToggle } from './ThemeToggle';
 import { Wordmark } from './Wordmark';
 import { APP_VERSION } from './version';
 import s from './AppShell.module.css';
+import { Tooltip } from '../design/primitives/Tooltip';
 
 export interface AppShellProps {
   route: Route;
@@ -61,10 +62,12 @@ export function AppShell({ route, children, fullBleed, hideNavOnPhone, onAdd }: 
         </nav>
         <div className={s.sideFoot}>
           <Button variant="primary" icon="plus" kbd="a" block onClick={onAdd}>{t('shell.add')}</Button>
-          <div className={s.sync} title={t('shell.syncLater')}>
-            <span className={s.syncDot} aria-hidden />
-            <span>{t('shell.localOnly')}</span>
-          </div>
+          <Tooltip content={t('shell.syncLater')}>
+            <div className={s.sync}>
+              <span className={s.syncDot} aria-hidden />
+              <span>{t('shell.localOnly')}</span>
+            </div>
+          </Tooltip>
           <div className={s.utility}>
             <ThemeToggle size="sm" />
             <IconButton size="sm" icon="keyboard" label={t('shell.shortcuts')} onClick={() => setHelp(true)} />

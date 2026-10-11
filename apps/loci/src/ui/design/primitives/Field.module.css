@@ -32,6 +32,3 @@ textarea.control { padding-block: var(--s-2); min-block-size: 88px; resize: vert
 .suffix { position: absolute; inset-inline-end: 12px; color: var(--muted); font-size: var(--text-sm); pointer-events: none; }
 .with-suffix > .control { padding-inline-end: 48px; }
 
-.select { position: relative; display: flex; align-items: center; }
-.select > select { appearance: none; padding-inline-end: 36px; cursor: pointer; }
-.select > svg { position: absolute; inset-inline-end: 10px; color: var(--muted); pointer-events: none; }

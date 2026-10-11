@@ -9,6 +9,7 @@ import { Button, IconButton } from '@ui/design/primitives/Button';
 import { Dialog } from '@ui/design/primitives/Dialog';
 import { Field } from '@ui/design/primitives/Field';
 import { Input } from '@ui/design/primitives/Input';
+import { Tooltip } from '@ui/design/primitives/Tooltip';
 import { Menu } from '@ui/design/primitives/Menu';
 import { Select } from '@ui/design/primitives/Select';
 import { Switch } from '@ui/design/primitives/Switch';
@@ -60,16 +61,16 @@ export function BulkBar({ count, noun, onRun, onClear, decks, fieldNames, onInfo
   })();
 
   return (
-    <div className={cx(s.bar, className)} role="toolbar" aria-label={t('browse.bulk.label')} title={t('browse.bulk.label')}>
+    <div className={cx(s.bar, className)} role="toolbar" aria-label={t('browse.bulk.label')}>
       <span className={s.count}>
         <IconButton size="sm" icon="close" label={t('browse.clearSelection')} onClick={onClear} />
         <span aria-live="polite">{t(noun === 'notes' ? 'browse.selectedNotes' : 'browse.selectedCards', { count })}</span>
       </span>
       <span className={s.sep} aria-hidden />
       <div className={s.actions}>
-        <Button size="sm" variant="ghost" icon="deck" onClick={() => openDialog('deck')} className={s.act} aria-label={t('browse.bulk.changeDeck')} title={t('browse.bulk.changeDeck')}>{t('browse.bulk.changeDeck')}</Button>
-        <Button size="sm" variant="ghost" icon="tag" onClick={() => openDialog('addTags')} className={s.act} aria-label={t('browse.bulk.addTags')} title={t('browse.bulk.addTags')}>{t('browse.bulk.addTags')}</Button>
-        <Button size="sm" variant="ghost" icon="suspend" onClick={() => void run({ kind: 'suspend' })} className={s.act} aria-label={t('browse.bulk.suspend')} title={t('browse.bulk.suspend')}>{t('browse.bulk.suspend')}</Button>
+        <Tooltip content={t('browse.bulk.changeDeck')}><Button size="sm" variant="ghost" icon="deck" onClick={() => openDialog('deck')} className={s.act} aria-label={t('browse.bulk.changeDeck')}>{t('browse.bulk.changeDeck')}</Button></Tooltip>
+        <Tooltip content={t('browse.bulk.addTags')}><Button size="sm" variant="ghost" icon="tag" onClick={() => openDialog('addTags')} className={s.act} aria-label={t('browse.bulk.addTags')}>{t('browse.bulk.addTags')}</Button></Tooltip>
+        <Tooltip content={t('browse.bulk.suspend')}><Button size="sm" variant="ghost" icon="suspend" onClick={() => void run({ kind: 'suspend' })} className={s.act} aria-label={t('browse.bulk.suspend')}>{t('browse.bulk.suspend')}</Button></Tooltip>
         <Menu
           label={t('browse.bulk.flag')}
           align="start"
@@ -78,7 +79,7 @@ export function BulkBar({ count, noun, onRun, onClear, decks, fieldNames, onInfo
             { separator: true as const, id: 'sep' },
             { id: 'f0', label: t('study.flags.0'), onSelect: () => void run({ kind: 'flag', flag: 0 }) },
           ]}
-          trigger={(p) => <Button {...p} size="sm" variant="ghost" icon="flag" iconEnd="chevron-down" className={s.act} aria-label={t('browse.bulk.flag')} title={t('browse.bulk.flag')}>{t('browse.bulk.flag')}</Button>}
+          trigger={(p) => <Tooltip content={t('browse.bulk.flag')}><Button {...p} size="sm" variant="ghost" icon="flag" iconEnd="chevron-down" className={s.act} aria-label={t('browse.bulk.flag')}>{t('browse.bulk.flag')}</Button></Tooltip>}
         />
         <Menu
           label={t('browse.bulk.more')}
@@ -102,10 +103,10 @@ export function BulkBar({ count, noun, onRun, onClear, decks, fieldNames, onInfo
             { separator: true, id: 's2' },
             { id: 'delete', label: t('browse.bulk.delete'), icon: 'trash', danger: true, kbd: 'ctrl+delete', onSelect: () => openDialog('delete') },
           ]}
-          trigger={(p) => <Button {...p} size="sm" variant="ghost" icon="more" className={s.act} aria-label={t('browse.bulk.more')} title={t('browse.bulk.more')}>{t('browse.bulk.more')}</Button>}
+          trigger={(p) => <Tooltip content={t('browse.bulk.more')}><Button {...p} size="sm" variant="ghost" icon="more" className={s.act} aria-label={t('browse.bulk.more')}>{t('browse.bulk.more')}</Button></Tooltip>}
         />
       </div>
-      <Button size="sm" variant="quiet-danger" icon="trash" onClick={() => openDialog('delete')} className={cx(s.act, s.delete)} aria-label={t('browse.bulk.delete')} title={t('browse.bulk.delete')}>{t('browse.bulk.delete')}</Button>
+      <Tooltip content={t('browse.bulk.delete')}><Button size="sm" variant="quiet-danger" icon="trash" onClick={() => openDialog('delete')} className={cx(s.act, s.delete)} aria-label={t('browse.bulk.delete')}>{t('browse.bulk.delete')}</Button></Tooltip>
 
       <Dialog open={open === 'deck'} onClose={() => setOpen(null)} title={t('browse.bulk.changeDeck')} description={t('browse.bulk.changeDeckHelp', { count })}
         confirmLabel={t('browse.bulk.move')} busy={busy} confirmDisabled={deckId === null} onConfirm={async () => { if (deckId !== null) await run({ kind: 'changeDeck', deckId }); }}>

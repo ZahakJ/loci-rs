@@ -6,7 +6,7 @@
 .l3 { fill: color-mix(in oklab, var(--accent) 76%, var(--surface-2)); stroke: none; }
 .l4 { fill: var(--accent-strong); stroke: none; }
 .today { stroke: var(--ink); stroke-width: 1; }
-.month, .day { fill: var(--faint); font-size: 9px; font-family: var(--font-ui); }
+.month, .day { fill: var(--faint); font-size: var(--text-3xs); font-family: var(--font-ui); }
 .legend { display: flex; align-items: center; justify-content: flex-end; gap: 3px; margin-block-start: var(--s-2); color: var(--faint); font-size: var(--text-xs); }
 .legend svg { display: inline; }
 .legend span:first-child { margin-inline-end: 4px; }

@@ -17,22 +17,25 @@
   --accent-strong: oklch(54% 0.14 70);
   --accent-soft: oklch(94% 0.04 75);
   --on-accent: #fff;
+  --accent-fill: oklch(54% 0.14 70);   /* filled primary controls (buttons, switches, checks) */
+  --accent-fill-hover: oklch(50% 0.14 70);
+  --on-accent-fill: #fff;
   --focus: oklch(62% 0.13 70);
   /* grades */
   --again: oklch(62% 0.17 20);
-  --hard: oklch(72% 0.14 65);
-  --good: oklch(66% 0.14 150);
-  --easy: oklch(68% 0.12 230);
+  --hard: oklch(66% 0.14 65);
+  --good: oklch(63% 0.14 150);
+  --easy: oklch(64% 0.12 230);
   --again-soft: oklch(95% 0.03 20);
   --hard-soft: oklch(96% 0.04 70);
   --good-soft: oklch(95% 0.04 150);
   --easy-soft: oklch(95% 0.03 230);
   /* counts (Anki-familiar) */
-  --new: oklch(60% 0.15 250);
-  --learn: oklch(68% 0.16 50);
-  --due: oklch(60% 0.14 150);
+  --new: oklch(54% 0.15 250);
+  --learn: oklch(55% 0.16 50);
+  --due: oklch(52% 0.14 150);
   /* semantic */
-  --danger: oklch(58% 0.19 25);
+  --danger: oklch(56% 0.19 25);
   --warn: oklch(72% 0.15 75);
   --ok: oklch(62% 0.14 150);
   /* card canvas variables consumed by the card shadow root */
@@ -43,14 +46,20 @@
   --loci-accent: var(--accent);
   --loci-cloze: var(--accent-strong);
   --loci-card-font: var(--font-card);
+  --loci-arabic-font: var(--font-arabic);
+  --loci-ui-font: var(--font-ui);
   --loci-card-size: 1.375rem;
 
   /* type */
   --font-ui: 'Inter Variable', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-card: 'Newsreader Variable', Newsreader, 'Noto Naskh Arabic', Georgia, 'Times New Roman', serif;
-  --font-card-sans: 'Inter Variable', Inter, 'Vazirmatn', system-ui, sans-serif;
-  --font-arabic: 'Noto Naskh Arabic', 'Vazirmatn', serif;
+  /* The one Arabic stack: every Arabic-specific rule and every Latin stack's Arabic fallback goes through it. */
+  --font-arabic: 'Noto Naskh Arabic', serif;
+  --font-card: 'Newsreader Variable', Newsreader, Georgia, var(--font-arabic);
+  --font-card-sans: 'Inter Variable', Inter, var(--font-arabic);
+  --font-card-system: system-ui, -apple-system, 'Segoe UI', Roboto, var(--font-arabic);
   --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --text-3xs: 0.625rem;  /* 10, keycaps and axis labels only */
+  --text-2xs: 0.6875rem; /* 11 */
   --text-xs: 0.75rem;   /* 12 */
   --text-sm: 0.8125rem; /* 13 */
   --text-md: 0.875rem;  /* 14, UI base */
@@ -95,6 +104,9 @@
   --accent-strong: oklch(84% 0.11 78);
   --accent-soft: oklch(30% 0.05 75);
   --on-accent: oklch(20% 0.03 70);
+  --accent-fill: oklch(55% 0.12 70);
+  --accent-fill-hover: oklch(51% 0.12 70);
+  --on-accent-fill: oklch(98% 0.006 85);
   --focus: oklch(78% 0.12 75);
   --again: oklch(70% 0.16 20);
   --hard: oklch(80% 0.13 70);
@@ -131,6 +143,9 @@
     --accent-strong: oklch(84% 0.11 78);
     --accent-soft: oklch(30% 0.05 75);
     --on-accent: oklch(20% 0.03 70);
+    --accent-fill: oklch(55% 0.12 70);
+    --accent-fill-hover: oklch(51% 0.12 70);
+    --on-accent-fill: oklch(98% 0.006 85);
     --focus: oklch(78% 0.12 75);
     --again: oklch(70% 0.16 20);
     --hard: oklch(80% 0.13 70);

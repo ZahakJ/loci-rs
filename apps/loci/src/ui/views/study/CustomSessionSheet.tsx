@@ -11,6 +11,7 @@ import { cx } from '../../design/primitives/layer';
 import { navigate, formatRoute } from '../../routes';
 import { CUSTOM_SEARCH_LIMIT, formatCustom, type CustomKind } from './format';
 import s from './Study.module.css';
+import { Radio } from '../../design/primitives/Radio';
 
 export interface CustomSessionSheetProps {
   open: boolean;
@@ -109,13 +110,7 @@ export function CustomSessionSheet({ open, onClose, deckId, initial = 'ahead', o
           <legend className="sr-only">{t('customStudy.title')}</legend>
           {options.map((o) => (
             <div key={o.value} className={cx(s.customOption, kind === o.value && s.customChosen)}>
-              <label className={s.customLabel}>
-                <input type="radio" name={name} value={o.value} checked={kind === o.value} onChange={() => setKind(o.value)} className={s.customRadio} />
-                <span className={s.customText}>
-                  <span className={s.customTitle}>{o.title}</span>
-                  <span className={s.customHelp}>{o.help}</span>
-                </span>
-              </label>
+              <Radio name={name} value={o.value} checked={kind === o.value} onChange={() => setKind(o.value)} label={o.title} description={o.help} className={s.customLabel} />
               {kind === o.value && o.value === 'ahead' && (
                 <div className={s.customControl}>
                   <span className={s.customControlLabel} id={`${name}-ahead`}>{t('customStudy.aheadDays')}</span>

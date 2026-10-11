@@ -16,7 +16,7 @@ export function ThemeToggle({ size = 'md' }: { size?: 'sm' | 'md' }) {
       size={size}
       icon={ICON[pref]}
       label={t('theme.toggle', { current: t(`theme.${pref}`), next: t(`theme.${next}`) })}
-      title={t('theme.current', { current: t(`theme.${pref}`) })}
+      tooltip={t('theme.current', { current: t(`theme.${pref}`) })}
       onClick={() => set(next)}
     />
   );

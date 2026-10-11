@@ -7,7 +7,7 @@
   padding-inline: 8px;
   border-radius: var(--r-pill);
   background: color-mix(in oklab, var(--tone) 13%, transparent);
-  color: color-mix(in oklab, var(--tone) 82%, var(--ink));
+  color: color-mix(in oklab, var(--tone) 68%, var(--ink));
   font-size: var(--text-xs);
   font-weight: 600;
   line-height: 1;

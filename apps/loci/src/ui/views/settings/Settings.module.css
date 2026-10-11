@@ -72,7 +72,7 @@
 .forecastSpark { flex: 1 1 10rem; min-inline-size: 8rem; }
 
 .presetPicker { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; padding: var(--s-3) var(--s-5); border-block-end: 1px solid var(--line); background: var(--surface-2); border-start-start-radius: var(--r-lg); border-start-end-radius: var(--r-lg); color: var(--muted); font-size: var(--text-sm); }
-.presetPicker select { min-block-size: 32px; }
+.presetPicker [role="combobox"] { min-block-size: 32px; inline-size: auto; min-inline-size: 12rem; }
 .custom { color: var(--muted); font-size: var(--text-sm); }
 
 .disclosure {

@@ -3,6 +3,7 @@ import { t } from '@core/i18n/i18n';
 import type { SessionSummary as Summary } from '@core/types';
 import { Icon } from '../../design/icons';
 import { Button } from '../../design/primitives/Button';
+import { cx } from '../../design/primitives/layer';
 import { formatPercent } from '../../hooks/format';
 import { gradeShares, type GradeKey } from './format';
 import s from './Study.module.css';
@@ -34,7 +35,7 @@ export function SessionSummary({ summary, onHome, onMore }: SessionSummaryProps)
       {summary.cards > 0 && (
         <div className={s.accuracy}>
           <div className={s.accuracyHead}>
-            <span className={s.accuracyFigure}>{formatPercent(summary.accuracy)}</span>
+            <span className={cx(s.accuracyFigure, 'num-lg')}>{formatPercent(summary.accuracy)}</span>
             <span className={s.accuracyText}>{t('studyScreen.summary.remembered')}</span>
           </div>
           <div className={s.accuracyBar} role="img" aria-label={t('studyScreen.summary.barAria', { again: summary.again, hard: summary.hard, good: summary.good, easy: summary.easy })}>
@@ -45,7 +46,7 @@ export function SessionSummary({ summary, onHome, onMore }: SessionSummaryProps)
               <li key={k}>
                 <span className={s[`dot_${k}`]} aria-hidden />
                 <span className={s.legendName}>{t(`study.${k}`)}</span>
-                <span className="tabular">{counts[k]}</span>
+                <span className="num">{counts[k]}</span>
               </li>
             ))}
           </ul>

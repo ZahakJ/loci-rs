@@ -7,6 +7,7 @@ import { Pill } from '../../design/primitives/Pill';
 import { cx } from '../../design/primitives/layer';
 import { formatClock, splitDeckName } from './format';
 import s from './Study.module.css';
+import { Tooltip } from '../../design/primitives/Tooltip';
 
 export type QueueKind = 'new' | 'learn' | 'review';
 
@@ -29,15 +30,17 @@ export interface TopBarProps {
 /** One count pill whose number ticks when it changes. */
 function CountPill({ tone, value, label, current }: { tone: 'new' | 'learn' | 'due'; value: number; label: string; current: boolean }) {
   return (
-    <span className={cx(s.countWrap, current && s.countCurrent)} title={label}>
-      {value === 0
-        ? <Pill tone={tone} value={0} label={label} />
-        : (
-          <Pill tone={tone} label={label}>
-            <span key={value} className={s.tick}>{value.toLocaleString()}</span>
-          </Pill>
-        )}
-    </span>
+    <Tooltip content={label} placement="bottom">
+      <span className={cx(s.countWrap, current && s.countCurrent)}>
+        {value === 0
+          ? <Pill tone={tone} value={0} label={label} />
+          : (
+            <Pill tone={tone} label={label} num>
+              <span key={value} className={s.tick}>{value.toLocaleString()}</span>
+            </Pill>
+          )}
+      </span>
+    </Tooltip>
   );
 }
 
@@ -57,32 +60,40 @@ export function TopBar({ deckName, counts, currentKind, progress, flag, marked, 
       </div>
       <div className={s.topInner}>
         <IconButton icon="chevron-left" label={t('study.leave')} onClick={onLeave} className={s.leave} />
-        <div className={s.deck} title={deckName}>
+        <Tooltip content={deckName} placement="bottom">
+        <div className={s.deck}>
           {parents.length > 0 && <span className={s.deckParents}>{parents.join(' / ')}<span aria-hidden className={s.deckSep}>/</span></span>}
           <span className={s.deckLeaf}>{leaf || t('studyScreen.allDecks')}</span>
           {flag > 0 && (
-            <span className={s.flagMark} data-flag={flag} title={t(`study.flags.${flag}`)}>
-              <Icon name="flag" size={16} label={t('studyScreen.flaggedAs', { colour: t(`study.flags.${flag}`) })} />
-            </span>
+            <Tooltip content={t(`study.flags.${flag}`)} placement="bottom">
+              <span className={s.flagMark} data-flag={flag}>
+                <Icon name="flag" size={16} label={t('studyScreen.flaggedAs', { colour: t(`study.flags.${flag}`) })} />
+              </span>
+            </Tooltip>
           )}
           {marked && (
-            <span className={s.markMark} title={t('studyScreen.markedNote')}>
-              <Icon name="star" size={16} label={t('studyScreen.markedNote')} />
-            </span>
+            <Tooltip content={t('studyScreen.markedNote')} placement="bottom">
+              <span className={s.markMark}>
+                <Icon name="star" size={16} label={t('studyScreen.markedNote')} />
+              </span>
+            </Tooltip>
           )}
         </div>
+        </Tooltip>
         <div className={s.topEnd}>
           {preview && (
-            <span className={s.previewPill} title={t('studyScreen.previewPillTitle')} data-preview-pill>
-              <Icon name="info" size={14} />
-              <span className={s.previewLong}>{t('studyScreen.previewPill')}</span>
-              <span className={s.previewShort} aria-hidden>{t('studyScreen.previewPillShort')}</span>
-            </span>
+            <Tooltip content={t('studyScreen.previewPillTitle')} placement="bottom">
+              <span className={s.previewPill} data-preview-pill>
+                <Icon name="info" size={14} />
+                <span className={s.previewLong}>{t('studyScreen.previewPill')}</span>
+                <span className={s.previewShort} aria-hidden>{t('studyScreen.previewPillShort')}</span>
+              </span>
+            </Tooltip>
           )}
           {elapsed !== null && (
             <span className={s.timer} role="timer" aria-label={t('study.timer')}>
               <Icon name="clock" size={16} />
-              <span className="tabular">{formatClock(elapsed)}</span>
+              <span className="num">{formatClock(elapsed)}</span>
             </span>
           )}
           {counts && (

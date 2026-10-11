@@ -15,10 +15,12 @@ export const NOTE_ONLY: ReadonlySet<BrowseColumn> = new Set(['cardCount']);
 export const WIDTH: Record<BrowseColumn, string> = {
   sortField: 'minmax(10rem, 3fr)', question: 'minmax(10rem, 2fr)', answer: 'minmax(10rem, 2fr)',
   deck: 'minmax(7rem, 1.2fr)', notetype: 'minmax(7rem, 1fr)', template: '6.5rem', tags: 'minmax(7rem, 1fr)',
-  due: '6.5rem', interval: '5.5rem', ease: '4.5rem', difficulty: '5.5rem', stability: '5.5rem', retrievability: '6rem',
-  reps: '4.5rem', lapses: '4.5rem', created: '6.5rem', modified: '6.5rem', cardCount: '4rem',
+  due: '7.5rem', interval: '5.5rem', ease: '4.5rem', difficulty: '5.5rem', stability: '5.5rem', retrievability: '6rem',
+  reps: '4.5rem', lapses: '4.5rem', created: '7rem', modified: '7rem', cardCount: '4rem',
 };
 export const NUMERIC: ReadonlySet<BrowseColumn> = new Set(['interval', 'ease', 'difficulty', 'stability', 'retrievability', 'reps', 'lapses', 'cardCount']);
+/** Columns read as data (numbers and dates): set in the mono numeral face (`.num`). */
+export const DATA_COLUMNS: ReadonlySet<BrowseColumn> = new Set([...NUMERIC, 'due', 'created', 'modified']);
 
 export const DEFAULT_COLUMNS: Record<BrowseMode, BrowseColumn[]> = {
   cards: ['sortField', 'template', 'due', 'deck'],

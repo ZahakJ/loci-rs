@@ -1,0 +1,55 @@
+/* Radio and Checkbox: designed 20 px marks over a visually hidden native input (forms and screen
+   readers keep the real control). The whole row is the hit area, at least 44 px tall. */
+.row {
+  position: relative;
+  display: flex; align-items: flex-start; gap: var(--s-3);
+  min-block-size: var(--tap);
+  padding-block: 12px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.bare { padding-block: 0; align-items: center; justify-content: center; min-inline-size: var(--tap); }
+.row:has(.input:disabled) { cursor: not-allowed; color: var(--muted); }
+.input {
+  position: absolute; inset-block-start: 12px; inset-inline-start: 0;
+  inline-size: 20px; block-size: 20px; margin: 0;
+  opacity: 0; cursor: inherit; z-index: 1;
+}
+.bare .input { inset-block-start: calc(50% - 10px); inset-inline-start: calc(50% - 10px); }
+.mark {
+  position: relative;
+  display: grid; place-items: center;
+  inline-size: 20px; block-size: 20px; flex-shrink: 0;
+  background: var(--surface);
+  border: 1.5px solid var(--line-strong);
+  color: var(--on-accent-fill);
+  transition: border-color var(--d-fast) var(--ease), background-color var(--d-fast) var(--ease);
+}
+.row:hover .input:not(:disabled) + .mark { border-color: var(--muted); }
+.input:focus-visible + .mark { outline: 2px solid var(--focus); outline-offset: 2px; }
+.input:disabled + .mark { background: var(--surface-2); border-color: var(--line); }
+
+/* radio: a circle with a brass dot */
+.radio .mark { border-radius: 50%; }
+.radio .mark::after {
+  content: ''; inline-size: 10px; block-size: 10px; border-radius: 50%;
+  background: var(--accent-fill);
+  transform: scale(0); transition: transform var(--d-fast) var(--ease);
+}
+.radio .input:checked + .mark { border-color: var(--accent-fill); }
+.radio .input:checked + .mark::after { transform: scale(1); }
+.radio .input:checked:disabled + .mark::after { background: var(--faint); }
+
+/* checkbox: a rounded square filled with brass, a 1.5 px check */
+.checkbox .mark { border-radius: var(--r-sm); }
+.checkbox .mark svg { opacity: 0; transition: opacity var(--d-fast) var(--ease); }
+.checkbox .input:checked + .mark,
+.checkbox .input:indeterminate + .mark { background: var(--accent-fill); border-color: var(--accent-fill); }
+.checkbox .input:checked + .mark svg,
+.checkbox .input:indeterminate + .mark svg { opacity: 1; }
+.checkbox .input:checked:disabled + .mark,
+.checkbox .input:indeterminate:disabled + .mark { background: var(--faint); border-color: var(--faint); }
+
+.text { display: grid; gap: 2px; min-inline-size: 0; padding-block-start: 1px; }
+.label { font-weight: 550; line-height: 1.35; }
+.description { color: var(--muted); font-size: var(--text-sm); line-height: 1.45; }

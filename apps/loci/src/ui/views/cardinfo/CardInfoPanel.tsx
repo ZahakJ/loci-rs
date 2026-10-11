@@ -65,7 +65,7 @@ function Ring({ value }: { value: number | null }) {
           <circle cx="32" cy="32" r={r} className={s.ringArc} strokeDasharray={`${c * v} ${c}`} transform="rotate(-90 32 32)" />
         )}
       </svg>
-      <span className={s.ringValue}>{value === null ? '–' : formatPercent(v)}</span>
+      <span className={cx(s.ringValue, 'num-lg')}>{value === null ? '–' : formatPercent(v)}</span>
     </div>
   );
 }
@@ -100,7 +100,7 @@ export function CardInfoContent({ info, headingLevel = 3 }: { info: CardExplanat
         {rows.map(([k, v]) => (
           <div key={k} className={s.fact}>
             <dt>{k}</dt>
-            <dd className="tabular">{v}</dd>
+            <dd><span className="num">{v}</span></dd>
           </div>
         ))}
       </dl>
@@ -115,13 +115,13 @@ export function CardInfoContent({ info, headingLevel = 3 }: { info: CardExplanat
               const g = GRADE[Math.max(0, Math.min(4, e.ease))]!;
               return (
                 <li key={e.id} className={s.historyRow}>
-                  <time className={s.historyDate} dateTime={new Date(e.id).toISOString()}>{shortDate(e.id)}</time>
+                  <time className={cx(s.historyDate, 'num')} dateTime={new Date(e.id).toISOString()}>{shortDate(e.id)}</time>
                   <span className={s.historyGrade}>
                     <span className={cx(s.gradeDot, s[g])} aria-hidden />
                     <span>{g === 'manual' ? t('cardInfoPanel.type.manual') : t(`study.${g}`)}</span>
                   </span>
                   <span className={s.historyKind}>{revlogKind(e)}</span>
-                  <span className={cx(s.historyIvl, 'tabular')} title={t('cardInfoPanel.interval')}>{revlogInterval(e.ivl)}</span>
+                  <span className={cx(s.historyIvl, 'num')}><span className="sr-only">{t('cardInfoPanel.interval')}: </span>{revlogInterval(e.ivl)}</span>
                 </li>
               );
             })}

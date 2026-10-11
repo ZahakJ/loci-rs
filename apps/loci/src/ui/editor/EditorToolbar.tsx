@@ -11,6 +11,7 @@ import { cx } from '@ui/design/primitives/layer';
 import { useTouchOnly } from '@ui/design/primitives/pointer';
 import type { FieldCommand, FieldEditorHandle } from './FieldEditor';
 import s from './EditorToolbar.module.css';
+import { Tooltip } from '../design/primitives/Tooltip';
 
 export interface EditorToolbarProps {
   active: FieldEditorHandle | null;
@@ -63,17 +64,18 @@ export function EditorToolbar({ active, cloze, onLink, onImage, onAudio, classNa
       {cloze && (
         <>
           {/* Cloze notes: the one tool that matters comes first, never scrolled out of view. */}
-          <button
-            type="button"
-            className={cx(s.btn, s.cloze)}
-            title={coarse ? t('editor.clozeTouchHint') : `${t('editor.clozeNew')} (Ctrl+Shift+C) · ${t('editor.clozeSame')} (Ctrl+Alt+Shift+C)`}
-            disabled={disabled}
-            onMouseDown={keep}
-            onClick={(e) => run(e.altKey ? 'clozeSame' : 'cloze')}
-          >
-            <Icon name="cloze" size={18} />
-            <span>{t('editor.cloze')}</span>
-          </button>
+          <Tooltip content={coarse ? t('editor.clozeTouchHint') : `${t('editor.clozeNew')} (Ctrl+Shift+C) · ${t('editor.clozeSame')} (Ctrl+Alt+Shift+C)`}>
+            <button
+              type="button"
+              className={cx(s.btn, s.cloze)}
+              disabled={disabled}
+              onMouseDown={keep}
+              onClick={(e) => run(e.altKey ? 'clozeSame' : 'cloze')}
+            >
+              <Icon name="cloze" size={18} />
+              <span>{t('editor.cloze')}</span>
+            </button>
+          </Tooltip>
           <span className={s.sep} aria-hidden />
         </>
       )}
@@ -101,9 +103,11 @@ export function EditorToolbar({ active, cloze, onLink, onImage, onAudio, classNa
             { id: 'display', label: t('editor.mathsBlock'), kbd: 'ctrl+shift+m', onSelect: () => run('mathDisplay') },
           ]}
           trigger={(p) => (
-            <button type="button" {...p} className={s.btn} aria-label={t('editor.maths')} title={t('editor.maths')} disabled={disabled} onMouseDown={keep}>
-              <Icon name="maths" size={18} />
-            </button>
+            <Tooltip content={t('editor.maths')}>
+              <button type="button" {...p} className={s.btn} aria-label={t('editor.maths')} disabled={disabled} onMouseDown={keep}>
+                <Icon name="maths" size={18} />
+              </button>
+            </Tooltip>
           )}
         />
       </div>
@@ -122,17 +126,18 @@ interface BtnProps { ctx: BtnCtx; icon: IconName; label: string; cmd?: FieldComm
 
 function Btn({ ctx, icon, label, cmd, kbd, onClick, state, textOnly }: BtnProps) {
   return (
-    <button
-      type="button"
-      className={s.btn}
-      aria-label={label}
-      title={kbd ? `${label} (${kbd})` : label}
-      aria-pressed={state ? !!ctx.pressed[state] && !ctx.source : cmd === 'source' ? ctx.source : undefined}
-      disabled={ctx.disabled || (textOnly && ctx.source)}
-      onMouseDown={(e: MouseEvent) => e.preventDefault()}
-      onClick={() => (onClick ? onClick() : cmd && ctx.run(cmd))}
-    >
-      <Icon name={icon} size={18} />
-    </button>
+    <Tooltip content={kbd ? `${label} (${kbd})` : label}>
+      <button
+        type="button"
+        className={s.btn}
+        aria-label={label}
+        aria-pressed={state ? !!ctx.pressed[state] && !ctx.source : cmd === 'source' ? ctx.source : undefined}
+        disabled={ctx.disabled || (textOnly && ctx.source)}
+        onMouseDown={(e: MouseEvent) => e.preventDefault()}
+        onClick={() => (onClick ? onClick() : cmd && ctx.run(cmd))}
+      >
+        <Icon name={icon} size={18} />
+      </button>
+    </Tooltip>
   );
 }

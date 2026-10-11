@@ -35,8 +35,8 @@
 }
 .block { display: flex; inline-size: 100%; }
 
-.primary { background: var(--accent-strong); color: var(--on-accent); }
-.primary:hover:not(:disabled) { background: color-mix(in oklab, var(--accent-strong) 86%, var(--ink)); }
+.primary { background: var(--accent-fill); color: var(--on-accent-fill); }
+.primary:hover:not(:disabled) { background: var(--accent-fill-hover); }
 .secondary { background: var(--surface); color: var(--ink); border-color: var(--line-strong); }
 .secondary:hover:not(:disabled) { background: var(--surface-2); }
 .ghost { background: transparent; color: var(--ink-2); }
@@ -48,7 +48,7 @@
 
 .label { display: inline-flex; align-items: center; min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; }
 .kbd { margin-inline-start: var(--s-1); }
-.primary .kbd { color: inherit; border-color: color-mix(in oklab, var(--on-accent) 45%, transparent); background: transparent; opacity: 0.85; }
+.primary .kbd { color: inherit; border-color: color-mix(in oklab, var(--on-accent-fill) 45%, transparent); background: transparent; opacity: 0.85; }
 .danger .kbd { color: inherit; border-color: color-mix(in oklab, var(--on-accent) 45%, transparent); background: transparent; }
 
 .spinner {
@@ -75,5 +75,6 @@
 .icon-button.lg { --btn-h: 48px; }
 @media (pointer: coarse) { .icon-button, .icon-button.sm { --btn-h: var(--tap); } }
 .icon-button.secondary { border-color: var(--line-strong); background: var(--surface); }
-.icon-button.primary { background: var(--accent-strong); color: var(--on-accent); }
+.icon-button.primary { background: var(--accent-fill); color: var(--on-accent-fill); }
+.icon-button.primary:hover:not(:disabled) { background: var(--accent-fill-hover); color: var(--on-accent-fill); }
 .icon-button[aria-pressed='true'] { background: var(--accent-soft); color: var(--ink); }

@@ -11,6 +11,7 @@ import { Segmented } from '../../design/primitives/Segmented';
 import { Select } from '../../design/primitives/Select';
 import { Skeleton } from '../../design/primitives/Skeleton';
 import { Switch } from '../../design/primitives/Switch';
+import { cx } from '../../design/primitives/layer';
 import { formatBytes, formatCount } from '../../hooks/format';
 import { navigate } from '../../routes';
 import { Page } from '../../shell/Page';
@@ -296,7 +297,7 @@ function FileRow({ file, meta }: { file: File; meta: string }) {
 function Num({ value, label }: { value: number; label: string }) {
   return (
     <div className={s.number}>
-      <span className={s.numberValue}>{formatCount(value)}</span>
+      <span className={cx(s.numberValue, 'num-lg')}>{formatCount(value)}</span>
       <span className={s.numberLabel}>{label}</span>
     </div>
   );

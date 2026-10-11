@@ -9,6 +9,8 @@ export { Field, useFieldControl, type FieldProps } from './Field';
 export { Input, Textarea, type InputProps, type TextareaProps } from './Input';
 export { Select, type SelectProps, type SelectOption } from './Select';
 export { Switch, type SwitchProps } from './Switch';
+export { Radio, type RadioProps } from './Radio';
+export { Checkbox, type CheckboxProps } from './Checkbox';
 export { Slider, type SliderProps } from './Slider';
 export { Segmented, type SegmentedProps, type SegmentedOption } from './Segmented';
 export { Tabs, type TabsProps, type TabItem } from './Tabs';

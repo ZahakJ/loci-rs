@@ -7,6 +7,18 @@ import { useLayoutEffect, type RefObject } from 'react';
 
 const bars = new Map<symbol, HTMLElement>();
 let frame = 0;
+let height = 0;
+
+/**
+ * Space the tallest registered bottom bar takes (px), as last measured; also on <html> as
+ * `--bottom-bar-height`. Floating layers (menus, listboxes, tooltips) keep above it.
+ */
+export function bottomBarHeight(): number { return height; }
+
+/** The lowest y (viewport px) a floating layer may reach: above the bottom bar with an 8 px margin. */
+export function floorY(): number {
+  return (typeof window === 'undefined' ? 0 : window.innerHeight) - height - 8;
+}
 let listening = false;
 
 /** Space a bar takes from the bottom of the viewport: from its top edge to the viewport bottom. */
@@ -27,6 +39,7 @@ function measure(): void {
     if (!el.isConnected) continue;
     max = Math.max(max, barSpace(el.getBoundingClientRect(), vh));
   }
+  height = max;
   const html = document.documentElement;
   if (max > 0) html.style.setProperty('--bottom-bar-height', `${max}px`);
   else html.style.removeProperty('--bottom-bar-height');

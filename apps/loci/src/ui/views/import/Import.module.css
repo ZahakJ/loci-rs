@@ -22,7 +22,7 @@
   .number:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .number:nth-last-child(2):nth-child(odd) { border-block-end: 0; }
 }
-.numberValue { font-family: var(--font-card); font-size: var(--text-2xl); font-weight: 500; font-variant-numeric: tabular-nums lining-nums; letter-spacing: -0.01em; line-height: 1.1; }
+.numberValue { font-size: var(--text-2xl); line-height: 1.1; } /* face: .num-lg */
 .numberLabel { color: var(--muted); font-size: var(--text-sm); }
 
 .cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-6); }

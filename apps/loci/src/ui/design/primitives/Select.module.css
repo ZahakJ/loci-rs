@@ -1,0 +1,54 @@
+/* Select: a trigger styled as a field control, opening a listbox styled like Menu. */
+.trigger {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  inline-size: 100%; min-inline-size: 0; min-block-size: 40px;
+  padding-inline: var(--s-3) 10px;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  color: var(--ink);
+  font-size: var(--text-md);
+  text-align: start;
+  cursor: pointer;
+  transition: border-color var(--d-fast) var(--ease), background-color var(--d-fast) var(--ease);
+}
+@media (pointer: coarse) { .trigger { min-block-size: var(--tap); font-size: var(--text-lg); } }
+.trigger:hover:not(:disabled) { border-color: var(--muted); }
+.trigger[aria-expanded='true'] { border-color: var(--accent); }
+.trigger:focus-visible { outline: 2px solid var(--focus); outline-offset: 0; border-color: var(--accent); }
+.trigger[aria-invalid='true'] { border-color: var(--danger); }
+.trigger:disabled { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+.value { flex: 1; min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chevron { flex-shrink: 0; color: var(--muted); transition: transform var(--d-fast) var(--ease); }
+.trigger[aria-expanded='true'] .chevron { transform: rotate(180deg); }
+
+.list {
+  position: fixed;
+  z-index: 80;
+  padding: var(--s-1);
+  background: var(--surface);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-2);
+  overflow: auto;
+  overscroll-behavior: contain;
+  outline: none;
+  animation: loci-pop-in var(--d-fast) var(--ease) both;
+}
+.option {
+  display: flex; align-items: center; gap: var(--s-3);
+  min-block-size: 36px;
+  padding-inline: var(--s-3) var(--s-2);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  font-size: var(--text-md);
+  cursor: pointer;
+  user-select: none;
+}
+@media (pointer: coarse) { .option { min-block-size: var(--tap); } }
+.option:focus-visible { outline: none; }
+.option[data-active='true'] { background: var(--surface-2); }
+.option:focus-visible[data-active='true'] { box-shadow: inset 0 0 0 1px var(--line-strong); }
+.option[aria-selected='true'] { font-weight: 550; }
+.option[aria-disabled='true'] { color: var(--faint); cursor: not-allowed; }
+.optionLabel { flex: 1; min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.check { flex-shrink: 0; color: var(--accent-strong); }

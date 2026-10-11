@@ -276,7 +276,7 @@
   font-weight: 600;
   letter-spacing: -0.003em;
 }
-.gradeKbd { font-size: 10px; min-inline-size: 18px; block-size: 18px; }
+.gradeKbd { font-size: var(--text-3xs); min-inline-size: 18px; block-size: 18px; }
 .gradeInterval {
   font-size: var(--text-sm);
   color: var(--muted);
@@ -426,12 +426,9 @@
 .customOption:hover { border-color: var(--line-strong); }
 .customChosen { border-color: var(--accent); background: color-mix(in oklab, var(--accent-soft) 35%, var(--surface)); }
 .customChosen:hover { border-color: var(--accent); }
-.customLabel { display: flex; gap: var(--s-3); align-items: flex-start; padding: var(--s-3) var(--s-4); cursor: pointer; min-block-size: var(--tap); }
-.customRadio { inline-size: 18px; block-size: 18px; margin: 2px 0 0; accent-color: var(--accent-strong); flex-shrink: 0; }
-.customText { display: grid; gap: 2px; }
-.customTitle { font-weight: 600; }
-.customHelp { color: var(--muted); font-size: var(--text-sm); line-height: 1.45; }
-.customControl { display: grid; gap: var(--s-2); padding: 0 var(--s-4) var(--s-4) calc(var(--s-4) + 18px + var(--s-3)); }
+.customLabel { padding-inline: var(--s-4); }
+.customLabel > input { inset-inline-start: var(--s-4); }
+.customControl { display: grid; gap: var(--s-2); padding: 0 var(--s-4) var(--s-4) calc(var(--s-4) + 20px + var(--s-3)); }
 .customControlLabel { font-size: var(--text-xs); font-weight: 600; color: var(--muted); letter-spacing: 0.02em; }
 @media (max-width: 719px) { .customControl { padding-inline-start: var(--s-4); } }
 

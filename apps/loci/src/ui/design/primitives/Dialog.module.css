@@ -18,14 +18,11 @@
 }
 .root[data-state='closed'] .scrim, .root[data-state='closed'] .panel { animation: loci-fade-out var(--d-fast) var(--ease-in) both; }
 .content { padding: var(--s-6) var(--s-6) var(--s-2); overflow: auto; }
-.icon {
-  display: grid; place-items: center;
-  inline-size: 40px; block-size: 40px; border-radius: 50%;
-  margin-block-end: var(--s-4);
-  background: var(--accent-soft); color: var(--accent-strong);
-}
-.destructive .icon { background: color-mix(in oklab, var(--danger) 14%, transparent); color: var(--danger); }
-.title { font-size: var(--text-xl); font-weight: 600; letter-spacing: var(--tracking-tight); }
+/* The icon is a bare 20 px glyph on the title's first line: no tinted circle. */
+.head { display: flex; align-items: flex-start; gap: var(--s-3); font-size: var(--text-xl); line-height: 1.25; }
+.icon { display: grid; place-items: center; block-size: 1.25em; flex-shrink: 0; color: var(--accent-strong); }
+.destructive .icon { color: var(--danger); }
+.title { font-size: var(--text-xl); font-weight: 600; letter-spacing: var(--tracking-tight); line-height: 1.25; min-inline-size: 0; }
 .description { margin-block-start: var(--s-2); color: var(--ink-2); font-size: var(--text-md); line-height: 1.55; }
 .body { margin-block-start: var(--s-4); }
 .actions {

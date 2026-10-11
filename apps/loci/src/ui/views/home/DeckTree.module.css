@@ -66,7 +66,7 @@
 
 @media (max-width: 719px) {
   .head, .row { grid-template-columns: minmax(0, 1fr) repeat(3, 40px) 44px; padding-inline: var(--s-2) 0; column-gap: 0; }
-  .head { font-size: 10px; letter-spacing: 0.03em; }
+  .head { font-size: var(--text-3xs); letter-spacing: 0.03em; }
   .head > span:nth-child(5), .row > .time { display: none; }
   .head > span:first-child { padding-inline-start: 32px; }
   .n { font-size: var(--text-sm); padding-inline-end: 2px; }

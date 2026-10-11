@@ -20,6 +20,10 @@ export default defineConfig({
   envPrefix: ['VITE_', 'TAURI_ENV_*'],
   build: {
     target: process.env.TAURI_ENV_PLATFORM === 'windows' ? 'chrome105' : 'safari13',
+    // CSS must keep logical properties as they are: lowered for safari13, `inset-inline-end` became
+    // `:not(:lang(ar, he, …))` rules that Chromium (Android webview, Windows, the e2e browser) drops,
+    // which put every field suffix and select chevron over the start of the value (audit 0.1 §2).
+    cssTarget: ['chrome105', 'safari15'],
     minify: !process.env.TAURI_ENV_DEBUG,
     sourcemap: !!process.env.TAURI_ENV_DEBUG,
   },
