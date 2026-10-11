@@ -1,0 +1,242 @@
+{
+  "crt": 1685592000,
+  "now": 1790850600,
+  "today": 1218,
+  "nextDayAt": 1790913600,
+  "rollover": 4,
+  "collapseTime": 1200,
+  "totals": {
+    "notes": 402,
+    "cards": 590,
+    "revlog": 7774,
+    "media": 19,
+    "notetypes": 6,
+    "decksInPackage": 10,
+    "decksAfterImport": 9,
+    "deckConfigs": 5,
+    "filteredCards": 10,
+    "fsrsCards": 198,
+    "leechNotes": 28
+  },
+  "decks": {
+    "Default": {
+      "total": 0,
+      "new": 0,
+      "newLimited": 0,
+      "learnIntraday": 0,
+      "learnDueNow": 0,
+      "interdayDue": 0,
+      "reviewDue": 0,
+      "reviewOverdue": 0,
+      "reviewFuture": 0,
+      "suspended": 0,
+      "buried": 0
+    },
+    "Languages": {
+      "total": 0,
+      "new": 0,
+      "newLimited": 0,
+      "learnIntraday": 0,
+      "learnDueNow": 0,
+      "interdayDue": 0,
+      "reviewDue": 0,
+      "reviewOverdue": 0,
+      "reviewFuture": 0,
+      "suspended": 0,
+      "buried": 0
+    },
+    "Languages::Arabic": {
+      "total": 115,
+      "new": 11,
+      "newLimited": 4,
+      "learnIntraday": 0,
+      "learnDueNow": 0,
+      "interdayDue": 0,
+      "reviewDue": 4,
+      "reviewOverdue": 0,
+      "reviewFuture": 95,
+      "suspended": 2,
+      "buried": 3
+    },
+    "Languages::Arabic::Verbs": {
+      "total": 100,
+      "new": 11,
+      "newLimited": 3,
+      "learnIntraday": 0,
+      "learnDueNow": 0,
+      "interdayDue": 3,
+      "reviewDue": 1,
+      "reviewOverdue": 0,
+      "reviewFuture": 84,
+      "suspended": 0,
+      "buried": 1
+    },
+    "Science": {
+      "total": 0,
+      "new": 0,
+      "newLimited": 0,
+      "learnIntraday": 0,
+      "learnDueNow": 0,
+      "interdayDue": 0,
+      "reviewDue": 0,
+      "reviewOverdue": 0,
+      "reviewFuture": 0,
+      "suspended": 0,
+      "buried": 0
+    },
+    "Science::Physics": {
+      "total": 105,
+      "new": 14,
+      "newLimited": 4,
+      "learnIntraday": 0,
+      "learnDueNow": 0,
+      "interdayDue": 0,
+      "reviewDue": 0,
+      "reviewOverdue": 0,
+      "reviewFuture": 88,
+      "suspended": 3,
+      "buried": 0
+    },
+    "Medicine": {
+      "total": 0,
+      "new": 0,
+      "newLimited": 0,
+      "learnIntraday": 0,
+      "learnDueNow": 0,
+      "interdayDue": 0,
+      "reviewDue": 0,
+      "reviewOverdue": 0,
+      "reviewFuture": 0,
+      "suspended": 0,
+      "buried": 0
+    },
+    "Medicine::Anatomy": {
+      "total": 134,
+      "new": 24,
+      "newLimited": 0,
+      "learnIntraday": 5,
+      "learnDueNow": 1,
+      "interdayDue": 0,
+      "reviewDue": 0,
+      "reviewOverdue": 0,
+      "reviewFuture": 91,
+      "suspended": 14,
+      "buried": 0
+    },
+    "History": {
+      "total": 136,
+      "new": 34,
+      "newLimited": 7,
+      "learnIntraday": 0,
+      "learnDueNow": 0,
+      "interdayDue": 0,
+      "reviewDue": 12,
+      "reviewOverdue": 11,
+      "reviewFuture": 86,
+      "suspended": 4,
+      "buried": 0
+    }
+  },
+  "cards": [
+    {
+      "label": "review due today",
+      "id": 1752565225752,
+      "deck": "Languages::Arabic",
+      "type": 2,
+      "queue": 2,
+      "due": 1218,
+      "ivl": 262,
+      "odue": 0
+    },
+    {
+      "label": "review overdue",
+      "id": 1734959114191,
+      "deck": "History",
+      "type": 2,
+      "queue": 2,
+      "due": 1212,
+      "ivl": 387,
+      "odue": 0
+    },
+    {
+      "label": "review future",
+      "id": 1685596167821,
+      "deck": "Languages::Arabic",
+      "type": 2,
+      "queue": 2,
+      "due": 1422,
+      "ivl": 903,
+      "odue": 0
+    },
+    {
+      "label": "intraday learning later today",
+      "id": 1790664961802,
+      "deck": "Medicine::Anatomy",
+      "type": 1,
+      "queue": 1,
+      "due": 1790850860,
+      "ivl": 0,
+      "odue": 0
+    },
+    {
+      "label": "interday learning",
+      "id": 1790658820081,
+      "deck": "Languages::Arabic::Verbs",
+      "type": 1,
+      "queue": 3,
+      "due": 1218,
+      "ivl": 0,
+      "odue": 0
+    },
+    {
+      "label": "relearning",
+      "id": 1696927349431,
+      "deck": "Medicine::Anatomy",
+      "type": 3,
+      "queue": -1,
+      "due": 1750933418,
+      "ivl": 2,
+      "odue": 0
+    },
+    {
+      "label": "new",
+      "id": 1790658050201,
+      "deck": "Science::Physics",
+      "type": 0,
+      "queue": 0,
+      "due": 344,
+      "ivl": 0,
+      "odue": 0
+    },
+    {
+      "label": "suspended",
+      "id": 1696927349431,
+      "deck": "Medicine::Anatomy",
+      "type": 3,
+      "queue": -1,
+      "due": 1750933418,
+      "ivl": 2,
+      "odue": 0
+    },
+    {
+      "label": "buried",
+      "id": 1777706526531,
+      "deck": "Languages::Arabic::Verbs",
+      "type": 2,
+      "queue": -3,
+      "due": 1218,
+      "ivl": 8,
+      "odue": 0
+    },
+    {
+      "label": "returned from filtered deck",
+      "id": 1734959114191,
+      "deck": "History",
+      "type": 2,
+      "queue": 2,
+      "due": 1212,
+      "ivl": 387,
+      "odue": 0
+    }
+  ]
+}

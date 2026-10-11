@@ -1,0 +1,15 @@
+[package]
+name = "loci-cli"
+description = "Loci command line: import, export, due, study, stats, backup, integrity, serve"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "loci"
+path = "src/main.rs"
+
+[dependencies]
+loci-core.workspace = true
+serde_json.workspace = true

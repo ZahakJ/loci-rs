@@ -1,0 +1,43 @@
+[workspace]
+resolver = "2"
+members = ["crates/loci-core", "crates/loci-cli"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/ZahakJ/loci-rs"
+rust-version = "1.85"
+
+[workspace.dependencies]
+loci-core = { path = "crates/loci-core" }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+serde_repr = "0.1"
+thiserror = "2"
+rusqlite = { version = "0.40", features = ["bundled", "serialize", "backup", "functions", "collation"] }
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+regex = "1"
+fancy-regex = "0.19"
+sha1 = "0.11"
+hex = "0.4"
+html-escape = "0.2"
+uuid = { version = "1", features = ["v4"] }
+rand = "0.10"
+rand_chacha = "0.10"
+zip = { version = "9", default-features = false, features = ["deflate-flate2-zlib-rs"] }
+ruzstd = "0.9"
+log = "0.4"
+tempfile = "3"
+
+[profile.release]
+lto = "thin"
+codegen-units = 4
+opt-level = 3
+strip = true
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 2

@@ -1,0 +1,29 @@
+[package]
+name = "loci-core"
+description = "Loci: the spaced-repetition engine (SQLite, FSRS-6, Anki packages)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+serde_repr.workspace = true
+thiserror.workspace = true
+rusqlite.workspace = true
+chrono.workspace = true
+regex.workspace = true
+fancy-regex.workspace = true
+sha1.workspace = true
+hex.workspace = true
+html-escape.workspace = true
+uuid.workspace = true
+rand.workspace = true
+rand_chacha.workspace = true
+zip.workspace = true
+ruzstd.workspace = true
+log.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
