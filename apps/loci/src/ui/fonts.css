@@ -1,0 +1,7 @@
+/* Self-hosted fonts (offline). Families: 'Inter Variable', 'Newsreader Variable', 'Noto Naskh Arabic', 'JetBrains Mono Variable'. */
+@import '@fontsource-variable/inter/wght.css';
+@import '@fontsource-variable/newsreader/opsz.css';
+@import '@fontsource-variable/newsreader/opsz-italic.css';
+@import '@fontsource/noto-naskh-arabic/arabic-400.css';
+@import '@fontsource/noto-naskh-arabic/arabic-600.css';
+@import '@fontsource-variable/jetbrains-mono/wght.css';

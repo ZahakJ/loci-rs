@@ -1,0 +1,13 @@
+.tip {
+  position: fixed;
+  z-index: 90;
+  max-inline-size: 260px;
+  padding: 6px 10px;
+  border-radius: var(--r-sm);
+  background: var(--ink);
+  color: var(--bg);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  pointer-events: none;
+  animation: loci-fade-in var(--d-fast) var(--ease) both;
+}

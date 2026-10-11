@@ -1,0 +1,34 @@
+.pane { display: flex; flex-direction: column; min-block-size: 0; min-inline-size: 0; background: var(--surface); }
+.head {
+  display: flex; align-items: center; gap: var(--s-2);
+  min-block-size: 52px;
+  padding-inline: var(--s-4) var(--s-2);
+  padding-block: 6px;
+  border-block-end: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.titles { flex: 1; min-inline-size: 0; display: grid; }
+.kind { font-size: var(--text-sm); font-weight: 600; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.deck { display: flex; align-items: flex-start; gap: 4px; font-size: var(--text-xs); color: var(--muted); overflow: hidden; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.deck > svg { margin-block-start: 1px; }
+.metaText { min-inline-size: 0; overflow: hidden; white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; }
+.deck > svg { flex-shrink: 0; }
+.status { font-size: var(--text-xs); color: var(--muted); white-space: nowrap; }
+.statusError { color: var(--danger); }
+.full { padding-inline: 8px; }
+.scroll { flex: 1; min-block-size: 0; overflow: auto; padding: var(--s-4) var(--s-4) var(--s-8); --toolbar-stick: calc(-1 * var(--s-4)); overscroll-behavior: contain; }
+.form { display: grid; gap: var(--s-4); }
+.loading { display: grid; gap: var(--s-3); }
+.error { color: var(--danger); font-size: var(--text-sm); }
+.ioNote { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: var(--text-sm); color: var(--ink-2); padding: var(--s-2) var(--s-3); border-radius: var(--r-md); background: var(--surface-2); }
+.ioNote a { margin-inline-start: auto; color: var(--ink); font-weight: 550; }
+.previewHead { border-block-start: 1px solid var(--line); padding-block-start: var(--s-3); }
+.disclosure {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-block-size: 32px; padding-inline: 6px 10px; margin-inline-start: -6px;
+  border-radius: var(--r-sm);
+  font-size: var(--text-sm); font-weight: 600; color: var(--ink-2);
+}
+.disclosure:hover { background: var(--surface-2); color: var(--ink); }
+.disclosure > svg { transition: transform var(--d-fast) var(--ease); }
+.disclosure[aria-expanded='false'] > svg { transform: rotate(-90deg); }

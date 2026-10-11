@@ -1,0 +1,9 @@
+.wrap { display: grid; gap: var(--s-2); }
+.meta { display: flex; justify-content: space-between; gap: var(--s-3); font-size: var(--text-sm); color: var(--muted); }
+.label { color: var(--ink-2); font-weight: 550; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.track { position: relative; block-size: 6px; border-radius: var(--r-pill); background: var(--surface-2); overflow: hidden; box-shadow: inset 0 0 0 1px var(--line); }
+.thin .track { block-size: 3px; box-shadow: none; }
+.fill { position: absolute; inset-block: 0; inset-inline-start: 0; inline-size: 100%; border-radius: inherit; background: var(--accent-strong); transform-origin: left center; transition: transform var(--d-slow) var(--ease); }
+[dir='rtl'] .fill { transform-origin: right center; }
+.indeterminate .fill { inline-size: 40%; animation: loci-indeterminate 1.2s var(--ease) infinite; transition: none; }
+@media (prefers-reduced-motion: reduce) { .indeterminate .fill { animation-duration: 2.4s; } }

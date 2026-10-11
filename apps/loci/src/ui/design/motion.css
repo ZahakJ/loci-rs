@@ -1,0 +1,22 @@
+/* Motion helpers. All durations come from tokens, so every animation is invisible when --d-base is 0. */
+@keyframes loci-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes loci-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes loci-rise-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes loci-sink-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(8px); } }
+@keyframes loci-pop-in { from { opacity: 0; transform: scale(0.98) translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes loci-slide-in-end { from { transform: translateX(var(--loci-slide-from, 24px)); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes loci-slide-in-up { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes loci-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@keyframes loci-indeterminate { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+
+.fade-in { animation: loci-fade-in var(--d-base) var(--ease) both; }
+.rise-in { animation: loci-rise-in var(--d-slow) var(--ease) both; }
+.pop-in { animation: loci-pop-in var(--d-base) var(--ease) both; }
+/* Staggered children: set --i on each child. */
+.stagger > * { animation: loci-rise-in var(--d-slow) var(--ease) both; animation-delay: calc(var(--i, 0) * var(--d-fast) / 3); }
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='on']) .rise-in,
+  :root:not([data-motion='on']) .stagger > * { animation-name: loci-fade-in; }
+}
+:root[data-motion='off'] .rise-in, :root[data-motion='off'] .stagger > * { animation: none; }

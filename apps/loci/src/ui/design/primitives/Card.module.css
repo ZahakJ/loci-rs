@@ -1,0 +1,12 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+}
+.pad-md { padding: var(--s-6); }
+.pad-sm { padding: var(--s-4); }
+.pad-none { padding: 0; }
+@media (max-width: 719px) { .pad-md { padding: var(--s-5); } }
+.interactive { transition: border-color var(--d-fast) var(--ease), background-color var(--d-fast) var(--ease); }
+.interactive:hover { border-color: var(--line-strong); }
+.sunken { background: var(--surface-2); border-color: transparent; }

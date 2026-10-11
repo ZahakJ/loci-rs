@@ -1,0 +1,8 @@
+.wordmark { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
+.mark { display: grid; place-items: center; color: var(--accent-strong); }
+.name { font-family: var(--font-card); font-weight: 560; letter-spacing: -0.012em; line-height: 1; font-variation-settings: 'opsz' 48; }
+.sm .name { font-size: 1.125rem; }
+.md .name { font-size: 1.5rem; }
+.lg .name { font-size: 2rem; }
+.xl { gap: 14px; }
+.xl .name { font-size: 3.25rem; letter-spacing: -0.02em; font-variation-settings: 'opsz' 72; }

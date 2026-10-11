@@ -1,0 +1,7 @@
+.svg { display: block; overflow: visible; color: var(--accent-strong); }
+.line { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.area { fill: currentColor; opacity: 0.12; stroke: none; }
+.dot { fill: currentColor; }
+.muted { color: var(--muted); }
+.new { color: var(--new); }
+.due { color: var(--due); }

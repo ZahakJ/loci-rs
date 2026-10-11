@@ -1,0 +1,46 @@
+/* The shadow host. Variables set here inherit into the card (DESIGN §8, §17). */
+.host {
+  display: block;
+  min-inline-size: 0;
+  --loci-good: var(--good);
+  --loci-again: var(--again);
+  --loci-hard: var(--hard);
+  --loci-mono: var(--font-mono);
+  --loci-io-fill: color-mix(in oklab, var(--line-strong) 72%, var(--surface));
+  --loci-io-stroke: color-mix(in oklab, var(--muted) 70%, var(--surface));
+  --loci-io-active: color-mix(in oklab, var(--accent) 62%, var(--surface));
+}
+:global(:root[data-card-align='center']) .host { --loci-card-align: center; }
+:global(:root[data-card-align='start']) .host { --loci-card-align: start; }
+
+/* ── lightbox ── */
+.lightbox {
+  position: fixed; inset: 0; z-index: 70;
+  display: grid; place-items: center;
+  padding: var(--s-10) var(--s-6);
+  background: color-mix(in oklab, var(--bg) 92%, transparent);
+  animation: loci-fade-in var(--d-base) var(--ease) both;
+  cursor: zoom-out;
+}
+.lightbox[data-state='closed'] { animation: loci-fade-out var(--d-fast) var(--ease-in) both; }
+.figure {
+  margin: 0; display: grid; gap: var(--s-3); justify-items: center;
+  max-inline-size: 100%; max-block-size: 100%;
+  animation: loci-pop-in var(--d-base) var(--ease) both;
+  outline: none;
+}
+.image {
+  max-inline-size: min(92vw, 1600px);
+  max-block-size: calc(100dvh - 9rem);
+  inline-size: auto; block-size: auto;
+  object-fit: contain;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-sheet);
+}
+.caption { color: var(--muted); font-size: var(--text-sm); max-inline-size: 60ch; text-align: center; }
+.close { position: absolute; inset-block-start: var(--s-3); inset-inline-end: var(--s-3); }
+@media (max-width: 719px) {
+  .lightbox { padding: var(--s-12) var(--s-2) var(--s-6); }
+  .image { max-inline-size: 100%; border-radius: var(--r-sm); }
+}

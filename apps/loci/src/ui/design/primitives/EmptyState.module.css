@@ -1,0 +1,7 @@
+.empty { display: grid; justify-items: center; gap: var(--s-3); padding: var(--s-12) var(--s-6); text-align: center; }
+.mark { display: grid; place-items: center; inline-size: 56px; block-size: 56px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-strong); margin-block-end: var(--s-2); }
+.title { font-family: var(--font-card); font-size: var(--text-2xl); font-weight: 500; letter-spacing: -0.01em; }
+.body { max-inline-size: 26rem; color: var(--muted); line-height: 1.55; }
+.actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2); margin-block-start: var(--s-3); }
+.compact { padding: var(--s-8) var(--s-4); }
+.compact .title { font-size: var(--text-xl); }

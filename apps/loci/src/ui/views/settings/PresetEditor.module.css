@@ -1,0 +1,54 @@
+.head { display: flex; gap: var(--s-3); align-items: flex-end; flex-wrap: wrap; }
+.nameField { flex: 1 1 18rem; max-inline-size: 28rem; }
+.usage { color: var(--muted); font-size: var(--text-sm); line-height: 1.5; }
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  block-size: 20px; padding-inline: 7px;
+  border-radius: var(--r-pill);
+  background: var(--good-soft);
+  color: color-mix(in oklab, var(--good) 65%, var(--ink));
+  font-size: 11px; font-weight: 650; letter-spacing: 0.01em;
+}
+.only { display: inline-flex; align-items: center; block-size: 20px; padding-inline: 7px; border-radius: var(--r-pill); box-shadow: inset 0 0 0 1px var(--line-strong); color: var(--muted); font-size: 11px; font-weight: 600; }
+.inactive .rowLabel { color: var(--muted); }
+.useRec {
+  font-size: var(--text-xs); color: var(--muted); font-weight: 550;
+  min-block-size: 24px; padding-inline: 6px; border-radius: var(--r-sm);
+  text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px;
+}
+.useRec:hover { color: var(--ink); background: var(--surface-2); }
+.number { inline-size: 9rem; }
+.stepsInput { inline-size: 12rem; }
+@media (max-width: 719px) { .number, .stepsInput { inline-size: 100%; } }
+
+.params { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; border-radius: var(--r-md); overflow: hidden; border: 1px solid var(--line); background: var(--line); }
+@media (max-width: 719px) { .params { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.param { display: grid; gap: 1px; padding: 6px 8px; background: var(--surface); }
+.paramKey { color: var(--faint); font-size: 10px; font-family: var(--font-mono); }
+.paramVal { font-family: var(--font-mono); font-size: var(--text-sm); font-variant-numeric: tabular-nums; color: var(--ink); }
+.changed .paramVal { color: var(--accent-strong); }
+.paramActions { display: flex; gap: var(--s-2); flex-wrap: wrap; align-items: center; }
+.paramsBlock { display: grid; gap: var(--s-3); inline-size: 100%; }
+.result { display: grid; gap: var(--s-2); padding: var(--s-3) var(--s-4); border-radius: var(--r-md); background: var(--surface-2); color: var(--ink-2); font-size: var(--text-sm); line-height: 1.5; }
+.result strong { color: var(--ink); font-variant-numeric: tabular-nums; }
+.metrics { display: flex; gap: var(--s-6); flex-wrap: wrap; }
+.metric { display: grid; }
+.metricLabel { color: var(--muted); font-size: var(--text-xs); }
+.metricValue { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink); }
+.arrow { color: var(--faint); margin-inline: 4px; }
+
+.saveBar {
+  position: sticky; inset-block-end: var(--s-4); z-index: 10;
+  display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap;
+  margin-block-start: var(--s-8);
+  padding: var(--s-3) var(--s-3) var(--s-3) var(--s-5);
+  border-radius: var(--r-lg);
+  background: var(--ink); color: var(--bg);
+  box-shadow: var(--shadow-2);
+  animation: loci-rise-in var(--d-base) var(--ease) both;
+}
+@media (max-width: 719px) { .saveBar { inset-block-end: calc(76px + env(safe-area-inset-bottom)); } }
+.saveText { flex: 1; font-weight: 550; }
+.saveBar button:focus-visible { outline-color: var(--accent); }
+.saveGhost { color: var(--bg) !important; }
+.saveGhost:hover { background: color-mix(in oklab, var(--bg) 14%, transparent) !important; }

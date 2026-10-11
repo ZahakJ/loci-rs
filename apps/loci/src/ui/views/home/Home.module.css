@@ -1,0 +1,80 @@
+.home { display: grid; gap: var(--s-10); }
+@media (max-width: 719px) { .home { gap: var(--s-8); } }
+
+/* ── Today hero ── */
+.hero { display: grid; gap: var(--s-5); padding-block: var(--s-2) 0; }
+.date { color: var(--muted); font-size: var(--text-sm); font-weight: 550; letter-spacing: 0.01em; }
+.sentence {
+  font-family: var(--font-card);
+  font-size: var(--text-3xl);
+  font-weight: 450;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  font-variation-settings: 'opsz' 60;
+  color: var(--ink);
+  max-inline-size: 30ch;
+}
+@media (min-width: 1024px) { .sentence { font-size: 2.5rem; } }
+.sentence em { font-style: italic; color: var(--accent-strong); }
+.counts { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.heroActions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin-block-start: var(--s-1); }
+.startButton { min-inline-size: 168px; }
+@media (max-width: 719px) { .heroActions > :first-child { flex: 1 1 100%; } }
+
+/* ── catch-up banner ── */
+.banner {
+  display: flex; align-items: center; gap: var(--s-4); flex-wrap: wrap;
+  padding: var(--s-4) var(--s-5);
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--accent);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+.bannerIcon { color: var(--accent-strong); }
+.bannerText { flex: 1 1 18rem; color: var(--ink-2); line-height: 1.5; }
+.bannerText strong { color: var(--ink); font-weight: 600; }
+
+/* ── insights ── */
+.sectionHead { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); margin-block-end: var(--s-4); }
+.sectionTitle { font-size: var(--text-lg); font-weight: 600; letter-spacing: var(--tracking-tight); }
+.sectionMeta { color: var(--muted); font-size: var(--text-sm); }
+.insights { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--s-3); }
+.insight { display: flex; flex-direction: column; gap: var(--s-3); padding: var(--s-5); }
+.insightTop { display: flex; gap: var(--s-3); align-items: flex-start; }
+.insightIcon { display: grid; place-items: center; inline-size: 28px; block-size: 28px; border-radius: 50%; flex-shrink: 0; background: var(--accent-soft); color: var(--accent-strong); }
+.warn .insightIcon { background: var(--hard-soft); color: color-mix(in oklab, var(--hard) 70%, var(--ink)); }
+.info .insightIcon { background: var(--easy-soft); color: color-mix(in oklab, var(--easy) 75%, var(--ink)); }
+.insightText { color: var(--ink-2); line-height: 1.5; font-size: var(--text-md); }
+.insightAction {
+  margin-block-start: auto; align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 4px;
+  min-block-size: 32px; margin-inline-start: 40px;
+  color: var(--ink); font-weight: 600; font-size: var(--text-sm); text-decoration: none;
+  border-block-end: 1px solid var(--line-strong);
+}
+.insightAction:hover { border-block-end-color: var(--accent); }
+
+/* ── main grid ── */
+.grid { display: grid; gap: var(--s-8); align-items: start; }
+@media (min-width: 1180px) { .grid { grid-template-columns: minmax(0, 1fr) 340px; gap: var(--s-6); } }
+
+/* ── momentum ── */
+.momentum { display: grid; gap: var(--s-4); }
+.momentumFigure { display: flex; align-items: baseline; gap: var(--s-2); flex-wrap: wrap; }
+.big { font-family: var(--font-card); font-size: var(--text-3xl); font-weight: 500; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums lining-nums; }
+.momentumText { color: var(--muted); }
+.momentumNote { color: var(--muted); font-size: var(--text-sm); line-height: 1.5; border-block-start: 1px solid var(--line); padding-block-start: var(--s-3); }
+.momentumNote strong { color: var(--ink-2); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ── empty ── */
+.emptyCard { padding-block: var(--s-6); }
+
+/* ── time budget progress ('6 of 20 min today') ── */
+.budget {
+  display: flex; align-items: center; gap: var(--s-3);
+  margin-block-start: calc(-1 * var(--s-2));
+  color: var(--muted); font-size: var(--text-sm); font-weight: 550; font-variant-numeric: tabular-nums;
+}
+.budgetBar { position: relative; inline-size: 5rem; block-size: 4px; border-radius: var(--r-pill); background: var(--surface-2); overflow: hidden; flex-shrink: 0; box-shadow: inset 0 0 0 1px var(--line); }
+.budgetBar > span { position: absolute; inset: 0; background: var(--accent); transform-origin: left center; transition: transform var(--d-slow) var(--ease); }
+[dir='rtl'] .budgetBar > span { transform-origin: right center; }

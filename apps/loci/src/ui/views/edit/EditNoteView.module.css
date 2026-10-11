@@ -1,0 +1,8 @@
+.body { min-inline-size: 0; }
+.bar {
+  position: sticky; inset-block-end: 0; z-index: 5;
+  margin-block-start: var(--s-8);
+  padding: var(--s-3) 0 calc(var(--s-3) + env(safe-area-inset-bottom));
+  background: var(--bg);
+  border-block-start: 1px solid var(--line);
+}

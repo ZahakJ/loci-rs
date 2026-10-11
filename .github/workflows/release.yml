@@ -1,0 +1,155 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  desktop:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: linux-x86_64
+            os: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+            args: --bundles appimage,deb,rpm
+          - name: windows-x86_64
+            os: windows-latest
+            target: x86_64-pc-windows-msvc
+            args: --bundles msi,nsis
+          - name: macos-aarch64
+            os: macos-latest
+            target: aarch64-apple-darwin
+            args: --target aarch64-apple-darwin --bundles dmg
+          - name: macos-x86_64
+            os: macos-latest
+            target: x86_64-apple-darwin
+            args: --target x86_64-apple-darwin --bundles dmg
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Linux system packages
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libsoup-3.0-dev libayatana-appindicator3-dev librsvg2-dev patchelf xdg-utils
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.0
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ". -> target"
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: pnpm
+          cache-dependency-path: apps/loci/pnpm-lock.yaml
+
+      - name: Install frontend dependencies
+        working-directory: apps/loci
+        run: pnpm install --frozen-lockfile
+
+      - name: Build and upload bundles
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          projectPath: apps/loci
+          tagName: ${{ github.ref_name }}
+          releaseName: "Loci ${{ github.ref_name }}"
+          releaseBody: "See the README for install lines per platform."
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.args }}
+
+  android:
+    name: android
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: "platforms;android-35 build-tools;35.0.0 ndk;27.2.12479018 platform-tools"
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.0
+          targets: aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ". -> target"
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: pnpm
+          cache-dependency-path: apps/loci/pnpm-lock.yaml
+
+      - name: Install frontend dependencies
+        working-directory: apps/loci
+        run: pnpm install --frozen-lockfile
+
+      - name: Restore the signing keystore
+        working-directory: apps/loci/src-tauri/gen/android
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/loci-release.keystore"
+          cat > keystore.properties <<EOF
+          password=$KEYSTORE_PASSWORD
+          keyAlias=$KEY_ALIAS
+          storeFile=$RUNNER_TEMP/loci-release.keystore
+          EOF
+
+      - name: Build release APKs (arm64 + universal)
+        working-directory: apps/loci
+        env:
+          NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.2.12479018
+        run: |
+          pnpm tauri android build --apk --target aarch64
+          mv src-tauri/gen/android/app/build/outputs/apk/arm64/release/app-arm64-release.apk "loci-${GITHUB_REF_NAME}-android-arm64.apk"
+          pnpm tauri android build --apk
+          mv src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release.apk "loci-${GITHUB_REF_NAME}-android-universal.apk"
+
+      - name: Attach APKs to the release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: apps/loci
+        run: |
+          for i in 1 2 3 4 5 6; do
+            if gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then break; fi
+            sleep 30
+          done
+          gh release upload "$GITHUB_REF_NAME" loci-*-android-*.apk --repo "$GITHUB_REPOSITORY" --clobber

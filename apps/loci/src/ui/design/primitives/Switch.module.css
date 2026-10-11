@@ -1,0 +1,22 @@
+.switch {
+  position: relative;
+  display: inline-flex; align-items: center;
+  inline-size: 40px; block-size: 24px;
+  flex-shrink: 0;
+  border-radius: var(--r-pill);
+  background: var(--line-strong);
+  transition: background-color var(--d-base) var(--ease);
+}
+/* enlarge the hit area to 44px without changing the visual */
+.switch::before { content: ''; position: absolute; inset: -10px -4px; }
+.thumb {
+  position: absolute; inset-inline-start: 3px;
+  inline-size: 18px; block-size: 18px; border-radius: 50%;
+  background: var(--surface);
+  transition: transform var(--d-base) var(--ease);
+}
+.switch[aria-checked='true'] { background: var(--accent-strong); }
+.switch[aria-checked='true'] .thumb { transform: translateX(16px); background: var(--on-accent); }
+[dir='rtl'] .switch[aria-checked='true'] .thumb { transform: translateX(-16px); }
+.switch:disabled { opacity: 0.5; }
+.row { display: inline-flex; align-items: center; gap: var(--s-3); cursor: pointer; min-block-size: var(--tap); }

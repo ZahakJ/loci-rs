@@ -1,0 +1,37 @@
+.field { display: grid; gap: 6px; min-inline-size: 0; }
+.label { font-size: var(--text-md); font-weight: 550; color: var(--ink); }
+.optional { color: var(--faint); font-weight: 400; margin-inline-start: var(--s-1); }
+.help { font-size: var(--text-sm); color: var(--muted); line-height: 1.45; }
+.error { display: flex; align-items: center; gap: 6px; font-size: var(--text-sm); color: var(--danger); }
+.inline { grid-template-columns: 1fr auto; align-items: center; column-gap: var(--s-4); }
+.inline .help, .inline .error { grid-column: 1 / -1; }
+
+.control {
+  inline-size: 100%;
+  min-block-size: 40px;
+  padding: 0 var(--s-3);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  color: var(--ink);
+  font-size: var(--text-md);
+  transition: border-color var(--d-fast) var(--ease), background-color var(--d-fast) var(--ease);
+}
+@media (pointer: coarse) { .control { min-block-size: var(--tap); font-size: var(--text-lg); } }
+.control::placeholder { color: var(--faint); }
+.control:hover:not(:disabled) { border-color: var(--muted); }
+.control:focus-visible { outline: 2px solid var(--focus); outline-offset: 0; border-color: var(--accent); }
+.control[aria-invalid='true'] { border-color: var(--danger); }
+.control:disabled { background: var(--surface-2); color: var(--muted); }
+textarea.control { padding-block: var(--s-2); min-block-size: 88px; resize: vertical; line-height: 1.5; }
+.mono { font-family: var(--font-mono); font-size: var(--text-sm); }
+
+.affix { position: relative; display: flex; align-items: center; }
+.with-icon > svg { position: absolute; inset-inline-start: 11px; color: var(--muted); pointer-events: none; }
+.with-icon > .control { padding-inline-start: 38px; }
+.suffix { position: absolute; inset-inline-end: 12px; color: var(--muted); font-size: var(--text-sm); pointer-events: none; }
+.with-suffix > .control { padding-inline-end: 48px; }
+
+.select { position: relative; display: flex; align-items: center; }
+.select > select { appearance: none; padding-inline-end: 36px; cursor: pointer; }
+.select > svg { position: absolute; inset-inline-end: 10px; color: var(--muted); pointer-events: none; }

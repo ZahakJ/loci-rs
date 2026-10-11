@@ -1,0 +1,11 @@
+.sk {
+  display: block;
+  border-radius: var(--r-sm);
+  background: linear-gradient(90deg, var(--surface-2) 25%, color-mix(in oklab, var(--surface-2) 55%, var(--surface)) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: loci-shimmer 1.4s linear infinite;
+}
+.text { block-size: 0.9em; margin-block: 0.3em; }
+.lines { display: grid; gap: var(--s-2); }
+@media (prefers-reduced-motion: reduce) { .sk { animation: none; } }
+:root[data-motion='off'] .sk { animation: none; }

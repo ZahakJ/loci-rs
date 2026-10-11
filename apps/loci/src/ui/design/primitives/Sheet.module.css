@@ -1,0 +1,46 @@
+.root { position: fixed; inset: 0; z-index: 60; display: flex; justify-content: flex-end; }
+.scrim {
+  position: absolute; inset: 0;
+  background: color-mix(in oklab, var(--ink) 22%, transparent);
+  animation: loci-fade-in var(--d-base) var(--ease) both;
+}
+:root[data-theme='dark'] .scrim { background: color-mix(in oklab, var(--bg) 70%, transparent); }
+.panel {
+  position: relative;
+  display: flex; flex-direction: column;
+  inline-size: min(var(--sheet-w, 36rem), 100vw);
+  block-size: 100%;
+  background: var(--surface);
+  box-shadow: var(--shadow-sheet);
+  animation: loci-slide-in-end var(--d-slow) var(--ease) both;
+  outline: none;
+}
+[dir='rtl'] .panel { --loci-slide-from: -24px; }
+.root[data-state='closed'] .scrim { animation: loci-fade-out var(--d-base) var(--ease-in) both; }
+.root[data-state='closed'] .panel { animation: loci-fade-out var(--d-base) var(--ease-in) both; }
+
+.header {
+  display: flex; align-items: center; gap: var(--s-3);
+  min-block-size: 64px;
+  padding-inline: var(--s-6) var(--s-3);
+  border-block-end: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.title { flex: 1; min-inline-size: 0; font-size: var(--text-xl); font-weight: 600; letter-spacing: var(--tracking-tight); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.body { flex: 1; overflow: auto; padding: var(--s-6); overscroll-behavior: contain; }
+.footer {
+  display: flex; align-items: center; justify-content: flex-end; gap: var(--s-2);
+  padding: var(--s-4) var(--s-6);
+  border-block-start: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+/* Phone: full-screen sheet rising from the bottom. */
+@media (max-width: 719px) {
+  .panel { inline-size: 100vw; animation-name: loci-slide-in-up; }
+  .header { padding-inline: var(--s-4) var(--s-2); min-block-size: 56px; padding-block-start: env(safe-area-inset-top); }
+  .body { padding: var(--s-5); }
+  .footer { padding: var(--s-3) var(--s-5) calc(var(--s-3) + env(safe-area-inset-bottom)); }
+  .bottom { align-items: flex-end; }
+  .bottom .panel { block-size: auto; max-block-size: 88dvh; border-start-start-radius: var(--r-lg); border-start-end-radius: var(--r-lg); }
+}

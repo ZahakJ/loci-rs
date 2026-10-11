@@ -1,0 +1,77 @@
+.field { display: grid; gap: 6px; min-inline-size: 0; }
+
+.head { display: flex; align-items: center; gap: var(--s-2); min-block-size: 28px; }
+.label {
+  flex: 1; min-inline-size: 0;
+  font-size: var(--text-sm); font-weight: 550; color: var(--ink-2);
+  letter-spacing: 0.005em;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.tools { display: flex; gap: 2px; margin-inline-end: -6px; }
+.tool { color: var(--faint); opacity: 0.55; transition: opacity var(--d-fast) var(--ease), color var(--d-fast) var(--ease), background-color var(--d-fast) var(--ease); }
+.field:hover .tool, .field:focus-within .tool, .tool:focus-visible, .tool[aria-pressed='true'] { opacity: 1; color: var(--muted); }
+.tool[aria-pressed='true'] { color: var(--ink); }
+.pinned { color: var(--accent-strong) !important; background: var(--accent-soft); }
+@media (hover: none) { .tool { opacity: 1; color: var(--muted); } }
+
+.editable, .source {
+  inline-size: 100%;
+  min-block-size: 46px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  color: var(--ink);
+  transition: border-color var(--d-fast) var(--ease), background-color var(--d-fast) var(--ease);
+}
+.editable {
+  font-family: var(--font-card);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  cursor: text;
+}
+.compact .editable { min-block-size: 40px; padding: 8px 12px; font-size: 1rem; }
+.editable:hover, .source:hover { border-color: var(--muted); }
+.editable:focus-visible, .editable:focus, .source:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 0;
+  border-color: var(--accent);
+}
+.editable[aria-invalid='true'], .source[aria-invalid='true'] { border-color: var(--danger); }
+.editable:empty::before {
+  content: attr(data-placeholder);
+  color: var(--faint);
+  font-family: var(--font-ui);
+  font-size: var(--text-md);
+  pointer-events: none;
+}
+.field[data-dragging] .editable { border-style: dashed; border-color: var(--accent); background: var(--accent-soft); }
+.editable[aria-busy='true'] { cursor: progress; }
+
+/* Content inside the field mirrors the card a little, but stays an editor. */
+.editable img { display: inline-block; max-inline-size: 100%; max-block-size: 16rem; border-radius: var(--r-sm); vertical-align: middle; }
+.editable img[data-loci-missing] { min-inline-size: 48px; min-block-size: 32px; outline: 1px dashed var(--line-strong); }
+.editable ul, .editable ol { padding-inline-start: 1.4em; }
+.editable a { color: var(--accent-strong); }
+.editable code, .editable pre { font-family: var(--font-mono); font-size: 0.86em; background: var(--surface-2); border-radius: 4px; padding: 0 0.25em; }
+.editable pre { padding: var(--s-2) var(--s-3); white-space: pre-wrap; }
+.editable sub, .editable sup { line-height: 0; }
+
+/* Cloze markers (CSS Custom Highlight API; the saved HTML never changes). */
+.editable::highlight(loci-cloze-body) { background-color: var(--accent-soft); color: var(--ink); }
+.editable::highlight(loci-cloze-mark) { color: var(--accent-strong); background-color: var(--accent-soft); }
+.editable::highlight(loci-cloze-hint) { color: var(--muted); background-color: var(--accent-soft); }
+
+.source {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  resize: vertical;
+  background: var(--surface-2);
+  tab-size: 2;
+}
+
+.error { font-size: var(--text-sm); color: var(--danger); }
+@media (pointer: coarse) { .editable { font-size: 1.125rem; } }

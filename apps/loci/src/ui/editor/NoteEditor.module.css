@@ -1,0 +1,7 @@
+.editor { display: grid; gap: var(--s-4); min-inline-size: 0; }
+.toolbar { z-index: 2; }
+.stuck { position: sticky; inset-block-start: var(--toolbar-stick, calc(-1 * var(--s-6))); }
+@media (max-width: 719px) { .stuck { inset-block-start: var(--toolbar-stick, calc(-1 * var(--s-5))); } }
+.fields { display: grid; gap: var(--s-5); }
+.compact { gap: var(--s-4); }
+.dialogFields { display: grid; gap: var(--s-4); }

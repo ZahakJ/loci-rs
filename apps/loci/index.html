@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Loci</title>
+    <meta name="description" content="A memory palace for everything you learn. Spaced repetition that imports your Anki collection." />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+    <script>
+      // Theme before first paint: localStorage 'loci.theme' (light|dark), else the system.
+      (function () {
+        var d = document.documentElement, t = null;
+        try { t = localStorage.getItem('loci.theme'); } catch (e) {}
+        if (t !== 'light' && t !== 'dark') t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        d.dataset.theme = t;
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Loci needs JavaScript to run.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

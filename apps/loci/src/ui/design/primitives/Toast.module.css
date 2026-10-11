@@ -1,0 +1,42 @@
+.region {
+  position: fixed;
+  z-index: 100;
+  inset-inline: 0;
+  /* Above whichever sticky bottom bar is showing (answer bar, tab bar, save bar: see bottomBar.ts),
+     never over its buttons; without one, clear of the safe-area inset. */
+  inset-block-end: calc(max(var(--bottom-bar-height, 0px), env(safe-area-inset-bottom, 0px)) + var(--s-4));
+  /* newest on top: the DOM keeps arrival order for screen readers */
+  display: flex; flex-direction: column-reverse; align-items: center; gap: var(--s-2);
+  padding-inline: var(--s-4);
+  pointer-events: none;
+}
+@media (max-width: 719px) { .region { inset-block-end: calc(max(var(--bottom-bar-height, 0px), env(safe-area-inset-bottom, 0px)) + var(--s-2)); } }
+.toast {
+  display: flex; align-items: center; gap: var(--s-3);
+  max-inline-size: min(32rem, 100%);
+  min-block-size: 48px;
+  padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4);
+  border-radius: var(--r-md);
+  background: var(--ink);
+  color: var(--bg);
+  font-size: var(--text-md);
+  box-shadow: var(--shadow-2);
+  pointer-events: auto;
+  animation: loci-rise-in var(--d-base) var(--ease) both;
+}
+.toast[data-leaving='true'] { animation: loci-sink-out var(--d-fast) var(--ease-in) both; }
+.icon { color: var(--accent); flex-shrink: 0; }
+.danger .icon { color: var(--again); }
+.message { flex: 1; min-inline-size: 0; padding-block: 6px; line-height: 1.4; }
+.action {
+  flex-shrink: 0;
+  min-block-size: 36px;
+  padding-inline: var(--s-3);
+  border-radius: var(--r-sm);
+  color: var(--accent);
+  font-weight: 600;
+}
+.action:hover { background: color-mix(in oklab, var(--bg) 12%, transparent); }
+.close { flex-shrink: 0; display: grid; place-items: center; inline-size: 36px; block-size: 36px; border-radius: var(--r-sm); color: color-mix(in oklab, var(--bg) 70%, var(--ink)); }
+.close:hover { background: color-mix(in oklab, var(--bg) 12%, transparent); color: var(--bg); }
+.action:focus-visible, .close:focus-visible { outline-color: var(--accent); }

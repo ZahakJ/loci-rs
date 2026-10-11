@@ -1,0 +1,73 @@
+/* Hand-drawn SVG charts. Colours only from tokens; marks thin; grid recessive (dataviz spec). */
+.frame { display: grid; gap: var(--s-3); min-inline-size: 0; }
+.plot { position: relative; min-inline-size: 0; border-radius: var(--r-sm); }
+.plot:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+.svg { display: block; overflow: visible; font-family: var(--font-ui); }
+
+.grid { stroke: var(--line); stroke-width: 1px; shape-rendering: crispEdges; }
+.axis { stroke: var(--line-strong); stroke-width: 1px; shape-rendering: crispEdges; }
+.yTick, .xTick { fill: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+.ref line { stroke: var(--ink-2); stroke-width: 1.5px; stroke-dasharray: none; opacity: 0.55; }
+.ref text { fill: var(--ink-2); font-size: 11px; font-weight: 550; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; }
+
+.bar { transition: opacity var(--d-fast) var(--ease); }
+.col.dim .bar { opacity: 0.45; }
+.dimRect { opacity: 0.45; }
+.highlight .bar { filter: none; }
+.hit { fill: transparent; cursor: default; }
+
+.line { fill: none; stroke-width: 2px; stroke-linejoin: round; stroke-linecap: round; }
+.area { opacity: 0.12; }
+.dot { stroke: var(--surface); stroke-width: 2px; }
+.crosshair { stroke: var(--line-strong); stroke-width: 1px; shape-rendering: crispEdges; }
+
+.fill-accent { fill: var(--accent); } .stroke-accent { stroke: var(--accent); }
+.fill-new { fill: var(--new); } .stroke-new { stroke: var(--new); }
+.fill-learn { fill: var(--learn); } .stroke-learn { stroke: var(--learn); }
+.fill-due { fill: var(--due); } .stroke-due { stroke: var(--due); }
+.fill-young { fill: color-mix(in oklab, var(--due) 55%, var(--surface)); } .stroke-young { stroke: color-mix(in oklab, var(--due) 55%, var(--surface)); }
+.fill-mature { fill: var(--due); } .stroke-mature { stroke: var(--due); }
+.fill-again { fill: var(--again); } .stroke-again { stroke: var(--again); }
+.fill-hard { fill: var(--hard); } .stroke-hard { stroke: var(--hard); }
+.fill-good { fill: var(--good); } .stroke-good { stroke: var(--good); }
+.fill-easy { fill: var(--easy); } .stroke-easy { stroke: var(--easy); }
+.fill-muted { fill: var(--line-strong); } .stroke-muted { stroke: var(--line-strong); }
+.fill-faint { fill: var(--line); } .stroke-faint { stroke: var(--line); }
+
+.tone-accent { --tone: var(--accent); } .tone-new { --tone: var(--new); } .tone-learn { --tone: var(--learn); } .tone-due { --tone: var(--due); }
+.tone-young { --tone: color-mix(in oklab, var(--due) 55%, var(--surface)); } .tone-mature { --tone: var(--due); }
+.tone-again { --tone: var(--again); } .tone-hard { --tone: var(--hard); } .tone-good { --tone: var(--good); } .tone-easy { --tone: var(--easy); }
+.tone-muted { --tone: var(--line-strong); } .tone-faint { --tone: var(--line); }
+
+.tip {
+  position: absolute; z-index: 5; pointer-events: none;
+  padding: 8px 10px;
+  background: var(--surface);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow-2);
+  font-size: var(--text-xs);
+  animation: loci-fade-in var(--d-fast) var(--ease) both;
+}
+.tipTitle { color: var(--muted); font-weight: 550; margin-block-end: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tipRow { display: flex; align-items: center; gap: 6px; line-height: 1.6; }
+.tipValue { color: var(--ink); font-weight: 650; font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
+.tipLabel { color: var(--muted); min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.key { inline-size: 8px; block-size: 8px; border-radius: 2px; background: var(--tone); flex-shrink: 0; }
+.keyLine { block-size: 2px; inline-size: 12px; border-radius: 1px; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 4px var(--s-4); font-size: var(--text-xs); color: var(--ink-2); list-style: none; padding: 0; }
+.legendItem { display: inline-flex; align-items: center; gap: 6px; }
+.swatch { inline-size: 10px; block-size: 10px; border-radius: 3px; background: var(--tone); flex-shrink: 0; }
+.legendValue { color: var(--muted); font-variant-numeric: tabular-nums; }
+.legendGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: 6px var(--s-4); }
+.legendGrid .legendItem > span:nth-child(2) { color: var(--ink); }
+.legendGrid .legendValue { margin-inline-start: auto; }
+
+.ring { display: block; }
+.ringTrack { fill: none; stroke: var(--surface-2); }
+.ringValue { fill: none; stroke-linecap: round; transition: stroke-dasharray var(--d-slow) var(--ease); }
+.ringTarget { stroke: var(--ink-2); stroke-width: 2px; stroke-linecap: round; }
+.ringText { fill: var(--ink); font: 650 1.125rem var(--font-ui); letter-spacing: -0.02em; }
+
+@media (prefers-reduced-motion: reduce) { .bar, .ringValue, .tip { transition: none; animation: none; } }
+@media (forced-colors: active) { .bar, .area { forced-color-adjust: none; } }

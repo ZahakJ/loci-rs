@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# The release gate. Everything must pass before a tag is pushed:
+#   1. cargo fmt --check            formatting
+#   2. cargo clippy (deny warnings) lints on every crate and target
+#   3. cargo test --workspace       the engine's tests (ported from recall) and the CLI
+#   4. frontend: typecheck + vitest the UI helpers
+#   5. frontend build + Tauri desktop build (debug binary; bundles are the release workflow's job)
+#   6. e2e (Playwright on the system Chrome against `loci serve`) unless LOCI_VERIFY_SKIP_E2E=1
+#
+# Usage: ./verify            full gate
+#        ./verify --quick    steps 1–4 only (no Tauri build, no e2e)
+set -euo pipefail
+cd "$(dirname "$0")"
+
+export PATH="$HOME/.cargo/bin:$PATH"
+export CARGO_BUILD_JOBS="${CARGO_BUILD_JOBS:-6}"
+QUICK=0
+[[ "${1:-}" == "--quick" ]] && QUICK=1
+
+step() { printf '\n\033[1m== %s\033[0m\n' "$*"; }
+
+step "fmt"
+cargo fmt --all -- --check
+
+step "clippy"
+if [[ -d apps/loci/dist ]]; then
+  cargo clippy --workspace --all-targets -- -D warnings
+else
+  # tauri-build needs the frontend bundle; before the first frontend build lint the engine crates.
+  cargo clippy -p loci-core -p loci-cli --all-targets -- -D warnings
+fi
+
+step "cargo test"
+cargo test --workspace --exclude loci-app
+
+step "frontend typecheck + unit tests"
+( cd apps/loci && pnpm typecheck && pnpm test )
+
+if [[ $QUICK == 1 ]]; then
+  echo; echo "verify --quick: green"
+  exit 0
+fi
+
+step "frontend build"
+( cd apps/loci && pnpm build )
+
+step "clippy (app)"
+cargo clippy --workspace --all-targets -- -D warnings
+
+step "tauri desktop build (debug)"
+cargo build -p loci-app
+
+step "cli build"
+cargo build -p loci-cli
+
+if [[ "${LOCI_VERIFY_SKIP_E2E:-0}" != "1" ]]; then
+  step "e2e (Playwright, system Chrome, against loci serve)"
+  ( cd apps/loci && pnpm test:e2e )
+else
+  echo "(e2e skipped: LOCI_VERIFY_SKIP_E2E=1)"
+fi
+
+echo; echo "verify: green"

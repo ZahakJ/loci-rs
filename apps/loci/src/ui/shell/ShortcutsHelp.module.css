@@ -1,0 +1,6 @@
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: var(--s-6) var(--s-8); }
+.group h3 { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 650; margin-block-end: var(--s-2); }
+.list { display: grid; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); min-block-size: 34px; border-block-end: 1px solid var(--line); font-size: var(--text-md); color: var(--ink-2); }
+.row:last-child { border-block-end: 0; }
+.keys { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; color: var(--faint); font-size: var(--text-xs); }

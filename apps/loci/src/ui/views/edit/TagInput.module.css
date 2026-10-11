@@ -1,0 +1,66 @@
+.root { position: relative; display: grid; gap: 6px; min-inline-size: 0; }
+.label { font-size: var(--text-sm); font-weight: 550; color: var(--ink-2); }
+.box {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  min-block-size: 40px;
+  padding: 5px 10px;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  cursor: text;
+  transition: border-color var(--d-fast) var(--ease);
+}
+.box:hover { border-color: var(--muted); }
+.box:focus-within { outline: 2px solid var(--focus); outline-offset: 0; border-color: var(--accent); }
+@media (pointer: coarse) { .box { min-block-size: var(--tap); } }
+.icon { color: var(--faint); }
+.chips { display: contents; list-style: none; }
+.chip {
+  display: inline-flex; align-items: center; gap: 2px;
+  max-inline-size: 100%;
+  block-size: 26px;
+  padding-inline: 9px 3px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  font-size: var(--text-sm);
+  color: var(--ink);
+  animation: loci-pop-in var(--d-fast) var(--ease) both;
+}
+.chipText { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chipPath { color: var(--muted); }
+.remove {
+  display: inline-grid; place-items: center;
+  inline-size: 20px; block-size: 20px;
+  border-radius: 50%;
+  color: var(--muted);
+}
+.remove:hover { background: var(--line); color: var(--ink); }
+@media (pointer: coarse) { .remove { inline-size: 28px; block-size: 28px; } }
+.input {
+  flex: 1; min-inline-size: 8ch;
+  block-size: 28px;
+  border: 0; background: transparent; color: var(--ink);
+  font-size: var(--text-md);
+}
+.input:focus-visible { outline: none; }
+.input::placeholder { color: var(--faint); }
+
+.suggest {
+  position: absolute; inset-inline: 0; inset-block-start: calc(100% + 4px); z-index: 20;
+  list-style: none; margin: 0; padding: 4px;
+  background: var(--surface);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-2);
+  max-block-size: 260px; overflow: auto;
+  animation: loci-pop-in var(--d-fast) var(--ease) both;
+}
+.option {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s-3);
+  min-block-size: 34px; padding: 4px 10px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+}
+.option[aria-selected='true'] { background: var(--surface-2); }
+.optTag { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.optCount { color: var(--muted); font-size: var(--text-sm); font-variant-numeric: tabular-nums; }

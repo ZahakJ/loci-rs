@@ -1,0 +1,162 @@
+/* Loci design tokens — the visual contract (DESIGN.md §17). Both themes are designed, not inverted. */
+:root {
+  color-scheme: light;
+  /* surfaces */
+  --bg: oklch(97.5% 0.006 85);
+  --surface: oklch(99% 0.004 85);
+  --surface-2: oklch(95.5% 0.008 85);
+  --line: oklch(88% 0.01 85);
+  --line-strong: oklch(78% 0.012 85);
+  /* text */
+  --ink: oklch(22% 0.02 260);
+  --ink-2: oklch(36% 0.02 260);
+  --muted: oklch(50% 0.02 260);
+  --faint: oklch(66% 0.015 260);
+  /* brand */
+  --accent: oklch(62% 0.13 70);
+  --accent-strong: oklch(54% 0.14 70);
+  --accent-soft: oklch(94% 0.04 75);
+  --on-accent: #fff;
+  --focus: oklch(62% 0.13 70);
+  /* grades */
+  --again: oklch(62% 0.17 20);
+  --hard: oklch(72% 0.14 65);
+  --good: oklch(66% 0.14 150);
+  --easy: oklch(68% 0.12 230);
+  --again-soft: oklch(95% 0.03 20);
+  --hard-soft: oklch(96% 0.04 70);
+  --good-soft: oklch(95% 0.04 150);
+  --easy-soft: oklch(95% 0.03 230);
+  /* counts (Anki-familiar) */
+  --new: oklch(60% 0.15 250);
+  --learn: oklch(68% 0.16 50);
+  --due: oklch(60% 0.14 150);
+  /* semantic */
+  --danger: oklch(58% 0.19 25);
+  --warn: oklch(72% 0.15 75);
+  --ok: oklch(62% 0.14 150);
+  /* card canvas variables consumed by the card shadow root */
+  --loci-ink: var(--ink);
+  --loci-muted: var(--muted);
+  --loci-line: var(--line);
+  --loci-surface: var(--surface);
+  --loci-accent: var(--accent);
+  --loci-cloze: var(--accent-strong);
+  --loci-card-font: var(--font-card);
+  --loci-card-size: 1.375rem;
+
+  /* type */
+  --font-ui: 'Inter Variable', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-card: 'Newsreader Variable', Newsreader, 'Noto Naskh Arabic', Georgia, 'Times New Roman', serif;
+  --font-card-sans: 'Inter Variable', Inter, 'Vazirmatn', system-ui, sans-serif;
+  --font-arabic: 'Noto Naskh Arabic', 'Vazirmatn', serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --text-xs: 0.75rem;   /* 12 */
+  --text-sm: 0.8125rem; /* 13 */
+  --text-md: 0.875rem;  /* 14, UI base */
+  --text-lg: 1rem;      /* 16 */
+  --text-xl: 1.25rem;   /* 20 */
+  --text-2xl: 1.5rem;   /* 24 */
+  --text-3xl: 2rem;     /* 32 */
+  --leading: 1.5;
+  --tracking-tight: -0.011em;
+
+  /* geometry */
+  --r-sm: 6px; --r-md: 10px; --r-lg: 16px; --r-pill: 999px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --gutter: 16px;
+  --content-max: 42rem;   /* study card */
+  --page-max: 72rem;
+  --tap: 44px;
+
+  /* elevation: light theme uses borders, not shadows */
+  --shadow-1: 0 0 0 1px var(--line);
+  --shadow-2: 0 0 0 1px var(--line), 0 8px 24px -16px oklch(22% 0.02 260 / 0.25);
+  --shadow-sheet: 0 0 0 1px var(--line), 0 24px 64px -24px oklch(22% 0.02 260 / 0.35);
+
+  /* motion */
+  --d-fast: 120ms; --d-base: 200ms; --d-slow: 320ms;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --ease-in: cubic-bezier(.4, 0, 1, 1);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: oklch(17% 0.015 260);
+  --surface: oklch(21% 0.015 260);
+  --surface-2: oklch(25% 0.016 260);
+  --line: oklch(30% 0.015 260);
+  --line-strong: oklch(40% 0.015 260);
+  --ink: oklch(93% 0.01 85);
+  --ink-2: oklch(82% 0.012 85);
+  --muted: oklch(68% 0.015 260);
+  --faint: oklch(52% 0.015 260);
+  --accent: oklch(78% 0.12 75);
+  --accent-strong: oklch(84% 0.11 78);
+  --accent-soft: oklch(30% 0.05 75);
+  --on-accent: oklch(20% 0.03 70);
+  --focus: oklch(78% 0.12 75);
+  --again: oklch(70% 0.16 20);
+  --hard: oklch(80% 0.13 70);
+  --good: oklch(74% 0.13 150);
+  --easy: oklch(76% 0.11 230);
+  --again-soft: oklch(28% 0.06 20);
+  --hard-soft: oklch(29% 0.06 70);
+  --good-soft: oklch(27% 0.06 150);
+  --easy-soft: oklch(27% 0.05 230);
+  --new: oklch(72% 0.13 250);
+  --learn: oklch(78% 0.14 55);
+  --due: oklch(72% 0.13 150);
+  --danger: oklch(68% 0.17 25);
+  --warn: oklch(80% 0.13 75);
+  --ok: oklch(72% 0.13 150);
+  --shadow-1: 0 0 0 1px var(--line);
+  --shadow-2: 0 0 0 1px var(--line), 0 12px 32px -16px oklch(0% 0 0 / 0.6);
+  --shadow-sheet: 0 0 0 1px var(--line-strong), 0 24px 64px -24px oklch(0% 0 0 / 0.7);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --bg: oklch(17% 0.015 260);
+    --surface: oklch(21% 0.015 260);
+    --surface-2: oklch(25% 0.016 260);
+    --line: oklch(30% 0.015 260);
+    --line-strong: oklch(40% 0.015 260);
+    --ink: oklch(93% 0.01 85);
+    --ink-2: oklch(82% 0.012 85);
+    --muted: oklch(68% 0.015 260);
+    --faint: oklch(52% 0.015 260);
+    --accent: oklch(78% 0.12 75);
+    --accent-strong: oklch(84% 0.11 78);
+    --accent-soft: oklch(30% 0.05 75);
+    --on-accent: oklch(20% 0.03 70);
+    --focus: oklch(78% 0.12 75);
+    --again: oklch(70% 0.16 20);
+    --hard: oklch(80% 0.13 70);
+    --good: oklch(74% 0.13 150);
+    --easy: oklch(76% 0.11 230);
+    --again-soft: oklch(28% 0.06 20);
+    --hard-soft: oklch(29% 0.06 70);
+    --good-soft: oklch(27% 0.06 150);
+    --easy-soft: oklch(27% 0.05 230);
+    --new: oklch(72% 0.13 250);
+    --learn: oklch(78% 0.14 55);
+    --due: oklch(72% 0.13 150);
+    --danger: oklch(68% 0.17 25);
+    --warn: oklch(80% 0.13 75);
+    --ok: oklch(72% 0.13 150);
+    --shadow-1: 0 0 0 1px var(--line);
+    --shadow-2: 0 0 0 1px var(--line), 0 12px 32px -16px oklch(0% 0 0 / 0.6);
+    --shadow-sheet: 0 0 0 1px var(--line-strong), 0 24px 64px -24px oklch(0% 0 0 / 0.7);
+  }
+}
+
+@media (max-width: 720px) {
+  :root { --loci-card-size: 1.25rem; --gutter: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --d-fast: 0ms; --d-base: 0ms; --d-slow: 0ms; }
+}
+:root[data-motion='off'] { --d-fast: 0ms; --d-base: 0ms; --d-slow: 0ms; }

@@ -1,0 +1,40 @@
+.bar {
+  display: flex; align-items: center; gap: 2px;
+  min-block-size: 44px;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  /* Wraps onto a second row when narrow (phones, the Browse editor pane): no tool is ever
+     hidden behind a horizontal scroll. */
+  flex-wrap: wrap;
+  row-gap: 2px;
+}
+.group { display: flex; gap: 2px; flex-shrink: 0; }
+.sep { inline-size: 1px; block-size: 20px; background: var(--line); margin-inline: 4px; flex-shrink: 0; }
+.end { margin-inline-start: auto; display: flex; gap: var(--s-1); flex-shrink: 0; padding-inline-start: var(--s-2); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-inline-size: 34px; block-size: 34px;
+  padding-inline: 7px;
+  border-radius: var(--r-sm);
+  color: var(--ink-2);
+  font-size: var(--text-sm); font-weight: 550;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--d-fast) var(--ease), color var(--d-fast) var(--ease);
+}
+.btn:hover:not(:disabled) { background: var(--surface-2); color: var(--ink); }
+.btn:disabled { opacity: 0.4; }
+.btn[aria-pressed='true'] { background: var(--accent-soft); color: var(--ink); }
+.btn[aria-expanded='true'] { background: var(--surface-2); }
+.cloze { padding-inline: 8px 10px; color: var(--accent-strong); }
+.cloze:hover:not(:disabled) { color: var(--accent-strong); background: var(--accent-soft); }
+@media (pointer: coarse) { .btn { min-inline-size: 44px; block-size: 44px; } }
+/* Phones: the rows are packed, so separators would only dangle at row ends. */
+@media (max-width: 719px) {
+  .bar { gap: 4px; }
+  .sep { display: none; }
+  .end { padding-inline-start: 0; }
+}

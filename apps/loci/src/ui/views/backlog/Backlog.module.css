@@ -1,0 +1,63 @@
+.view { display: grid; gap: var(--s-10); }
+.loading { display: grid; gap: var(--s-4); }
+
+/* the debt, said plainly */
+.debt { display: grid; gap: var(--s-3); max-inline-size: 44rem; }
+.debtSentence {
+  font-family: var(--font-card);
+  font-size: var(--text-3xl);
+  font-weight: 450;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  font-variation-settings: 'opsz' 60;
+  color: var(--ink);
+  text-wrap: balance;
+}
+@media (min-width: 1024px) { .debtSentence { font-size: 2.375rem; } }
+.pace { color: var(--ink-2); line-height: 1.55; font-size: var(--text-lg); max-inline-size: 40rem; }
+.why {
+  display: flex;
+  gap: var(--s-3);
+  align-items: flex-start;
+  margin-block-start: var(--s-2);
+  padding-block-start: var(--s-4);
+  border-block-start: 1px solid var(--line);
+  color: var(--muted);
+  line-height: 1.55;
+  max-inline-size: 40rem;
+}
+.why svg { color: var(--accent-strong); margin-block-start: 2px; }
+
+/* plans */
+.plansTitle { font-size: var(--text-lg); font-weight: 600; margin-block-end: var(--s-4); }
+.plans { display: grid; gap: var(--s-3); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 720px) { .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.plan {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  padding: var(--s-6);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  transition: border-color var(--d-fast) var(--ease);
+}
+.plan:hover { border-color: var(--line-strong); }
+.recommended { border-color: color-mix(in oklab, var(--accent) 55%, var(--line)); }
+.recommended:hover { border-color: var(--accent); }
+.planHead { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); }
+.planTitle { font-size: var(--text-lg); font-weight: 600; letter-spacing: var(--tracking-tight); }
+.planControl { display: grid; gap: var(--s-2); }
+.planSentence { color: var(--ink-2); line-height: 1.55; flex: 1; }
+.planFoot { margin-block-start: auto; }
+@media (max-width: 719px) { .plan { padding: var(--s-5); } }
+
+/* result sheet */
+.result { display: grid; gap: var(--s-5); }
+.resultFigures { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: var(--r-md); }
+.figure { display: grid; gap: 2px; padding: var(--s-4) var(--s-5); }
+.figure + .figure { border-inline-start: 1px solid var(--line); }
+.figureValue { font-family: var(--font-card); font-size: var(--text-3xl); font-weight: 500; line-height: 1.1; font-variant-numeric: tabular-nums lining-nums; letter-spacing: -0.02em; }
+.figureLabel { color: var(--muted); font-size: var(--text-sm); }
+.resultText { color: var(--ink-2); line-height: 1.5; }
+.resultNote { color: var(--muted); font-size: var(--text-sm); line-height: 1.5; }

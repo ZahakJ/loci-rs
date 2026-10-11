@@ -1,0 +1,6 @@
+.stack { display: grid; gap: var(--s-4); }
+.summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2); padding: var(--s-3) var(--s-4); border-radius: var(--r-md); background: var(--surface-2); }
+.summary dt { color: var(--muted); font-size: var(--text-xs); }
+.summary dd { font-weight: 600; font-variant-numeric: tabular-nums; }
+.edit { justify-self: start; margin-inline-start: calc(-1 * var(--s-3)); }
+.error { color: var(--danger); font-size: var(--text-sm); }

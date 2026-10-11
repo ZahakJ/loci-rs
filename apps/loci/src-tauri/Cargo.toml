@@ -1,0 +1,25 @@
+[package]
+name = "loci-app"
+description = "Loci: a memory palace for everything you learn (desktop and Android app)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lib]
+name = "loci_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+loci-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+log.workspace = true
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+tauri-plugin-log = "2"
+tauri-plugin-opener = "2"
+uuid.workspace = true

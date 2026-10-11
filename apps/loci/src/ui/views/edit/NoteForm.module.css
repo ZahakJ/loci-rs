@@ -1,0 +1,47 @@
+.form { display: grid; gap: var(--s-6); min-inline-size: 0; }
+.main { display: grid; gap: var(--s-5); min-inline-size: 0; align-content: start; }
+.page { --toolbar-stick: 0px; }
+.page.withPreview { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 1100px) {
+  .page.withPreview { grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); gap: var(--s-10); align-items: start; }
+  .side { position: sticky; inset-block-start: var(--s-6); }
+}
+
+.pickers { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-3); }
+.single { grid-template-columns: minmax(0, 22rem); }
+/* Phones: one picker per row, so the chosen deck's name stays readable. */
+@media (max-width: 479px) { .pickers { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); } }
+
+.loading { display: grid; gap: var(--s-4); }
+.loadError, .formError { color: var(--danger); font-size: var(--text-sm); display: flex; gap: 6px; align-items: center; }
+
+.dupe {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  font-size: var(--text-sm); color: var(--ink-2);
+  padding: 6px 10px;
+  border-radius: var(--r-sm);
+  background: var(--hard-soft);
+  animation: loci-fade-in var(--d-base) var(--ease) both;
+}
+.dupe > svg { color: var(--hard); }
+.dupeLink { color: var(--ink); font-weight: 550; margin-inline-start: auto; }
+
+.previewHead { display: flex; align-items: center; border-block-start: 1px solid var(--line); padding-block-start: var(--s-4); margin-block-start: var(--s-1); }
+.disclosure {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-block-size: 32px; padding-inline: 6px 10px; margin-inline-start: -6px;
+  border-radius: var(--r-sm);
+  font-size: var(--text-sm); font-weight: 600; color: var(--ink-2);
+}
+.disclosure:hover { background: var(--surface-2); color: var(--ink); }
+.disclosure > svg { transition: transform var(--d-fast) var(--ease); }
+.disclosure[aria-expanded='false'] > svg { transform: rotate(-90deg); }
+[dir='rtl'] .disclosure[aria-expanded='false'] > svg { transform: rotate(90deg); }
+.preview { animation: loci-fade-in var(--d-base) var(--ease) both; }
+.previewSheet { border-block-start: 1px solid var(--line); padding-block-start: var(--s-4); margin-block-start: var(--s-1); }
+
+.footer { display: flex; align-items: center; gap: var(--s-3); inline-size: 100%; }
+.hint { margin-inline-end: auto; color: var(--muted); font-size: var(--text-sm); display: inline-flex; align-items: center; gap: 6px; }
+.footer > :last-child { margin-inline-start: auto; }
+/* Keyboard hints mean nothing on touch screens (the Kbd caps hide themselves; the words go too). */
+@media (pointer: coarse) { .hint { display: none; } }

@@ -1,0 +1,13 @@
+.splash { display: grid; place-items: center; min-block-size: 100dvh; animation: loci-fade-in var(--d-slow) var(--ease) 150ms both; }
+.splashInner { display: grid; justify-items: center; gap: var(--s-4); color: var(--muted); }
+.line { inline-size: 120px; }
+.fallback { display: grid; gap: var(--s-4); padding: var(--s-10); max-inline-size: var(--page-max); margin-inline: auto; }
+@media (max-width: 719px) { .fallback { padding: var(--s-5) var(--gutter); } }
+.error { display: grid; place-items: center; min-block-size: 100dvh; padding: var(--s-6); }
+.errorCard { max-inline-size: 30rem; display: grid; gap: var(--s-4); }
+.errorCard h1 { font-size: var(--text-2xl); }
+.errorCard p { color: var(--ink-2); line-height: 1.55; }
+.errorCard code { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--muted); word-break: break-word; }
+.actions { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+.banner { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; padding: var(--s-3) var(--s-6); background: var(--surface); border-block-end: 1px solid var(--line); border-inline-start: 3px solid var(--warn); }
+.bannerText { flex: 1; color: var(--muted); min-inline-size: 12rem; }

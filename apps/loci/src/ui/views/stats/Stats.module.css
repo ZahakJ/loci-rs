@@ -1,0 +1,63 @@
+.stack { display: grid; gap: var(--s-8); transition: opacity var(--d-base) var(--ease); }
+.refetching { opacity: 0.7; }
+.scope { inline-size: min(18rem, 100%); }
+
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--s-5); }
+.full { grid-column: 1 / -1; }
+.half { grid-column: span 6; }
+.wideHalf { grid-column: span 7; }
+.narrowHalf { grid-column: span 5; }
+.third { grid-column: span 4; }
+@media (max-width: 1199px) {
+  .wideHalf, .narrowHalf, .half { grid-column: span 12; }
+  .third { grid-column: span 6; }
+  .third:last-of-type { grid-column: span 12; }
+}
+@media (max-width: 719px) {
+  .grid { gap: var(--s-4); }
+  .third, .third:last-of-type { grid-column: span 12; }
+}
+
+.panel { display: flex; flex-direction: column; min-inline-size: 0; }
+.panelHead { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: var(--s-5) var(--s-6) 0; min-block-size: 52px; flex-wrap: wrap; }
+.panelTitle { font-size: var(--text-lg); font-weight: 600; letter-spacing: var(--tracking-tight); }
+.panelBody { padding: var(--s-4) var(--s-6); flex: 1; display: grid; gap: var(--s-4); align-content: start; min-inline-size: 0; }
+.panelFoot { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-2) var(--s-4); flex-wrap: wrap; padding: var(--s-4) var(--s-6) var(--s-5); border-block-start: 1px solid var(--line); }
+.sentence { color: var(--ink-2); font-size: var(--text-md); line-height: 1.55; max-inline-size: 46rem; flex: 1 1 18rem; }
+.action { display: inline-flex; align-items: center; gap: 2px; font-size: var(--text-sm); font-weight: 600; color: var(--ink); text-decoration: none; white-space: nowrap; border-block-end: 1px solid var(--accent); padding-block: 2px; }
+.action:hover { color: var(--accent-strong); }
+@media (max-width: 719px) {
+  .panelHead { padding: var(--s-4) var(--s-4) 0; }
+  .panelBody { padding: var(--s-3) var(--s-4); }
+  .panelFoot { padding: var(--s-3) var(--s-4) var(--s-4); }
+}
+
+/* today */
+.today { display: flex; align-items: center; gap: var(--s-8); flex-wrap: wrap; }
+.tiles { display: grid; grid-template-columns: repeat(5, minmax(6.5rem, auto)); gap: var(--s-4) var(--s-8); flex: 1; }
+@media (max-width: 899px) { .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 479px) { .today { gap: var(--s-5); } .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tile { display: grid; gap: 2px; }
+.tile dt { font-size: var(--text-sm); color: var(--muted); }
+.tile dd { font-size: var(--text-2xl); font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
+
+/* retention bullets */
+.bullets { display: grid; gap: var(--s-3); list-style: none; padding: 0; }
+.bulletRow { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) 3.25rem; align-items: center; gap: var(--s-3); }
+.bulletLabel { font-size: var(--text-sm); color: var(--ink-2); white-space: nowrap; }
+.track { position: relative; block-size: 10px; border-radius: var(--r-pill); background: var(--surface-2); }
+.fill { position: absolute; inset-block: 0; inset-inline-start: 0; border-radius: var(--r-pill); background: var(--good); }
+.fillLow { background: var(--hard); }
+.target { position: absolute; inset-block: -4px; inline-size: 2px; margin-inline-start: -1px; border-radius: 1px; background: var(--ink-2); }
+.bulletValue { text-align: end; font-size: var(--text-sm); font-weight: 600; font-variant-numeric: tabular-nums; }
+.legendNote { display: flex; align-items: center; gap: 6px; font-size: var(--text-xs); color: var(--muted); }
+.targetKey { inline-size: 2px; block-size: 12px; border-radius: 1px; background: var(--ink-2); }
+
+.bigFigure { display: flex; align-items: baseline; gap: var(--s-2); font-size: var(--text-3xl); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
+.bigFigure span { font-size: var(--text-sm); font-weight: 450; letter-spacing: 0; color: var(--muted); }
+.momentum { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s-6); flex-wrap: wrap; }
+.runs { display: flex; gap: var(--s-6); }
+.runs dt { font-size: var(--text-xs); color: var(--muted); }
+.runs dd { font-size: var(--text-md); font-weight: 600; }
+
+.notEnough { font-size: var(--text-sm); color: var(--muted); margin-block-start: var(--s-2); }

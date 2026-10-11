@@ -1,0 +1,40 @@
+.stack { display: grid; gap: var(--s-6); }
+.policy { display: flex; gap: var(--s-3); align-items: flex-start; color: var(--ink-2); line-height: 1.55; }
+.policy svg { color: var(--accent-strong); flex-shrink: 0; margin-block-start: 2px; }
+.table { inline-size: 100%; font-size: var(--text-md); }
+.table th {
+  text-align: start; font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 650;
+  color: var(--muted); padding: var(--s-3) var(--s-4); border-block-end: 1px solid var(--line);
+}
+.table td { padding: var(--s-3) var(--s-4); border-block-end: 1px solid var(--line); vertical-align: middle; }
+.table tr:last-child td { border-block-end: 0; }
+.table tbody tr { transition: background-color var(--d-fast) var(--ease); }
+.table tbody tr:hover { background: color-mix(in oklab, var(--surface-2) 60%, transparent); }
+.num { text-align: end !important; font-variant-numeric: tabular-nums; color: var(--ink-2); white-space: nowrap; }
+.when { display: grid; gap: 1px; }
+.whenRel { font-weight: 550; color: var(--ink); }
+.whenAbs { color: var(--muted); font-size: var(--text-sm); }
+.act { text-align: end; inline-size: 1%; white-space: nowrap; }
+.latest { margin-inline-start: var(--s-2); }
+
+.metaPhone { display: none; }
+.loading { padding: var(--s-4); }
+@media (max-width: 719px) {
+  .table thead { display: none; }
+  .table, .table tbody { display: block; }
+  .table tr { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3) var(--s-4); border-block-end: 1px solid var(--line); }
+  .table tr:last-child { border-block-end: 0; }
+  .table td { display: block; border: 0; padding: 0; }
+  .table td:first-child { flex: 1; min-inline-size: 0; }
+  .table td:nth-child(2), .table td:nth-child(3), .table td:nth-child(4) { display: none; }
+  .whenAbs { display: none; }
+  .table td.act { inline-size: auto; flex-shrink: 0; }
+  .metaPhone { display: block; color: var(--muted); font-size: var(--text-sm); }
+}
+.foot { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; justify-content: space-between; color: var(--muted); font-size: var(--text-sm); }
+.restoreList { display: grid; gap: var(--s-2); margin-block-start: var(--s-2); color: var(--ink-2); }
+.restoreList li { display: flex; gap: var(--s-2); }
+.restoreList svg { color: var(--good); flex-shrink: 0; margin-block-start: 2px; }
+.lociOnly { display: flex; gap: var(--s-2); align-items: flex-start; color: var(--muted); font-size: var(--text-sm); line-height: 1.5; }
+.lociOnly svg { flex-shrink: 0; margin-block-start: 2px; }
+.lociOnly a { color: var(--ink-2); }
