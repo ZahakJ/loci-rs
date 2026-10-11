@@ -1,0 +1,132 @@
+
+:host {
+  display: block;
+  color: var(--loci-ink);
+  --_ink: var(--loci-ink, oklch(22% .02 260));
+  --_muted: var(--loci-muted, oklch(50% .02 260));
+  --_line: var(--loci-line, oklch(88% .01 85));
+  --_surface: var(--loci-surface, oklch(99% .004 85));
+  --_accent: var(--loci-accent, oklch(62% .13 70));
+  --_cloze: var(--loci-cloze, var(--_accent));
+  --_mono: var(--loci-mono, "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace);
+  --_good: var(--loci-good, oklch(66% .14 150));
+  --_again: var(--loci-again, oklch(62% .17 20));
+  --_hard: var(--loci-hard, oklch(72% .14 65));
+}
+.card {
+  font-family: var(--loci-card-font, "Newsreader Variable", "Newsreader", "Noto Naskh Arabic", Georgia, "Times New Roman", serif);
+  font-size: var(--loci-card-size, 1.375rem);
+  line-height: 1.45;
+  color: var(--_ink);
+  background: transparent;
+  text-align: var(--loci-card-align, start);
+  overflow-wrap: break-word;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  unicode-bidi: plaintext;
+}
+.card :where(p, div, li, dd, dt, td, th, blockquote, h1, h2, h3, h4, h5, h6, figcaption) { unicode-bidi: plaintext; }
+.card :where([dir]) { unicode-bidi: isolate; }
+.card[dir="rtl"], .card :where([dir="rtl"], :lang(ar), :lang(fa), :lang(ur)) { line-height: 1.7; }
+.card[dir="rtl"] { font-size: calc(var(--loci-card-size, 1.375rem) * 1.15); }
+.card :where(:lang(ar), :lang(fa), :lang(ur)) { font-family: "Noto Naskh Arabic", var(--loci-card-font, serif); font-size: 1.15em; }
+.card :where(p) { margin: 0 0 .75em; }
+.card :where(p:last-child) { margin-block-end: 0; }
+.card :where(h1, h2, h3, h4) { font-weight: 600; line-height: 1.2; margin: .4em 0 .5em; }
+.card :where(h1) { font-size: 1.5em; } .card :where(h2) { font-size: 1.3em; } .card :where(h3) { font-size: 1.15em; }
+.card :where(b, strong) { font-weight: 600; }
+.card :where(ul, ol) { margin: .25em 0 .75em; padding-inline-start: 1.4em; text-align: start; }
+.card :where(li) { margin: .15em 0; }
+.card :where(li::marker) { color: var(--_muted); }
+.card :where(a) { color: var(--_accent); text-decoration-thickness: 1px; text-underline-offset: .18em; }
+.card :where(blockquote) { margin: .75em 0; padding-inline-start: 1em; border-inline-start: 2px solid var(--_line); color: var(--_muted); }
+.card :where(small, sub, sup) { font-size: .75em; }
+.card :where(mark) { background: color-mix(in oklch, var(--_accent) 22%, transparent); color: inherit; padding: 0 .1em; border-radius: 2px; }
+
+/* the hairline between question and answer (Anki's <hr id=answer>) */
+.card :where(hr) { border: 0; height: 1px; background: var(--_line); margin: 1.25em 0; }
+.card hr#answer { margin: 1.5em auto; transform-origin: center; }
+
+/* media */
+.card :where(img, video, svg, canvas) { max-width: 100%; height: auto; }
+.card :where(img) { border-radius: 6px; vertical-align: middle; }
+.card :where(img.latex) { border-radius: 0; }
+.card :where(audio) { display: none; }
+
+/* tables */
+.card :where(table) { border-collapse: collapse; margin: .75em auto; font-size: .9em; max-width: 100%; display: block; overflow-x: auto; }
+.card :where(th, td) { border: 1px solid var(--_line); padding: .35em .6em; vertical-align: top; text-align: start; }
+.card :where(th) { font-weight: 600; background: color-mix(in oklch, var(--_line) 35%, transparent); }
+
+/* code */
+.card :where(code, kbd, samp, pre) { font-family: var(--_mono); font-size: .82em; }
+.card :where(code, kbd) { background: color-mix(in oklch, var(--_line) 45%, transparent); padding: .08em .3em; border-radius: 4px; }
+.card :where(kbd) { border: 1px solid var(--_line); border-bottom-width: 2px; }
+.card :where(pre) { text-align: start; direction: ltr; background: var(--_surface); border: 1px solid var(--_line); border-radius: 10px; padding: .8em 1em; overflow-x: auto; line-height: 1.5; white-space: pre; }
+.card :where(pre code) { background: none; padding: 0; font-size: 1em; }
+
+/* ruby (furigana) */
+.card :where(ruby rt) { font-size: .5em; color: var(--_muted); }
+
+/* cloze: accent colour, never bold blue */
+.card .cloze { color: var(--_cloze); font-weight: inherit; }
+.card span.cloze[data-cloze] { font-family: var(--_mono); font-size: .85em; letter-spacing: .02em; padding: 0 .2em; border-radius: 4px; background: color-mix(in oklch, var(--_cloze) 12%, transparent); }
+.card .cloze-inactive { color: inherit; }
+.card .cloze[data-cloze-index].loci-hidden { color: transparent; background: color-mix(in oklch, var(--_cloze) 14%, transparent); border-radius: 4px; cursor: pointer; }
+.card.nightMode .cloze, .card.night_mode .cloze { color: var(--_cloze); }
+
+/* night mode: black text and white highlights pasted into fields as inline styles (common in Anki
+   collections) follow the theme instead of painting black-on-dark or white panels */
+.card.nightMode :is([style*="color: black" i], [style*="color:black" i], [style*="color: rgb(0, 0, 0)"], [style*="color:rgb(0,0,0)"], [style*="color: #000;" i], [style*="color:#000;" i], [style$="color: #000" i], [style$="color:#000" i], [style*="color: #000000" i], [style*="color:#000000" i], [style*="color: windowtext" i]) { color: var(--_ink) !important; }
+.card.nightMode :is([style*="background-color: white" i], [style*="background-color:white" i], [style*="background-color: rgb(255, 255, 255)"], [style*="background-color:rgb(255,255,255)"], [style*="background-color: #fff" i], [style*="background-color:#fff" i], [style*="background: white" i], [style*="background:white" i], [style*="background: rgb(255, 255, 255)"], [style*="background: #fff" i], [style*="background-color: window" i]) { background-color: transparent !important; }
+.card.nightMode :is([bgcolor="white" i], [bgcolor="#ffffff" i], [bgcolor="#fff" i]) { background-color: transparent; }
+.card.nightMode font[color="black" i], .card.nightMode font[color="#000000" i], .card.nightMode font[color="#000" i] { color: var(--_ink); }
+
+/* maths (KaTeX output goes inside .loci-math) */
+.card .loci-math { font-size: 1em; }
+.card .loci-math[data-display="1"] { display: block; margin: .6em 0; text-align: center; overflow-x: auto; overflow-y: hidden; padding: .1em 0; }
+.card .loci-math .katex { font-size: 1.08em; }
+.card .loci-math[data-error] { font-family: var(--_mono); font-size: .8em; color: var(--_muted); white-space: pre-wrap; }
+
+/* hints */
+.card a.hint { font-family: inherit; font-size: .8em; color: var(--_accent); text-decoration: none; border-bottom: 1px dashed currentColor; cursor: pointer; }
+.card div.hint { margin-top: .4em; color: var(--_muted); font-size: .9em; }
+
+/* typed answers (Anki class names) */
+.card .loci-type { display: block; margin: .75em 0; }
+.card #typeans { display: inline-block; font-family: var(--_mono); font-size: .85em; line-height: 1.7; text-align: start; padding: .5em .75em; border-radius: 10px; border: 1px solid var(--_line); background: var(--_surface); white-space: pre-wrap; }
+.card .typeGood { color: var(--_good); background: color-mix(in oklch, var(--_good) 12%, transparent); }
+.card .typeBad { color: var(--_again); background: color-mix(in oklch, var(--_again) 12%, transparent); text-decoration: line-through; text-decoration-thickness: 1px; }
+.card .typeMissed { color: var(--_hard); background: color-mix(in oklch, var(--_hard) 12%, transparent); }
+.card #typearrow { color: var(--_muted); }
+
+/* Anki's stock image-occlusion toggle button runs Anki-only script; Loci reveals masks itself. */
+.card button#toggle, .card .toggle-masks { display: none; }
+/* stray buttons in card HTML get the app's quiet button look */
+.card button:not(.loci-audio) { font: inherit; font-size: 0.8em; padding: 0.3em 0.9em; border: 1px solid var(--loci-line); border-radius: 999px; background: transparent; color: var(--loci-muted); cursor: pointer; }
+/* audio button */
+.card .loci-audio {
+  display: inline-grid; place-items: center; vertical-align: middle;
+  inline-size: 2.25rem; block-size: 2.25rem; margin: .1em .25em; padding: 0;
+  border: 1px solid var(--_line); border-radius: 999px; background: var(--_surface); color: var(--_accent);
+  cursor: pointer; transition: border-color 120ms cubic-bezier(.2,.8,.2,1), background-color 120ms cubic-bezier(.2,.8,.2,1);
+}
+.card .loci-audio::before { content: ""; inline-size: 0; block-size: 0; margin-inline-start: 3px; border-block: 6px solid transparent; border-inline-start: 10px solid currentColor; }
+.card .loci-audio:hover { border-color: var(--_accent); }
+.card .loci-audio:focus-visible { outline: 2px solid var(--_accent); outline-offset: 2px; }
+.card .loci-audio[data-playing]::before { border: 0; inline-size: 10px; block-size: 10px; margin: 0; background: currentColor; border-radius: 2px; }
+
+/* image occlusion masks (SVG overlay drawn by the UI) */
+.card .loci-io { position: relative; display: inline-block; max-width: 100%; line-height: 0; }
+.card .loci-io > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.card .loci-io-mask { fill: var(--loci-io-fill, oklch(86% .02 75)); stroke: var(--loci-io-stroke, oklch(58% .03 70)); stroke-width: 1.5px; vector-effect: non-scaling-stroke; }
+.card .loci-io-mask.is-active { fill: color-mix(in oklch, var(--_accent) 70%, var(--loci-io-fill, oklch(86% .02 75))); stroke: var(--_accent); }
+.card .loci-io-mask.is-revealed { fill: transparent; stroke: var(--_accent); stroke-dasharray: 4 3; }
+.card.nightMode .loci-io-mask, .card.night_mode .loci-io-mask { fill: var(--loci-io-fill, oklch(40% .02 70)); stroke: var(--loci-io-stroke, oklch(62% .03 70)); }
+.card .loci-io-label { fill: var(--_ink); font-family: inherit; }
+
+/* template problems */
+.card .loci-template-error { font-family: system-ui, sans-serif; font-size: .8em; color: var(--_muted); border: 1px dashed var(--_line); border-radius: 10px; padding: .75em 1em; text-align: start; }
+
+@media (prefers-reduced-motion: reduce) { .card .loci-audio { transition: none; } }

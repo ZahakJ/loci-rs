@@ -69,6 +69,8 @@ impl std::fmt::Debug for Db {
 impl Db {
     fn configure(conn: Connection) -> Result<Connection> {
         conn.create_collation("unicase", unicase_compare)?;
+        // `power()` for the retrievability column/sort (the bundled SQLite lacks the math functions).
+        crate::search::register_sql_functions(&conn)?;
         conn.busy_timeout(std::time::Duration::from_secs(5))?;
         Ok(conn)
     }
