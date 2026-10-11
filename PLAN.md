@@ -106,3 +106,11 @@ GitHub private repo, secrets, `ci.yml`, `release.yml`, tag `v0.1.0` once, watch,
 `./verify` green; release `v0.1.0` with Linux (AppImage, deb, rpm), Windows (msi, exe),
 macOS (dmg ×2) and Android (arm64 + universal APK) assets; README install lines point at
 those files; the owner's TS-app full backup imports into the Rust app.
+
+## 5. Outcome (recorded after the build)
+
+- Phases 0–3 went as planned; five agents in two waves (A scheduler, B Anki packages, C template/search/rotation/i18n; D Collection core, E study/browse/import/export/stats/rpc), each with disjoint file ownership and a scratch-copy compile loop while siblings were mid-edit.
+- Tests: 455 lib + 56 integration in `loci-core` (two `#[ignore]`d perf tests), 183 vitest cases for the UI helpers, 16 Playwright flows against `loci serve`. `./verify` green locally and in CI.
+- Measured (README): cold start 0.81–0.83 s, 100k-card import 4.6 s, browse page 86–91 ms at any offset, answer 0.4 ms.
+- Deviations from §0: none. Extra: `unicode-normalization` replaced two hand-written tables; `serde_json`'s `float_roundtrip` is on so stored FSRS parameters read back exactly; `power()` is registered on every SQLite connection (the bundled build has no math functions).
+- `tauri android build --target aarch64` writes its APK under `apk/universal/`; the release workflow renames by `find` rather than by the expected path.
