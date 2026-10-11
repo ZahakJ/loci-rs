@@ -215,3 +215,9 @@ export function installLeaveBackup(): () => void {
     document.removeEventListener('visibilitychange', onVisibility);
   };
 }
+
+/** Tells the shell the UI is interactive (cold-start measurement); a no-op outside Tauri. */
+export function reportReady(): void {
+  if (!isTauri()) return;
+  void import('@tauri-apps/api/core').then(({ invoke }) => invoke<number>('app_ready')).then((ms) => console.info(`[loci] ready in ${ms} ms`)).catch(() => undefined);
+}

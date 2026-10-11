@@ -65,6 +65,7 @@ export function App() {
         const r = window.location.hash || '#/';
         if (empty && (r === '#/' || r === '#' || r === '')) navigate('#/welcome', { replace: true });
         setBoot('ready');
+        void import('../bridge').then((b) => b.reportReady());
       } catch (e) {
         if (!alive) return;
         setBootError(errorMessage(e));

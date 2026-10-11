@@ -15,7 +15,11 @@ use loci_core::LociError;
 use serde_json::Value;
 use std::collections::HashMap;
 use std::path::PathBuf;
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, LazyLock, Mutex};
+use std::time::Instant;
+
+/// Process start, for the cold-start measurement (`app_ready`).
+static STARTED: LazyLock<Instant> = LazyLock::new(Instant::now);
 use tauri::ipc::{Channel, InvokeBody, Request, Response};
 use tauri::{Manager, State};
 
@@ -170,6 +174,15 @@ fn percent_decode(s: &str) -> String {
     String::from_utf8(out).unwrap_or_else(|_| s.to_string())
 }
 
+/// Called by the frontend once Home (or Welcome) is interactive; logs the cold-start time and
+/// returns it in milliseconds.
+#[tauri::command]
+fn app_ready() -> u64 {
+    let ms = STARTED.elapsed().as_millis() as u64;
+    log::info!("Loci ready in {ms} ms");
+    ms
+}
+
 /// Where the collection lives (for the About/Data screens).
 #[tauri::command]
 fn data_dir(state: State<'_, Shared>) -> String {
@@ -182,6 +195,7 @@ fn backup_on_leave(state: &AppState) {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    LazyLock::force(&STARTED);
     tauri::Builder::default()
         .plugin(tauri_plugin_log::Builder::new().level(log::LevelFilter::Info).build())
         .plugin(tauri_plugin_dialog::init())
@@ -201,7 +215,7 @@ pub fn run() {
                 }
             }
         })
-        .invoke_handler(tauri::generate_handler![stage_bytes, rpc, rpc_bytes, save_bytes, data_dir])
+        .invoke_handler(tauri::generate_handler![stage_bytes, rpc, rpc_bytes, save_bytes, data_dir, app_ready])
         .run(tauri::generate_context!())
         .expect("error while running Loci");
 }
