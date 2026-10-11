@@ -130,7 +130,6 @@ mod parse_tests {
 mod sql_tests {
     //! Port of recall `tests/unit/search/search.test.ts` over an in-memory `Db` with the same fixture.
     use crate::db::Db;
-    use crate::search::parse::parse_search;
     use crate::search::sql::*;
     use crate::text::field_checksum;
     use crate::text::plain_text;
