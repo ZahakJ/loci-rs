@@ -22,6 +22,7 @@ fancy-regex = "0.19"
 sha1 = "0.11"
 hex = "0.4"
 html-escape = "0.2"
+unicode-normalization = "0.1"
 uuid = { version = "1", features = ["v4"] }
 rand = "0.10"
 rand_chacha = "0.10"
