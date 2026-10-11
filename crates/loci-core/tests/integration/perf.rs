@@ -1,13 +1,13 @@
 //! Large-collection timings (recall `tests/unit/integration/perf.test.ts`). Ignored by default:
 //! `cargo test --release -p loci-core --test integration -- --ignored --nocapture perf`.
-//! Imports the 100k-card package when it exists (`LOCI_PERF_APKG` or the scratchpad path).
+//! Imports the 100k-card package named by `LOCI_PERF_APKG` (default `fixtures/large-100k.apkg`,
+//! not committed; generate one with recall's `buildLargeCollection`) and skips when absent.
 
 use super::helpers::*;
 use loci_core::types::*;
 use std::time::Instant;
 
-const DEFAULT_APKG: &str =
-    "/tmp/claude-1000/-home-avicenna-Documents-side/21822616-e5d0-459e-82b4-8d8edfc4089a/scratchpad/large-100k.apkg";
+const DEFAULT_APKG: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../../fixtures/large-100k.apkg");
 
 fn time<T>(label: &str, f: impl FnOnce() -> T) -> T {
     let t0 = Instant::now();
