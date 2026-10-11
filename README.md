@@ -103,7 +103,7 @@ Measured on the development desktop (16 cores, 30 GB, Linux) with release builds
 
 | Measurement | Result |
 |---|---|
-| Cold start (process start to the Home screen interactive, release AppImage) | COLDSTART |
+| Cold start (process start to the Home screen interactive, release binary under Xvfb with software rendering, three runs) | 806 ms, 818 ms, 827 ms |
 | Import of the 100,000-card `.apkg` | 4.6 s |
 | Deck tree with counts on 100,000 cards | 37 ms |
 | Browse page of 100 rows sorted by due, offset 0 / offset 99,900 | 91 ms / 86 ms (the table is virtualised; scrolling only ever asks for one page) |
