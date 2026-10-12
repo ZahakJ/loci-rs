@@ -4,36 +4,38 @@ This chapter takes you from download to a first study session: install, the firs
 
 ## Install
 
-Every build is attached to the [latest release](https://github.com/ZahakJ/loci-rs/releases/latest). Download one file for your platform, or paste the matching line. The lines below are for v0.2.0, the current release.
+Every build is attached to the [latest release](https://github.com/ZahakJ/loci-rs/releases/latest). Download one file for your platform, or paste the matching line. The lines below are for v0.2.1, the current release.
 
-**Linux.** The AppImage runs on most distributions without installation. A `.deb` (`Loci_0.2.0_amd64.deb`) and an `.rpm` (`Loci-0.2.0-1.x86_64.rpm`) are on the release page too.
+**Linux.** The AppImage runs on most distributions without installation. A `.deb` (`Loci_0.2.1_amd64.deb`) and an `.rpm` (`Loci-0.2.1-1.x86_64.rpm`) are on the release page too.
 
 ```sh
-curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.0/Loci_0.2.0_amd64.AppImage && chmod +x Loci_0.2.0_amd64.AppImage && ./Loci_0.2.0_amd64.AppImage
+curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.1/Loci_0.2.1_amd64.AppImage && chmod +x Loci_0.2.1_amd64.AppImage && ./Loci_0.2.1_amd64.AppImage
 ```
 
-**Windows.** In PowerShell, this downloads and runs the `.msi` installer. The other installer, `Loci_0.2.0_x64-setup.exe`, does the same job.
+**Windows.** In PowerShell, this downloads and runs the `.msi` installer. The other installer, `Loci_0.2.1_x64-setup.exe`, does the same job.
 
 ```powershell
-Invoke-WebRequest https://github.com/ZahakJ/loci-rs/releases/download/v0.2.0/Loci_0.2.0_x64_en-US.msi -OutFile Loci.msi; Start-Process .\Loci.msi
+Invoke-WebRequest https://github.com/ZahakJ/loci-rs/releases/download/v0.2.1/Loci_0.2.1_x64_en-US.msi -OutFile Loci.msi; Start-Process .\Loci.msi
 ```
 
-**macOS.** The line below is for Apple silicon (`Loci_0.2.0_aarch64.dmg`). For an Intel Mac, replace `aarch64` with `x64` (`Loci_0.2.0_x64.dmg`).
+**macOS.** The line below is for Apple silicon (`Loci_0.2.1_aarch64.dmg`). For an Intel Mac, replace `aarch64` with `x64` (`Loci_0.2.1_x64.dmg`).
 
 ```sh
-curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.0/Loci_0.2.0_aarch64.dmg && open Loci_0.2.0_aarch64.dmg
+curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.1/Loci_0.2.1_aarch64.dmg && open Loci_0.2.1_aarch64.dmg
 ```
 
-The macOS build is not notarised. After dragging Loci to Applications, run this once, or right-click the app and choose Open:
+The macOS build is ad-hoc signed but not notarised (there is no paid Apple certificate), so the first launch says "Apple could not verify Loci". After dragging Loci to Applications, right-click the app and choose Open, then Open again; on macOS 15 and later, open it once, then click *Open Anyway* in System Settings → Privacy & Security. Or run this once:
 
 ```sh
-xattr -d com.apple.quarantine /Applications/Loci.app
+xattr -cr /Applications/Loci.app
 ```
 
-**Android.** The line below installs the arm64 APK, which is the one for arm64 phones; `loci-v0.2.0-android-universal.apk` on the release page contains every ABI. With the phone connected and `adb` available:
+Version 0.2.0 was not signed as a bundle, and macOS called it "damaged"; 0.2.1 fixes that ([details](https://github.com/ZahakJ/loci-rs/blob/main/docs/macos-gatekeeper.md)).
+
+**Android.** The line below installs the arm64 APK, which is the one for arm64 phones; `loci-v0.2.1-android-universal.apk` on the release page contains every ABI. With the phone connected and `adb` available:
 
 ```sh
-curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.0/loci-v0.2.0-android-arm64.apk && adb install loci-v0.2.0-android-arm64.apk
+curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.1/loci-v0.2.1-android-arm64.apk && adb install loci-v0.2.1-android-arm64.apk
 ```
 
 Or open the APK link on the phone itself and allow installs from your browser. Loci needs Android 7.0 (API 24) or newer.

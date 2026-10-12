@@ -17,27 +17,27 @@ Download one file for your platform from the [latest release](https://github.com
 **Linux** (AppImage; `.deb` and `.rpm` are on the release page too)
 
 ```sh
-curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.0/Loci_0.2.0_amd64.AppImage && chmod +x Loci_0.2.0_amd64.AppImage && ./Loci_0.2.0_amd64.AppImage
+curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.1/Loci_0.2.1_amd64.AppImage && chmod +x Loci_0.2.1_amd64.AppImage && ./Loci_0.2.1_amd64.AppImage
 ```
 
 **Windows** (PowerShell; `.msi` installer, or the `-setup.exe`)
 
 ```powershell
-Invoke-WebRequest https://github.com/ZahakJ/loci-rs/releases/download/v0.2.0/Loci_0.2.0_x64_en-US.msi -OutFile Loci.msi; Start-Process .\Loci.msi
+Invoke-WebRequest https://github.com/ZahakJ/loci-rs/releases/download/v0.2.1/Loci_0.2.1_x64_en-US.msi -OutFile Loci.msi; Start-Process .\Loci.msi
 ```
 
 **macOS** (Apple silicon; Intel: replace `aarch64` with `x64`)
 
 ```sh
-curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.0/Loci_0.2.0_aarch64.dmg && open Loci_0.2.0_aarch64.dmg
+curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.1/Loci_0.2.1_aarch64.dmg && open Loci_0.2.1_aarch64.dmg
 ```
 
-The macOS build is not notarised: after dragging Loci to Applications, run `xattr -d com.apple.quarantine /Applications/Loci.app` once, or right-click → Open.
+The macOS build is ad-hoc signed but not notarised. After dragging Loci to Applications, right-click it → Open (macOS 15 and later: System Settings → Privacy & Security → Open Anyway), or run once: `xattr -cr /Applications/Loci.app`
 
 **Android** (arm64 phones; a universal APK for every ABI is on the release page)
 
 ```sh
-curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.0/loci-v0.2.0-android-arm64.apk && adb install loci-v0.2.0-android-arm64.apk
+curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.1/loci-v0.2.1-android-arm64.apk && adb install loci-v0.2.1-android-arm64.apk
 ```
 
 Or open the APK link on the phone and allow installs from your browser. Android 7.0 (API 24) or newer.

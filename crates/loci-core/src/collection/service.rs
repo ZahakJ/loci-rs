@@ -94,7 +94,7 @@ impl Collection {
             core: CollectionCore::new(db, blobs, clock, tz),
             session: None,
             db_path,
-            app_version: "loci 0.2.0".to_string(),
+            app_version: "loci 0.2.1".to_string(),
             queue_counter: None,
             closed: false,
         }

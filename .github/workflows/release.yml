@@ -80,6 +80,19 @@ jobs:
           prerelease: false
           args: ${{ matrix.args }}
 
+      # Ad-hoc signature check (docs/macos-gatekeeper.md). Tauri signs the .app with
+      # bundle.macOS.signingIdentity "-" before it builds the dmg; this fails the job if the
+      # bundle or the copy inside the dmg is unsigned, partially signed or altered after signing.
+      - name: Verify the macOS signature
+        if: startsWith(matrix.os, 'macos')
+        shell: bash
+        run: |
+          bundle="target/${{ matrix.target }}/release/bundle"
+          app="$(find "$bundle/macos" -maxdepth 1 -name '*.app' | head -1)"
+          dmg="$(find "$bundle/dmg" -maxdepth 1 -name '*.dmg' | head -1)"
+          test -n "$app" && test -n "$dmg"
+          ./scripts/verify-macos-signature.sh "$app" "$dmg"
+
   android:
     name: android
     runs-on: ubuntu-22.04

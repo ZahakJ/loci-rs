@@ -1,6 +1,6 @@
 {
   "name": "loci-app",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "type": "module",
   "description": "Loci — a memory palace for everything you learn. Tauri app frontend.",

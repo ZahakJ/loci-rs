@@ -2152,7 +2152,7 @@ checksum = "47d9d19d1d6efa0109d2f65ff4c85cddd50bd572e5a00127ab10987290bcefae"
 
 [[package]]
 name = "loci-app"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "loci-core",
  "log",
@@ -2169,7 +2169,7 @@ dependencies = [
 
 [[package]]
 name = "loci-cli"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "chrono",
  "loci-core",
@@ -2179,7 +2179,7 @@ dependencies = [
 
 [[package]]
 name = "loci-core"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "chrono",
  "fancy-regex",
