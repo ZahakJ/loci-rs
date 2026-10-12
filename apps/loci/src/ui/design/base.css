@@ -76,7 +76,7 @@ table { border-collapse: collapse; }
 
 /* Reduced-motion preference set to "off" inside the app restores motion even when the OS asks for less. */
 @media (prefers-reduced-motion: reduce) {
-  :root[data-motion='on'] { --d-fast: 120ms; --d-base: 200ms; --d-slow: 320ms; }
+  :root[data-motion='on'] { --d-fast: 120ms; --d-base: 160ms; --d-slow: 180ms; }
 }
 
 /* Keyboard hints can be hidden from Settings. */

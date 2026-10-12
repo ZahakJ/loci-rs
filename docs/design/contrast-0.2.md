@@ -1,6 +1,6 @@
 # Contrast of the Loci tokens, 0.2
 
-Generated 2026-10-11 by `apps/loci/scripts/contrast.ts` (`pnpm contrast`) from `src/ui/design/tokens.css`.
+Generated 2026-10-12 by `apps/loci/scripts/contrast.ts` (`pnpm contrast`) from `src/ui/design/tokens.css`.
 Colours are converted from OKLCH to sRGB by the script (OKLab → linear sRGB, clipped to gamut); ratios are WCAG 2.x.
 
 Thresholds: 4.5 for text (including count numerals and pill labels); 3.0 for large text, UI components and the
@@ -39,6 +39,12 @@ Pill text is `color-mix(in oklab, tone, ink)` over `color-mix(in oklab, tone, bg
 | light | pill hard | pill text (hard 68% ink / 13% bg) | 4.65 | 4.5 | PASS |
 | light | pill good | pill text (good 68% ink / 13% bg) | 4.72 | 4.5 | PASS |
 | light | pill easy | pill text (easy 68% ink / 13% bg) | 4.71 | 4.5 | PASS |
+| light | accent / surface | chart series: brass bars and lines | 3.64 | 3.0 | PASS |
+| light | accent-soft / surface | chart series: deep brass (accent-strong 72% over surface) | 3.01 | 3.0 | PASS |
+| light | slate / surface | chart series: slate (ink-2 58% over surface) | 3.47 | 3.0 | PASS |
+| light | ink / selection | Browse selected row (ink-2 11% over surface) | 13.70 | 4.5 | PASS |
+| light | ink-2 / selection | Browse selected row, secondary cells | 8.59 | 4.5 | PASS |
+| light | accent-strong / selection | Browse selection rule (2 px) | 4.11 | 3.0 | PASS |
 | dark | ink / bg | body text | 15.56 | 4.5 | PASS |
 | dark | ink / surface | body text on panels | 14.42 | 4.5 | PASS |
 | dark | ink-2 / bg | secondary text | 10.95 | 4.5 | PASS |
@@ -69,5 +75,11 @@ Pill text is `color-mix(in oklab, tone, ink)` over `color-mix(in oklab, tone, bg
 | dark | pill hard | pill text (hard 68% ink / 13% bg) | 9.68 | 4.5 | PASS |
 | dark | pill good | pill text (good 68% ink / 13% bg) | 8.98 | 4.5 | PASS |
 | dark | pill easy | pill text (easy 68% ink / 13% bg) | 9.21 | 4.5 | PASS |
+| dark | accent / surface | chart series: brass bars and lines | 8.72 | 3.0 | PASS |
+| dark | accent-soft / surface | chart series: deep brass (accent-strong 72% over surface) | 5.73 | 3.0 | PASS |
+| dark | slate / surface | chart series: slate (ink-2 58% over surface) | 3.87 | 3.0 | PASS |
+| dark | ink / selection | Browse selected row (ink-2 11% over surface) | 11.98 | 4.5 | PASS |
+| dark | ink-2 / selection | Browse selected row, secondary cells | 8.44 | 4.5 | PASS |
+| dark | accent-strong / selection | Browse selection rule (2 px) | 8.92 | 3.0 | PASS |
 
 Every required pair passes in both themes.

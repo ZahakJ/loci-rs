@@ -1,5 +1,12 @@
-<p align="center"><img src="apps/loci/public/icons/icon.svg" width="72" alt=""></p>
-<h1 align="center">Loci</h1>
+<p align="center"><img src="docs/media/banner.png" alt="Loci — a memory palace for everything you learn" width="820"></p>
+
+<p align="center">
+  <a href="https://github.com/ZahakJ/loci-rs/releases/latest"><img src="https://img.shields.io/github/v/release/ZahakJ/loci-rs?color=b8862f&label=release" alt="Latest release"></a>
+  <a href="https://github.com/ZahakJ/loci-rs/actions/workflows/ci.yml"><img src="https://github.com/ZahakJ/loci-rs/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://zahakj.github.io/loci-rs/manual/"><img src="https://img.shields.io/badge/manual-read-2a3140" alt="Manual"></a>
+  <img src="https://img.shields.io/badge/platforms-Linux%20%C2%B7%20Windows%20%C2%B7%20macOS%20%C2%B7%20Android-2a3140" alt="Linux, Windows, macOS, Android">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/licence-MIT-2a3140" alt="MIT licence"></a>
+</p>
 
 Loci is a local-first spaced-repetition app, written in Rust, that imports your Anki collection with its history intact, schedules it with FSRS-6, and runs on Linux, Windows, macOS and Android.
 
@@ -10,19 +17,19 @@ Download one file for your platform from the [latest release](https://github.com
 **Linux** (AppImage; `.deb` and `.rpm` are on the release page too)
 
 ```sh
-curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/Loci_0.1.0_amd64.AppImage && chmod +x Loci_0.1.0_amd64.AppImage && ./Loci_0.1.0_amd64.AppImage
+curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.0/Loci_0.2.0_amd64.AppImage && chmod +x Loci_0.2.0_amd64.AppImage && ./Loci_0.2.0_amd64.AppImage
 ```
 
 **Windows** (PowerShell; `.msi` installer, or the `-setup.exe`)
 
 ```powershell
-Invoke-WebRequest https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/Loci_0.1.0_x64_en-US.msi -OutFile Loci.msi; Start-Process .\Loci.msi
+Invoke-WebRequest https://github.com/ZahakJ/loci-rs/releases/download/v0.2.0/Loci_0.2.0_x64_en-US.msi -OutFile Loci.msi; Start-Process .\Loci.msi
 ```
 
 **macOS** (Apple silicon; Intel: replace `aarch64` with `x64`)
 
 ```sh
-curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/Loci_0.1.0_aarch64.dmg && open Loci_0.1.0_aarch64.dmg
+curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.0/Loci_0.2.0_aarch64.dmg && open Loci_0.2.0_aarch64.dmg
 ```
 
 The macOS build is not notarised: after dragging Loci to Applications, run `xattr -d com.apple.quarantine /Applications/Loci.app` once, or right-click → Open.
@@ -30,7 +37,7 @@ The macOS build is not notarised: after dragging Loci to Applications, run `xatt
 **Android** (arm64 phones; a universal APK for every ABI is on the release page)
 
 ```sh
-curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.1.0/loci-v0.1.0-android-arm64.apk && adb install loci-v0.1.0-android-arm64.apk
+curl -LO https://github.com/ZahakJ/loci-rs/releases/download/v0.2.0/loci-v0.2.0-android-arm64.apk && adb install loci-v0.2.0-android-arm64.apk
 ```
 
 Or open the APK link on the phone and allow installs from your browser. Android 7.0 (API 24) or newer.
@@ -43,12 +50,24 @@ git clone git@github.com:ZahakJ/loci-rs.git && cd loci-rs/apps/loci && pnpm inst
 
 ## Screenshots
 
-<p align="center"><img src="docs/captures/home-desktop-light.png" width="800" alt="Home: today's estimate, insights, the deck tree and momentum, light theme"></p>
 <p align="center">
-  <img src="docs/captures/study-front-phone-light.png" width="196" alt="Study on a phone, question side">
-  <img src="docs/captures/study-back-phone-dark.png" width="196" alt="Study on a phone, answer side, dark theme">
-  <img src="docs/captures/home-phone-light.png" width="196" alt="Home on a phone">
-  <img src="docs/captures/stats-phone-dark.png" width="196" alt="Statistics on a phone, dark theme">
+  <img src="docs/captures/home-desktop-light.png" width="400" alt="Home: today's estimate, insights, the deck tree and momentum, light theme">
+  <img src="docs/captures/home-desktop-dark.png" width="400" alt="Home in the dark theme">
+</p>
+<p align="center">
+  <img src="docs/captures/study-back-desktop-light.png" width="400" alt="Study, answer side: the card as paper on a desk, light theme">
+  <img src="docs/captures/stats-desktop-dark.png" width="400" alt="Statistics in brass and slate, dark theme">
+</p>
+<p align="center">
+  <img src="docs/captures/browse-desktop-dark.png" width="400" alt="Browse with three cards selected and the bulk bar, dark theme">
+  <img src="docs/captures/palette-desktop-light.png" width="400" alt="The command palette (Ctrl/Cmd+K), light theme">
+</p>
+<p align="center">
+  <img src="docs/captures/study-front-phone-light.png" width="160" alt="Study on a phone, question side">
+  <img src="docs/captures/study-back-phone-dark.png" width="160" alt="Study on a phone, answer side, dark theme">
+  <img src="docs/captures/home-phone-dark.png" width="160" alt="Home on a phone, dark theme">
+  <img src="docs/captures/browse-phone-light.png" width="160" alt="Browse on a phone, selecting cards">
+  <img src="docs/captures/first-run-phone-dark.png" width="160" alt="First launch on a phone, dark theme">
 </p>
 
 The captures show the synthetic fixture collection (`fixtures/`, 402 notes, 590 cards, three years of simulated history) imported into the Rust engine and rendered by the app's own interface; no real deck was used. Every screen, in both themes and at desktop and phone size, is in `docs/captures/` and on the [project page](https://zahakj.github.io/loci-rs/).
@@ -56,7 +75,7 @@ The captures show the synthetic fixture collection (`fixtures/`, 402 notes, 590 
 ## What it is
 
 - **A real Anki replacement.** Imports `.apkg` and `.colpkg` from every Anki version (legacy and current package layouts) with notes, note types, templates, media, tags, decks, review history and scheduling state. A card due tomorrow in Anki is due tomorrow here. Exports back to `.apkg` that Anki 2.1 through 26.x and AnkiDroid read.
-- **FSRS-6 by default**, ported from the reference implementation and tested against its published vectors. *Optimise*, a button in each preset's settings, fits the parameters to your own reviews. The engine also implements automatic optimisation (after 400 new reviews per preset), but the v0.1.0 interface does not call it yet. Anki's SM-2 is there for people who want it.
+- **FSRS-6 by default**, ported from the reference implementation and tested against its published vectors. *Optimise*, a button in each preset's settings, fits the parameters to your own reviews. The engine also implements automatic optimisation (after 400 new reviews per preset), but the v0.2.0 interface does not call it yet. Anki's SM-2 is there for people who want it.
 - **One app for desktop, laptop and phone.** Native builds for Linux, Windows, macOS and Android from one Rust engine and one interface; a study screen designed around the keyboard on a desk and the thumb on a phone; light and dark themes that are designed rather than inverted; typography that renders Arabic, mathematics and code well.
 - **Humane about workload.** A catch-up mode for backlogs, a daily time budget instead of card caps, a workload forecast before you change settings, and momentum instead of streaks.
 - **Data you own.** A real SQLite file in your app-data folder, rotating automatic backups (written when the window closes or the app is hidden; the engine's 30-minute backup is not yet called by the interface), restore, an integrity check on open, and a full-backup zip (collection plus media) that Loci restores. No account, no server, nothing leaves the device.

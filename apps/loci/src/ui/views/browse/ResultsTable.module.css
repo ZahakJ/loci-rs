@@ -17,7 +17,7 @@
 .row:not(.header):hover { background: var(--surface-2); }
 .header {
   position: sticky; inset-block-start: 0; z-index: 2;
-  block-size: 34px;
+  block-size: 40px;
   background: var(--bg);
   border-block-end: 1px solid var(--line);
   color: var(--muted);
@@ -45,7 +45,12 @@
 .sorted { color: var(--ink); }
 .sorted .sortIcon { opacity: 1; color: var(--accent-strong); }
 
-.selected, .selected:hover { background: var(--accent-soft) !important; color: var(--ink); }
+.selected, .selected:hover { background: color-mix(in oklab, var(--ink-2) 11%, var(--surface)) !important; color: var(--ink); }
+/* chosen rows: a slate tint and a brass rule along the inline end of the flag column */
+.selected::after {
+  content: ''; position: absolute; inset-block: 0; inset-inline-start: 0; inline-size: 2px;
+  background: var(--accent-strong); pointer-events: none;
+}
 .suspended { color: var(--muted); background: color-mix(in oklab, var(--hard-soft) 70%, transparent); }
 .suspended .primary { color: var(--ink-2); }
 .buried { color: var(--muted); }

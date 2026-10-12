@@ -44,6 +44,15 @@
 .navKbd { opacity: 0; transition: opacity var(--d-fast) var(--ease); }
 .navLink:hover .navKbd, .navLink:focus-visible .navKbd { opacity: 1; }
 .sideFoot { margin-block-start: auto; display: grid; gap: var(--s-3); }
+.paletteButton {
+  display: flex; align-items: center; gap: var(--s-2);
+  block-size: 36px; padding-inline: var(--s-3);
+  border: 1px solid var(--line); border-radius: var(--r-sm);
+  background: var(--bg); color: var(--muted); font: inherit; font-size: var(--text-sm);
+  cursor: pointer; transition: border-color var(--d-fast) var(--ease), color var(--d-fast) var(--ease);
+}
+.paletteButton:hover { border-color: var(--line-strong); color: var(--ink-2); }
+.paletteKbd { margin-inline-start: auto; }
 .sync {
   display: flex; align-items: center; gap: var(--s-2);
   padding: var(--s-2) var(--s-3);

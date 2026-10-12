@@ -166,6 +166,16 @@ export function evaluate(theme: string, tokens: Record<string, string>, pill: { 
     const bg = mixOklab(col(tone), col('bg'), pill.bg);
     push(`pill ${name}`, `pill text (${tone} ${Math.round(pill.text * 100)}% ink / ${Math.round(pill.bg * 100)}% bg)`, fg, bg, TEXT, true);
   }
+  // 0.2 mixes outside the token table (charts.module.css, ResultsTable.module.css): chart marks are
+  // graphical objects (3.0 against the panel); the Browse selection tint must keep ink and muted legible.
+  const surface = col('surface');
+  push('accent / surface', 'chart series: brass bars and lines', col('accent'), surface, UI, true);
+  push('accent-soft / surface', 'chart series: deep brass (accent-strong 72% over surface)', mixOklab(col('accent-strong'), surface, 0.72), surface, UI, true);
+  push('slate / surface', 'chart series: slate (ink-2 58% over surface)', mixOklab(col('ink-2'), surface, 0.58), surface, UI, true);
+  const selected = mixOklab(col('ink-2'), surface, 0.11);
+  push('ink / selection', 'Browse selected row (ink-2 11% over surface)', col('ink'), selected, TEXT, true);
+  push('ink-2 / selection', 'Browse selected row, secondary cells', col('ink-2'), selected, TEXT, true);
+  push('accent-strong / selection', 'Browse selection rule (2 px)', col('accent-strong'), selected, UI, true);
   return rows;
 }
 

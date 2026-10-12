@@ -25,7 +25,8 @@
   border: 2px solid var(--accent-strong);
   transition: transform var(--d-fast) var(--ease);
 }
-.range::-moz-range-thumb { inline-size: 16px; block-size: 16px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent-strong); }
+.range::-moz-range-thumb { box-sizing: border-box; inline-size: 20px; block-size: 20px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent-strong); transition: transform var(--d-fast) var(--ease); }
+.range:hover::-moz-range-thumb { transform: scale(1.1); }
 .range:hover::-webkit-slider-thumb { transform: scale(1.1); }
 .range:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--focus); outline-offset: 2px; }
 .range:focus-visible::-moz-range-thumb { outline: 2px solid var(--focus); outline-offset: 2px; }

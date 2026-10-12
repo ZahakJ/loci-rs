@@ -18,14 +18,14 @@ export function systemPrefersDark(): boolean {
 }
 
 let fadeTimer: number | undefined;
-/** Applies a resolved theme to <html>; `fade` adds the 200ms colour cross-fade. */
+/** Applies a resolved theme to <html>; `fade` adds the --d-base (160ms) colour cross-fade. */
 export function applyTheme(theme: ResolvedTheme, fade = false): void {
   const html = document.documentElement;
   if (html.dataset.theme === theme) return;
   if (fade) {
     html.classList.add('theme-fade');
     window.clearTimeout(fadeTimer);
-    fadeTimer = window.setTimeout(() => html.classList.remove('theme-fade'), 260);
+    fadeTimer = window.setTimeout(() => html.classList.remove('theme-fade'), 220);
   }
   html.dataset.theme = theme;
   const meta = document.querySelector('meta[name="theme-color"]');

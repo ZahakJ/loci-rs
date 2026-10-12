@@ -13,6 +13,9 @@ import { AppShell } from './shell/AppShell';
 import { BusyIndicator } from './shell/BusyIndicator';
 import { BootError, IntegrityBanner, NotFound, Splash, ViewFallback } from './shell/Status';
 import { ShortcutsHelp } from './shell/ShortcutsHelp';
+import { CommandPalette } from './shell/CommandPalette';
+import { runCommand } from './shell/commands';
+import { isTauri } from '../bridge/tauri';
 import { useUi } from './store/ui';
 
 function renderView(route: Route): ReactNode {
@@ -117,6 +120,19 @@ export function App() {
   }, [openAdd]);
   useGlobalKeys(route, onAdd);
 
+  // macOS menu bar items arrive as `menu` events carrying a command id
+  const addRef = useRef(onAdd);
+  addRef.current = onAdd;
+  useEffect(() => {
+    if (!isTauri()) return;
+    let off: (() => void) | undefined;
+    let alive = true;
+    void import('@tauri-apps/api/event').then(({ listen }) =>
+      listen<string>('menu', (e) => runCommand(e.payload, addRef.current)).then((u) => { if (alive) off = u; else u(); }),
+    );
+    return () => { alive = false; off?.(); };
+  }, []);
+
   // move focus to the new page's heading on navigation (not on first load)
   const first = useRef(true);
   const routeKey = route.name === 'add' ? null : `${route.name}:${JSON.stringify(route)}`;
@@ -162,6 +178,7 @@ export function App() {
         )}
       </Suspense>
       <ShortcutsHelp />
+      <CommandPalette onAdd={onAdd} />
       <BusyIndicator />
       <Toaster closeLabel={t('common.dismiss')} />
     </>

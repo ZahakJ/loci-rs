@@ -43,11 +43,17 @@
 .optionBody { color: var(--muted); line-height: 1.55; }
 .optionAction { margin-block-start: auto; padding-block-start: var(--s-2); }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.foot { display: flex; gap: var(--s-2); align-items: center; color: var(--faint); font-size: var(--text-sm); flex-wrap: wrap; }
+.foot { display: flex; gap: var(--s-2) var(--s-4); align-items: center; color: var(--muted); font-size: var(--text-sm); flex-wrap: wrap; }
 .foot svg { color: var(--faint); }
 .themeRow { margin-inline-start: auto; display: flex; align-items: center; gap: var(--s-2); }
 @media (max-width: 719px) { .themeRow { margin-inline-start: 0; } }
 .private { display: flex; gap: var(--s-2); align-items: flex-start; flex: 1 1 20rem; line-height: 1.5; }
 .private svg { margin-block-start: 2px; }
+.manual {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  color: var(--accent-strong); text-decoration: none; border-radius: var(--r-sm);
+}
+.manual:hover span { text-decoration: underline; text-underline-offset: 3px; }
+.foot .manual svg { color: currentColor; }
 .srs { color: var(--ink-2); font-size: var(--text-lg); line-height: 1.5; max-inline-size: 34rem; margin-block-start: calc(-1 * var(--s-2)); }
 @media (max-width: 719px) { .srs { font-size: var(--text-md); } }

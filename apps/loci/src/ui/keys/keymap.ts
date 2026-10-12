@@ -6,7 +6,7 @@
 import type { RouteName } from '../routes';
 import { STUDY_KEYS } from '../views/study/keys';
 
-export type GlobalAction = 'add' | 'browse' | 'stats' | 'home' | 'search' | 'help' | 'undo';
+export type GlobalAction = 'palette' | 'add' | 'browse' | 'stats' | 'home' | 'search' | 'help' | 'undo';
 
 export interface KeyInput {
   key: string;
@@ -24,6 +24,8 @@ export interface KeyContext { route: RouteName; modalOpen: boolean }
 export function matchGlobal(e: KeyInput, ctx: KeyContext): GlobalAction | null {
   if (e.defaultPrevented || e.repeat || ctx.modalOpen || e.editable) return null;
   const mod = e.ctrlKey || e.metaKey;
+  // Ctrl/Cmd+K opens the palette anywhere but inside a field (where the editor uses it for links).
+  if (mod && !e.altKey && !e.shiftKey && e.key.toLowerCase() === 'k') return 'palette';
   if (mod && !e.altKey && !e.shiftKey && e.key.toLowerCase() === 'z') return ctx.route === 'study' ? null : 'undo';
   if (mod || e.altKey) return null;
   if (e.key === '?') return 'help';
@@ -64,6 +66,7 @@ export const SHORTCUT_GROUPS: ShortcutGroup[] = [
       { keys: ['d'], label: 'keys.home' },
       { keys: ['/'], label: 'keys.search' },
       { keys: ['ctrl+z'], label: 'keys.undo' },
+      { keys: ['ctrl+k'], label: 'keys.palette' },
       { keys: ['?'], label: 'keys.help' },
     ],
   },

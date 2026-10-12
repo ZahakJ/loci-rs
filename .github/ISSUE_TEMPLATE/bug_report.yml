@@ -13,7 +13,7 @@ body:
     id: version
     attributes:
       label: Loci version and platform
-      placeholder: "v0.1.0, Linux AppImage / Windows msi / macOS dmg / Android apk"
+      placeholder: "v0.2.0, Linux AppImage / Windows msi / macOS dmg / Android apk"
     validations:
       required: true
   - type: textarea

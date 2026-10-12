@@ -104,6 +104,12 @@ async function captureDevice(browser: Browser, device: Device): Promise<void> {
   page.on('pageerror', (e) => log(`pageerror during ${device.name}/${step}:`, e.message.slice(0, 120)));
   page.on('console', (m) => { if (m.type() === 'error') log(`console error during ${device.name}/${step}:`, m.text().slice(0, 160)); });
   try {
+    at('first run');
+    await page.goto(`${BASE}/#/`);
+    await page.getByRole('heading', { level: 1, name: /memory palace/ }).waitFor({ timeout: 20_000 });
+    await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+    await shoot(page, device, 'first-run');
+
     await importFixture(page);
 
     await page.goto(`${BASE}/#/`);
@@ -111,6 +117,18 @@ async function captureDevice(browser: Browser, device: Device): Promise<void> {
     await page.getByRole('region', { name: 'Momentum' }).waitFor();
     await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
     await shoot(page, device, 'home');
+
+    if (!device.mobile) {
+      at('palette');
+      await page.keyboard.press('Control+k');
+      const palette = page.getByRole('dialog', { name: 'Command palette' });
+      await palette.waitFor();
+      await palette.getByRole('combobox').fill('theme');
+      await page.waitForTimeout(300);
+      await shoot(page, device, 'palette');
+      await page.keyboard.press('Escape');
+      await palette.waitFor({ state: 'detached' });
+    }
 
     at('study');
     await page.goto(`${BASE}/${await arabicDeckHref(page)}`);

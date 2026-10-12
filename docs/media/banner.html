@@ -1,0 +1,50 @@
+<!doctype html>
+<!-- Source of docs/media/banner.png (1640×640). Regenerate: node --experimental-strip-types apps/loci/scripts/banner.ts -->
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: Newsreader; src: url(../../apps/loci/node_modules/@fontsource-variable/newsreader/files/newsreader-latin-opsz-normal.woff2) format('woff2'); font-weight: 200 800; }
+@font-face { font-family: Newsreader; font-style: italic; src: url(../../apps/loci/node_modules/@fontsource-variable/newsreader/files/newsreader-latin-opsz-italic.woff2) format('woff2'); font-weight: 200 800; }
+@font-face { font-family: Inter; src: url(../../apps/loci/node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2) format('woff2'); font-weight: 100 900; }
+@font-face { font-family: 'JetBrains Mono'; src: url(../../apps/loci/node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2) format('woff2'); font-weight: 100 800; }
+:root { --bg: oklch(17% 0.015 260); --surface: oklch(21% 0.015 260); --line: oklch(30% 0.015 260); --ink: oklch(93% 0.01 85); --muted: oklch(68% 0.015 260); --brass: oklch(78% 0.12 75); }
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1640px; height: 640px; overflow: hidden; background: var(--bg); }
+body { position: relative; font-family: Inter, sans-serif; color: var(--ink); }
+.glow { position: absolute; inset: 0; background:
+  radial-gradient(60% 90% at 78% 40%, oklch(30% 0.04 75 / 0.55), transparent 70%),
+  radial-gradient(50% 70% at 10% 100%, oklch(24% 0.02 260 / 0.8), transparent 70%); }
+.copy { position: absolute; left: 112px; top: 0; bottom: 0; width: 760px; display: flex; flex-direction: column; justify-content: center; }
+.brand { display: flex; align-items: center; gap: 22px; }
+.brand svg { width: 76px; height: 76px; }
+.name { font-family: Newsreader; font-size: 92px; font-weight: 480; letter-spacing: -0.02em; line-height: 1; }
+.tag { margin-top: 30px; font-family: Newsreader; font-size: 46px; line-height: 1.12; font-weight: 400; letter-spacing: -0.01em; }
+.tag em { color: var(--brass); font-style: italic; }
+.rule { margin: 34px 0 22px; width: 88px; height: 2px; background: var(--brass); }
+.facts { color: var(--muted); font-size: 21px; line-height: 1.6; }
+.facts b { color: var(--ink); font-weight: 550; }
+.plat { margin-top: 18px; font-family: 'JetBrains Mono'; font-size: 16px; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(60% 0.02 260); }
+.window { position: absolute; left: 840px; top: 96px; width: 720px; height: 486px; border-radius: 16px; overflow: hidden; border: 1px solid var(--line);
+  background: var(--bg) url(../captures/study-back-desktop-dark.png) no-repeat; background-size: 720px auto; background-position: 0 36px;
+  box-shadow: 0 40px 80px -20px oklch(5% 0.01 260 / 0.9); }
+.window::before { content: ''; position: absolute; inset: 0 0 auto; height: 36px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.dots { position: absolute; top: 13px; left: 16px; display: flex; gap: 8px; z-index: 1; }
+.dots i { width: 11px; height: 11px; border-radius: 50%; background: var(--line); }
+.phone { position: absolute; left: 1372px; top: 150px; width: 216px; height: 458px; border-radius: 32px; padding: 7px; background: oklch(12% 0.01 260); border: 1px solid oklch(34% 0.015 260);
+  box-shadow: 0 30px 70px -10px oklch(4% 0.01 260 / 0.95); }
+.phone div { width: 100%; height: 100%; border-radius: 26px; background: url(../captures/study-back-phone-dark.png) top / 100% auto no-repeat; }
+</style></head>
+<body>
+<div class="glow"></div>
+<div class="copy">
+  <div class="brand">
+    <svg viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#252b37"/><g transform="translate(256 256) scale(0.86) translate(-256 -270)"><path d="M124 214 C 170 158 212 134 256 134 S 342 158 388 214" stroke="#d9a654" stroke-width="30" fill="none" stroke-linecap="round"/><g fill="#d9a654"><circle cx="256" cy="186" r="15"/><rect x="114" y="222" width="284" height="30" rx="8"/><rect x="148" y="266" width="36" height="104" rx="6"/><rect x="238" y="266" width="36" height="104" rx="6"/><rect x="328" y="266" width="36" height="104" rx="6"/><rect x="114" y="382" width="284" height="30" rx="8"/></g></g></svg>
+    <span class="name">Loci</span>
+  </div>
+  <p class="tag">A memory palace for<br><em>everything</em> you learn.</p>
+  <div class="rule"></div>
+  <p class="facts">Spaced repetition that imports your <b>Anki</b> years intact,<br>schedules with <b>FSRS-6</b>, and keeps everything on your device.</p>
+  <p class="plat">Rust · Linux · Windows · macOS · Android</p>
+</div>
+<div class="window"><div class="dots"><i></i><i></i><i></i></div></div>
+<div class="phone"><div></div></div>
+</body></html>

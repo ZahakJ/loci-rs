@@ -86,7 +86,7 @@
   --paper-shadow: 0 1px 2px oklch(22% 0.02 260 / 0.06), 0 0 0 1px var(--line);
 
   /* motion */
-  --d-fast: 120ms; --d-base: 200ms; --d-slow: 320ms;
+  --d-fast: 120ms; --d-base: 160ms; --d-slow: 180ms;
   --ease: cubic-bezier(.2, .8, .2, 1);
   --ease-in: cubic-bezier(.4, 0, 1, 1);
 }

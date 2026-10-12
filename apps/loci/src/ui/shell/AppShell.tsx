@@ -28,6 +28,7 @@ export interface AppShellProps {
 export function AppShell({ route, children, fullBleed, hideNavOnPhone, onAdd }: AppShellProps) {
   const section = navSection(route);
   const setHelp = useUi((st) => st.setHelpOpen);
+  const setPalette = useUi((st) => st.setPaletteOpen);
   const current = (id: string) => (section === id ? 'page' : undefined);
   const tabbar = useRef<HTMLElement>(null);
   // the phone tab bar measures 0 where it is hidden (desktop, tablet, full-screen editors)
@@ -62,6 +63,11 @@ export function AppShell({ route, children, fullBleed, hideNavOnPhone, onAdd }: 
         </nav>
         <div className={s.sideFoot}>
           <Button variant="primary" icon="plus" kbd="a" block onClick={onAdd}>{t('shell.add')}</Button>
+          <button type="button" className={s.paletteButton} onClick={() => setPalette(true)}>
+            <Icon name="search" size={16} />
+            <span>{t('shell.palette')}</span>
+            <Kbd className={s.paletteKbd}>ctrl+k</Kbd>
+          </button>
           <Tooltip content={t('shell.syncLater')}>
             <div className={s.sync}>
               <span className={s.syncDot} aria-hidden />

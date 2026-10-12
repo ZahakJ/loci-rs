@@ -189,6 +189,137 @@ fn data_dir(state: State<'_, Shared>) -> String {
     state.data_dir.display().to_string()
 }
 
+#[cfg(desktop)]
+#[cfg_attr(not(target_os = "macos"), allow(dead_code))]
+mod menu {
+    //! The macOS menu bar. Built on every desktop target so it is type-checked everywhere; only
+    //! macOS installs it. Items that are app actions emit a `menu` event with their id, which the
+    //! webview turns into the same command the palette runs (`src/ui/shell/commands.ts`).
+    use tauri::menu::{AboutMetadataBuilder, Menu, MenuItem, PredefinedMenuItem, Submenu};
+    use tauri::{AppHandle, Emitter, Runtime};
+
+    /// Ids forwarded to the webview; each is a command id in `commands.ts`. The palette has no
+    /// accelerator here: Cmd+K belongs to the editor (insert link) while a field has focus, so the
+    /// webview handles it.
+    pub const FORWARDED: &[&str] = &[
+        "settings",
+        "add",
+        "import",
+        "home",
+        "browse",
+        "stats",
+        "palette",
+        "theme.system",
+        "theme.light",
+        "theme.dark",
+        "manual",
+        "shortcuts",
+    ];
+
+    fn item<R: Runtime>(app: &AppHandle<R>, id: &str, label: &str, accel: Option<&str>) -> tauri::Result<MenuItem<R>> {
+        MenuItem::with_id(app, id, label, true, accel)
+    }
+
+    pub fn build<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Menu<R>> {
+        let about = AboutMetadataBuilder::new()
+            .name(Some("Loci"))
+            .version(Some(env!("CARGO_PKG_VERSION")))
+            .comments(Some("A memory palace for everything you learn."))
+            .website(Some("https://zahakj.github.io/loci-rs/"))
+            .license(Some("MIT"))
+            .build();
+        let app_menu = Submenu::with_items(
+            app,
+            "Loci",
+            true,
+            &[
+                &PredefinedMenuItem::about(app, Some("About Loci"), Some(about))?,
+                &PredefinedMenuItem::separator(app)?,
+                &item(app, "settings", "Settings…", Some("CmdOrCtrl+,"))?,
+                &PredefinedMenuItem::separator(app)?,
+                &PredefinedMenuItem::services(app, None)?,
+                &PredefinedMenuItem::separator(app)?,
+                &PredefinedMenuItem::hide(app, None)?,
+                &PredefinedMenuItem::hide_others(app, None)?,
+                &PredefinedMenuItem::show_all(app, None)?,
+                &PredefinedMenuItem::separator(app)?,
+                &PredefinedMenuItem::quit(app, None)?,
+            ],
+        )?;
+        let file = Submenu::with_items(
+            app,
+            "File",
+            true,
+            &[
+                &item(app, "add", "Add Card…", Some("CmdOrCtrl+N"))?,
+                &PredefinedMenuItem::separator(app)?,
+                &item(app, "import", "Import…", Some("CmdOrCtrl+Shift+I"))?,
+                &PredefinedMenuItem::separator(app)?,
+                &PredefinedMenuItem::close_window(app, None)?,
+            ],
+        )?;
+        let edit = Submenu::with_items(
+            app,
+            "Edit",
+            true,
+            &[
+                &PredefinedMenuItem::undo(app, None)?,
+                &PredefinedMenuItem::redo(app, None)?,
+                &PredefinedMenuItem::separator(app)?,
+                &PredefinedMenuItem::cut(app, None)?,
+                &PredefinedMenuItem::copy(app, None)?,
+                &PredefinedMenuItem::paste(app, None)?,
+                &PredefinedMenuItem::select_all(app, None)?,
+            ],
+        )?;
+        let theme = Submenu::with_items(
+            app,
+            "Appearance",
+            true,
+            &[
+                &item(app, "theme.system", "Match System", None)?,
+                &item(app, "theme.light", "Light", None)?,
+                &item(app, "theme.dark", "Dark", None)?,
+            ],
+        )?;
+        let view = Submenu::with_items(
+            app,
+            "View",
+            true,
+            &[
+                &item(app, "home", "Decks", Some("CmdOrCtrl+1"))?,
+                &item(app, "browse", "Browse", Some("CmdOrCtrl+2"))?,
+                &item(app, "stats", "Statistics", Some("CmdOrCtrl+3"))?,
+                &PredefinedMenuItem::separator(app)?,
+                &item(app, "palette", "Command Palette…", None)?,
+                &theme,
+                &PredefinedMenuItem::separator(app)?,
+                &PredefinedMenuItem::fullscreen(app, None)?,
+            ],
+        )?;
+        let window = Submenu::with_items(
+            app,
+            "Window",
+            true,
+            &[&PredefinedMenuItem::minimize(app, None)?, &PredefinedMenuItem::maximize(app, Some("Zoom"))?],
+        )?;
+        let help = Submenu::with_items(
+            app,
+            "Help",
+            true,
+            &[&item(app, "manual", "Loci Manual", None)?, &item(app, "shortcuts", "Keyboard Shortcuts", Some("CmdOrCtrl+/"))?],
+        )?;
+        Menu::with_items(app, &[&app_menu, &file, &edit, &view, &window, &help])
+    }
+
+    pub fn forward<R: Runtime>(app: &AppHandle<R>, event: tauri::menu::MenuEvent) {
+        let id = event.id().as_ref();
+        if FORWARDED.contains(&id) {
+            let _ = app.emit("menu", id);
+        }
+    }
+}
+
 fn backup_on_leave(state: &AppState) {
     let _ = with_engine(state, |e| e.dispatch("backupOnLeave", &[], None, &mut |_| {}));
 }
@@ -196,10 +327,18 @@ fn backup_on_leave(state: &AppState) {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     LazyLock::force(&STARTED);
-    tauri::Builder::default()
+    let builder = tauri::Builder::default()
         .plugin(tauri_plugin_log::Builder::new().level(log::LevelFilter::Info).build())
         .plugin(tauri_plugin_dialog::init())
-        .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_opener::init());
+    // Desktop: the window comes back at the size and place it was closed at.
+    #[cfg(desktop)]
+    let builder = builder.plugin(tauri_plugin_window_state::Builder::default().build());
+    // macOS gets a native menu bar; Linux and Windows keep the app's own chrome (sidebar and
+    // command palette), see DESIGN.md "Window and menus".
+    #[cfg(target_os = "macos")]
+    let builder = builder.menu(menu::build).on_menu_event(menu::forward);
+    builder
         .setup(|app| {
             let data_dir = app.path().app_data_dir().map_err(|e| format!("No app data directory: {e}"))?;
             std::fs::create_dir_all(&data_dir)?;

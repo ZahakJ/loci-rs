@@ -121,10 +121,10 @@ function TodayPanel({ data }: { data: Stats }) {
   return (
     <Panel id="today" title={t('stats.today')} className={s.full} sentence={t('stats.todaySentence', { count: td.studied, duration: minutes })}>
       <div className={s.today}>
-        <Ring value={td.studied ? td.correctPct : 0} label={t('stats.correctToday', { pct: formatPercent(td.correctPct) })} center={td.studied ? formatPercent(td.correctPct) : '–'} tone="good" />
+        <Ring value={td.studied ? td.correctPct : 0} label={t('stats.correctToday', { pct: formatPercent(td.correctPct) })} center={td.studied ? formatPercent(td.correctPct) : '–'} />
         <dl className={s.tiles}>
           <div className={s.tile}><dt>{t('stats.tile.studied')}</dt><dd><span className="num-lg">{formatCount(td.studied)}</span></dd></div>
-          <div className={s.tile}><dt>{t('stats.tile.time')}</dt><dd><span className="num-lg">{minutes}</span></dd></div>
+          <div className={s.tile}><dt>{t('stats.tile.time')}</dt><dd><span className={/^\d/.test(minutes) ? 'num-lg' : s.tileWords}>{minutes}</span></dd></div>
           <div className={s.tile}><dt>{t('stats.tile.again')}</dt><dd><span className="num-lg">{formatCount(td.again)}</span></dd></div>
           <div className={s.tile}><dt>{t('stats.tile.learned')}</dt><dd><span className="num-lg">{formatCount(td.learned)}</span></dd></div>
           <div className={s.tile}><dt>{t('stats.tile.relearned')}</dt><dd><span className="num-lg">{formatCount(td.relearned)}</span></dd></div>
@@ -148,7 +148,7 @@ function ForecastPanel({ data, range, setRange }: { data: Stats; range: '30' | '
       action={data.forecast[0] && data.forecast[0].due > sum.avg * 2 ? { label: t('stats.planCatchUp'), href: '#/backlog/all' } : undefined}>
       <Bars
         data={rows}
-        series={[{ key: 'due', label: t('stats.forecastDue'), tone: 'due' }, { key: 'new', label: t('stats.forecastWithNew'), tone: 'new' }]}
+        series={[{ key: 'due', label: t('stats.forecastDue'), tone: 'accent' }, { key: 'new', label: t('stats.forecastWithNew'), tone: 'slate' }]}
         title={t('stats.forecast')}
         desc={t('stats.forecastDesc', { days })}
         categoryHeader={t('stats.day')}
@@ -214,7 +214,7 @@ function ReviewsPanel({ data, mode, setMode }: { data: Stats; mode: 'reviews' | 
       {mode === 'reviews' ? (
         <Bars
           data={data.reviewsPerDay.map((d) => ({ label: first.has(data.reviewsPerDay.indexOf(d)) ? mfmt.format(dateOf(d.day)) : fmt.format(dateOf(d.day)), values: [d.review, d.learn, d.relearn] }))}
-          series={[{ key: 'review', label: t('stats.review'), tone: 'due' }, { key: 'learn', label: t('stats.learning'), tone: 'learn' }, { key: 'relearn', label: t('stats.relearn'), tone: 'again' }]}
+          series={[{ key: 'review', label: t('stats.review'), tone: 'accent' }, { key: 'learn', label: t('stats.learning'), tone: 'accent-soft' }, { key: 'relearn', label: t('stats.relearn'), tone: 'slate' }]}
           title={t('stats.reviewsPerDay')}
           desc={t('stats.reviewsDesc')}
           categoryHeader={t('stats.day')}
@@ -248,12 +248,12 @@ function DistributionPanels({ data }: { data: Stats }) {
         <Histogram buckets={data.intervals} title={t('stats.intervals')} desc={t('stats.intervalsDesc')} seriesLabel={t('stats.cards')} categoryHeader={t('stats.interval')} />
       </Panel>
       <Panel id="stability" title={t('stats.stability')} className={s.third} sentence={stab ? t('stats.stabilitySentence', { bucket: stab.bucket, share: formatPercent(stab.share) }) : t('stats.noData')}>
-        <Histogram buckets={data.stability} title={t('stats.stability')} desc={t('stats.stabilityDesc')} seriesLabel={t('stats.cards')} categoryHeader={t('stats.stability')} tone="easy" />
+        <Histogram buckets={data.stability} title={t('stats.stability')} desc={t('stats.stabilityDesc')} seriesLabel={t('stats.cards')} categoryHeader={t('stats.stability')} />
       </Panel>
       <Panel id="difficulty" title={t('stats.difficulty')} className={s.third}
         sentence={t('stats.difficultySentence', { share: formatPercent(hardShare) })}
         action={hardShare > 0.1 ? { label: t('stats.seeHardCards'), href: `#/browse?q=${encodeURIComponent('prop:d>0.7')}` } : undefined}>
-        <Histogram buckets={data.difficulty.map((b) => ({ ...b, bucket: b.bucket.replace(/–\d+%$/, '%').replace(/^(\d+)%$/, '$1') }))} title={t('stats.difficulty')} desc={t('stats.difficultyDesc')} seriesLabel={t('stats.cards')} categoryHeader={t('stats.difficulty')} tone="hard" />
+        <Histogram buckets={data.difficulty.map((b) => ({ ...b, bucket: b.bucket.replace(/–\d+%$/, '%').replace(/^(\d+)%$/, '$1') }))} title={t('stats.difficulty')} desc={t('stats.difficultyDesc')} seriesLabel={t('stats.cards')} categoryHeader={t('stats.difficulty')} />
       </Panel>
     </>
   );

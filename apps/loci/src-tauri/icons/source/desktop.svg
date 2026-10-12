@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Desktop master: the macOS-style grid (824 px tile inside 1024, 100 px margin). -->
+  <defs>
+    <linearGradient id="slate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#252b37"/>
+      <stop offset="1" stop-color="#181c25"/>
+    </linearGradient>
+  </defs>
+  <rect x="100" y="100" width="824" height="824" rx="186" fill="url(#slate)"/>
+  <rect x="101.5" y="101.5" width="821" height="821" rx="184.5" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="3"/>
+  <g transform="translate(512 512) scale(1.22) translate(-256 -268)"><g fill="none" stroke="#d9a654" stroke-linecap="round" stroke-linejoin="round"><path d="M124 214 C 170 158 212 134 256 134 S 342 158 388 214" stroke-width="30"/></g><g fill="#d9a654"><circle cx="256" cy="186" r="15"/><rect x="114" y="222" width="284" height="30" rx="8"/><rect x="148" y="266" width="36" height="104" rx="6"/><rect x="238" y="266" width="36" height="104" rx="6"/><rect x="328" y="266" width="36" height="104" rx="6"/><rect x="114" y="382" width="284" height="30" rx="8"/></g></g>
+</svg>

@@ -13,6 +13,7 @@ import { toast } from '../../design/primitives/Toast';
 import { navigate } from '../../routes';
 import { Wordmark } from '../../shell/Wordmark';
 import { ThemeToggle } from '../../shell/ThemeToggle';
+import { MANUAL_URL, openExternal } from '../../shell/native';
 import { useImportFile } from '../../store/importFile';
 import { DropZone } from '../import/DropZone';
 import s from './Welcome.module.css';
@@ -120,6 +121,9 @@ export default function WelcomeView() {
 
         <footer className={s.foot}>
           <span className={s.private}><Icon name="shield" size={16} /><span>{t('welcome.private')}</span></span>
+          <a className={s.manual} href={MANUAL_URL} onClick={(e) => { e.preventDefault(); void openExternal(MANUAL_URL); }}>
+            <Icon name="help" size={16} /><span>{t('welcome.manual')}</span><Icon name="external" size={14} />
+          </a>
           <span className={s.themeRow}><ThemeToggle size="sm" /></span>
         </footer>
       </div>

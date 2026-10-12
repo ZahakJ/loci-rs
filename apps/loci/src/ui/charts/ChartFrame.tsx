@@ -7,7 +7,7 @@ import { useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type Reac
 import { cx } from '@ui/design/primitives/layer';
 import s from './charts.module.css';
 
-export type Tone = 'accent' | 'new' | 'learn' | 'due' | 'young' | 'mature' | 'again' | 'hard' | 'good' | 'easy' | 'muted' | 'faint';
+export type Tone = 'accent' | 'accent-soft' | 'slate' | 'new' | 'learn' | 'due' | 'young' | 'mature' | 'again' | 'hard' | 'good' | 'easy' | 'muted' | 'faint';
 
 export interface TipRow { label: string; value: string; tone?: Tone; line?: boolean }
 export interface Tip { x: number; y: number; title: string; rows: TipRow[] }

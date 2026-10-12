@@ -1,0 +1,63 @@
+/* The command palette: a sheet of paper dropped from the top third, one field and a list. */
+.root { position: fixed; inset: 0; z-index: 80; display: flex; justify-content: center; align-items: flex-start; padding: 12vh var(--s-4) var(--s-4); }
+.scrim {
+  position: absolute; inset: 0;
+  background: color-mix(in oklab, var(--ink) 22%, transparent);
+  animation: loci-fade-in var(--d-fast) var(--ease) both;
+}
+:root[data-theme='dark'] .scrim { background: color-mix(in oklab, var(--bg) 70%, transparent); }
+.panel {
+  position: relative;
+  inline-size: min(36rem, 100%);
+  max-block-size: min(28rem, 76dvh);
+  display: flex; flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sheet);
+  overflow: hidden;
+  animation: loci-pop-in var(--d-fast) var(--ease) both;
+}
+.root[data-state='closed'] .scrim, .root[data-state='closed'] .panel { animation: loci-fade-out var(--d-fast) var(--ease-in) both; }
+.field {
+  display: flex; align-items: center; gap: var(--s-3);
+  padding-inline: var(--s-4); block-size: 56px; flex-shrink: 0;
+  border-block-end: 1px solid var(--line);
+}
+.fieldIcon { color: var(--muted); flex-shrink: 0; }
+.input {
+  flex: 1; min-inline-size: 0; block-size: 100%;
+  border: 0; background: transparent; outline: none;
+  font: inherit; font-size: var(--text-lg); color: var(--ink);
+}
+.input::placeholder { color: var(--muted); }
+.esc { flex-shrink: 0; }
+.list { list-style: none; margin: 0; padding: var(--s-2); overflow-y: auto; overscroll-behavior: contain; }
+.group {
+  padding: var(--s-3) var(--s-3) var(--s-1);
+  font-size: var(--text-2xs); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--muted);
+}
+.group:first-child { padding-block-start: var(--s-1); }
+.option {
+  position: relative;
+  display: flex; align-items: center; gap: var(--s-3);
+  min-block-size: 40px; padding-inline: var(--s-3);
+  border-radius: var(--r-sm);
+  color: var(--ink-2); cursor: pointer;
+}
+.optionIcon { color: var(--muted); flex-shrink: 0; }
+.label { flex: 1; min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.external { color: var(--muted); }
+.kbd { margin-inline-start: auto; }
+.active { background: var(--surface-2); color: var(--ink); }
+.active::before {
+  content: ''; position: absolute; inset-inline-start: 0; inset-block: 8px;
+  inline-size: 2px; border-radius: 2px; background: var(--accent);
+}
+.active .optionIcon { color: var(--accent-strong); }
+.empty { padding: var(--s-6) var(--s-3); color: var(--muted); text-align: center; }
+@media (max-width: 479px) {
+  .root { padding-block-start: calc(var(--s-4) + env(safe-area-inset-top)); }
+  .panel { max-block-size: 70dvh; }
+}

@@ -1,1 +1,1 @@
-{"default":{"identifier":"default","description":"What the Loci webview may ask the shell for.","local":true,"windows":["main"],"permissions":["core:default","core:window:allow-set-title","dialog:default","opener:default","log:default"]}}
+{"default":{"identifier":"default","description":"What the Loci webview may ask the shell for.","local":true,"windows":["main"],"permissions":["core:default","core:window:allow-set-title","core:window:allow-set-theme","dialog:default","opener:default","log:default"]}}

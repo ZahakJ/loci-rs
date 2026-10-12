@@ -292,7 +292,7 @@ Colour in OKLCH. Light: `--bg oklch(97.5% .006 85)`, `--surface oklch(99% .004 8
 learn `oklch(68% .16 50)`, due `oklch(60% .14 150)`.
 Type scale: 12 / 13 / 14 (UI base) / 16 / 20 / 24 / 32; card body 22 desktop, 20
 phone. Radii 6 / 10 / 16. Spacing 4-point grid. Shadows: none in light theme beyond a
-1px `--line` border; dark theme uses `--surface` lift only. Motion: 120 / 200 / 320ms,
+1px `--line` border; dark theme uses `--surface` lift only. Motion: 120 / 160 / 180ms (0.1: 120 / 200 / 320) **[changed in 0.2]**,
 `cubic-bezier(.2,.8,.2,1)`. Icons: inline SVG, 1.5px stroke, 20px. Theme switch is
 instant with a 200ms colour cross-fade on `html`.
 
@@ -304,15 +304,34 @@ Additions in 0.2 **[changed in 0.2]**:
 - `--paper-shadow` (study card, card previews) in both themes; in dark the cloze colour is `--accent` (`--accent-strong` is too pale on slate paper). Image-occlusion masks: `--line-strong` 85% over surface with a 1px `--muted` edge; the asked mask brass 22% with a 2px brass rule. **[changed in 0.2]**
 - Contrast (`pnpm contrast`, `docs/design/contrast-0.2.md`): light counts darkened to new `oklch(54% .15 250)`, learn `oklch(55% .16 50)`, due `oklch(52% .14 150)`; light grades to hard `oklch(66% .14 65)`, good `oklch(63% .14 150)`, easy `oklch(64% .12 230)`; light danger `oklch(56% .19 25)`; pill text mixes 68% tone into ink (was 82%). Hues unchanged. **[changed in 0.2]**
 
+- Charts: brass (`--accent`) is the one series colour; a second brass (`accent-soft`, `--accent-strong` 72% over surface) and a slate (`slate`, `--ink-2` 58% over surface) carry secondary series; all three are 3:1 or more against the panel in both themes (`pnpm contrast`). Grade colours only on the answer-buttons chart, count colours only on card counts. **[changed in 0.2]**
+- Browse selection: a slate tint (`--ink-2` 11% over surface) with a 2px `--accent-strong` rule at the inline start; header 40px. **[changed in 0.2]**
+
 Theme follows the system by default; both themes are designed (not inverted): the
-dark theme lowers chroma on large surfaces and raises it on the accent.
+dark theme lowers chroma on large surfaces and raises it on the accent. The native window
+follows the same preference (`setTheme(light|dark)`, or `null` = the OS while it is "system"),
+so the title bar, file dialogs and the macOS menu bar match the page. **[changed in 0.2]**
+
+### 17a. Window and menus **[changed in 0.2]**
+
+- **macOS**: a native menu bar (Loci, File, Edit, View, Window, Help). The Edit menu is what makes
+  Cmd+C/V/X/Z/A work in a webview; app items (Settings Cmd+,, Add Card Cmd+N, Import, Decks /
+  Browse / Statistics Cmd+1–3, Appearance, Manual, Shortcuts) emit their command id to the page.
+- **Linux and Windows**: no menu bar. A GTK or Win32 menu strip above a designed page is the
+  "Windows app" look the owner rejected, and every command already lives in the sidebar, the
+  keys, and the command palette (Ctrl/Cmd+K, also a "Commands" button in the sidebar). The OS
+  title bar stays (client-side decorations would fight GNOME, KDE and tiling WMs).
+- **Android**: no menu; the phone tab bar.
+- The window remembers its size, position and maximised state (`tauri-plugin-window-state`).
+- Icon: the Loci mark (brass portico on slate) for every platform's icon set.
 
 ## 18. First run (C3)
 
 A single calm screen: the wordmark, one sentence, three cards: *Import from Anki*
 (drop zone), *Try a sample deck* (bundled 30-card deck about memory itself, with
 cloze, image, maths and Arabic cards), *Start empty*. No account, no tour. After
-import: a preview, then Home with "Start" focused.
+import: a preview, then Home with "Start" focused. The footer links the manual for people new
+to spaced repetition (opened in the system browser). **[changed in 0.2]**
 
 ## 19. Testing contract
 

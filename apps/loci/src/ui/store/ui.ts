@@ -1,6 +1,7 @@
 /** App-wide UI state (zustand). Collection data lives behind the API, not here. */
 import { create } from 'zustand';
 import type { CollectionSettings, Progress } from '@core/types';
+import { syncWindowTheme } from '../shell/native';
 import { applyTheme, readStoredTheme, resolveTheme, storeTheme, systemPrefersDark, type ResolvedTheme, type ThemePref } from './theme';
 
 export interface BusyOp { op: string; progress: Progress; at: number }
@@ -16,6 +17,9 @@ interface UiState {
   closeAdd: () => void;
 
   helpOpen: boolean;
+
+  paletteOpen: boolean;
+  setPaletteOpen: (open: boolean) => void;
   setHelpOpen: (open: boolean) => void;
 
   /** Study keycap hints for the current session: cards answered, and whether help was opened. */
@@ -46,6 +50,7 @@ export const useUi = create<UiState>((set, get) => ({
     storeTheme(storage, pref);
     const theme = resolveTheme(pref, systemPrefersDark());
     applyTheme(theme, true);
+    void syncWindowTheme(pref);
     set({ themePref: pref, theme });
   },
   syncSystemTheme: () => {
@@ -60,6 +65,9 @@ export const useUi = create<UiState>((set, get) => ({
 
   helpOpen: false,
   setHelpOpen: (helpOpen) => set(helpOpen ? { helpOpen, studyHints: { ...get().studyHints, helpOpened: true } } : { helpOpen }),
+
+  paletteOpen: false,
+  setPaletteOpen: (paletteOpen) => set({ paletteOpen }),
 
   studyHints: { answered: 0, helpOpened: false },
   resetStudyHints: () => set({ studyHints: { answered: 0, helpOpened: false } }),

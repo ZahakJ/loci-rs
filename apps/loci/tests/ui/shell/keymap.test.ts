@@ -6,6 +6,11 @@ const key = (k: string, mods: Partial<KeyInput> = {}): KeyInput => ({ key: k, ct
 const home = { route: 'home' as const, modalOpen: false };
 
 describe('matchGlobal', () => {
+  it('opens the palette on ctrl/cmd+k, but not inside a field', () => {
+    expect(matchGlobal({ ...key('k'), ctrlKey: true }, home)).toBe('palette');
+    expect(matchGlobal({ ...key('k'), metaKey: true }, { route: 'study', modalOpen: false })).toBe('palette');
+    expect(matchGlobal({ ...key('k'), ctrlKey: true, editable: true }, home)).toBeNull();
+  });
   it('maps the single-letter shortcuts', () => {
     expect(matchGlobal(key('a'), home)).toBe('add');
     expect(matchGlobal(key('b'), home)).toBe('browse');

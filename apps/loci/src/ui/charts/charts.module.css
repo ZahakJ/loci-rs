@@ -22,6 +22,10 @@
 .crosshair { stroke: var(--line-strong); stroke-width: 1px; shape-rendering: crispEdges; }
 
 .fill-accent { fill: var(--accent); } .stroke-accent { stroke: var(--accent); }
+/* Loci's chart palette: brass is the one series colour; a second brass (accent-strong 72%) and a slate grey
+   carry the secondary series, each at 3:1 or more against the panel (pnpm contrast). Grade and count colours appear only where a mark *is* a grade or a count. */
+.fill-accent-soft { fill: color-mix(in oklab, var(--accent-strong) 72%, var(--surface)); } .stroke-accent-soft { stroke: color-mix(in oklab, var(--accent-strong) 72%, var(--surface)); }
+.fill-slate { fill: color-mix(in oklab, var(--ink-2) 58%, var(--surface)); } .stroke-slate { stroke: color-mix(in oklab, var(--ink-2) 58%, var(--surface)); }
 .fill-new { fill: var(--new); } .stroke-new { stroke: var(--new); }
 .fill-learn { fill: var(--learn); } .stroke-learn { stroke: var(--learn); }
 .fill-due { fill: var(--due); } .stroke-due { stroke: var(--due); }
@@ -34,7 +38,7 @@
 .fill-muted { fill: var(--line-strong); } .stroke-muted { stroke: var(--line-strong); }
 .fill-faint { fill: var(--line); } .stroke-faint { stroke: var(--line); }
 
-.tone-accent { --tone: var(--accent); } .tone-new { --tone: var(--new); } .tone-learn { --tone: var(--learn); } .tone-due { --tone: var(--due); }
+.tone-accent { --tone: var(--accent); } .tone-accent-soft { --tone: color-mix(in oklab, var(--accent-strong) 72%, var(--surface)); } .tone-slate { --tone: color-mix(in oklab, var(--ink-2) 58%, var(--surface)); } .tone-new { --tone: var(--new); } .tone-learn { --tone: var(--learn); } .tone-due { --tone: var(--due); }
 .tone-young { --tone: color-mix(in oklab, var(--due) 55%, var(--surface)); } .tone-mature { --tone: var(--due); }
 .tone-again { --tone: var(--again); } .tone-hard { --tone: var(--hard); } .tone-good { --tone: var(--good); } .tone-easy { --tone: var(--easy); }
 .tone-muted { --tone: var(--line-strong); } .tone-faint { --tone: var(--line); }

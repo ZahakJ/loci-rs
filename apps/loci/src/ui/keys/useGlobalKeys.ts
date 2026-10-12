@@ -38,6 +38,7 @@ export function useGlobalKeys(route: Route, onAdd: () => void): void {
       e.preventDefault();
       const ui = useUi.getState();
       switch (action) {
+        case 'palette': ui.setPaletteOpen(true); break;
         case 'add': addRef.current(); break;
         case 'browse': navigate('#/browse'); break;
         case 'stats': navigate('#/stats/all'); break;
