@@ -19,8 +19,8 @@ executable and then the whole `.app` after every resource is in place, and only 
 it uploads what `tauri build` produced. `hardenedRuntime` is set to `false`: the hardened runtime
 only matters for notarization, which needs a Developer ID this project does not have.
 
-The macOS release job then runs `scripts/verify-macos-signature.sh` on the `.app` and on the copy inside
-the `.dmg`. It fails the build unless `codesign --verify --deep --strict --verbose=2` passes
+The macOS release job then mounts the `.dmg` and runs `scripts/verify-macos-signature.sh` on the `.app`
+inside it, the copy users download (Tauri deletes the loose `.app` once the dmg is built). It fails the build unless `codesign --verify --deep --strict --verbose=2` passes
 ("valid on disk", "satisfies its Designated Requirement"), `codesign -dv` reports
 `Signature=adhoc` with sealed resources, and `Contents/_CodeSignature/CodeResources` exists. It
 also prints `spctl -a -vvv -t install`, which says "rejected": that is the expected answer for

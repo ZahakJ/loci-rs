@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# Check that a macOS app bundle (and the copy inside its dmg) carries a complete, valid
-# ad-hoc signature. Runs in the macOS release job; fails the build if the bundle is unsigned,
-# partially signed or modified after signing (the cause of "is damaged and can't be opened").
+# Check that a macOS app bundle carries a complete, valid ad-hoc signature. Runs in the macOS
+# release job and fails the build if the bundle is unsigned, partially signed or modified after
+# signing (the cause of "is damaged and can't be opened").
 #
-#   scripts/verify-macos-signature.sh <App.app> [<image.dmg>]
+#   scripts/verify-macos-signature.sh <App.app | image.dmg>...
 #
-# spctl is printed for the log only: without a Developer ID and notarization it always says
-# "rejected", which is expected for an ad-hoc signature (see docs/macos-gatekeeper.md).
+# A .dmg is mounted read-only and every .app at its top level is checked: that copy is what
+# users download. spctl is printed for the log only: without a Developer ID and notarization it
+# always says "rejected", which is expected for an ad-hoc signature (docs/macos-gatekeeper.md).
 set -euo pipefail
 
-app="${1:?usage: verify-macos-signature.sh <App.app> [<image.dmg>]}"
-dmg="${2:-}"
+[ "$#" -gt 0 ] || { echo "usage: verify-macos-signature.sh <App.app | image.dmg>..." >&2; exit 2; }
 
 check_app() {
   local a="$1"
@@ -28,16 +28,28 @@ check_app() {
   spctl -a -vvv -t install "$a" 2>&1 || true
 }
 
-check_app "$app"
-
-if [ -n "$dmg" ]; then
-  echo "==> the copy inside $dmg"
+check_dmg() {
+  local dmg="$1" mnt found=0
   mnt="$(mktemp -d)"
+  echo "==> mounting $dmg"
   hdiutil attach -nobrowse -readonly -noautoopen -mountpoint "$mnt" "$dmg" >/dev/null
-  trap 'hdiutil detach "$mnt" -force >/dev/null 2>&1 || true' EXIT
-  check_app "$mnt/$(basename "$app")"
+  for a in "$mnt"/*.app; do
+    [ -d "$a" ] || continue
+    found=1
+    check_app "$a" || { hdiutil detach "$mnt" -force >/dev/null 2>&1 || true; exit 1; }
+  done
+  hdiutil detach "$mnt" -force >/dev/null 2>&1 || true
+  [ "$found" = 1 ] || { echo "::error::no .app at the top level of $dmg"; exit 1; }
   echo "==> codesign -dv $dmg"
   codesign -dv "$dmg" 2>&1 || echo "(the dmg itself carries no signature)"
-fi
+}
+
+for target in "$@"; do
+  case "$target" in
+    *.dmg) check_dmg "$target" ;;
+    *.app) check_app "$target" ;;
+    *) echo "::error::not a .app or .dmg: $target"; exit 2 ;;
+  esac
+done
 
 echo "signature OK"

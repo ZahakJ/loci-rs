@@ -2,7 +2,7 @@
 
 ## v0.2.1 — 12 October 2026
 
-- **macOS: "Loci is damaged and can't be opened" is fixed.** The 0.2.0 app bundle was not signed as a whole, so Gatekeeper rejected the download as damaged. The bundle is now ad-hoc signed (`bundle.macOS.signingIdentity: "-"`), and the release job fails unless `codesign --verify --deep --strict` passes on the `.app` and on the copy inside the `.dmg`. It is still not notarised: the first launch needs right-click → Open (macOS 15 and later: Privacy & Security → Open Anyway) or `xattr -cr /Applications/Loci.app` ([details](https://github.com/ZahakJ/loci-rs/blob/main/docs/macos-gatekeeper.md)).
+- **macOS: "Loci is damaged and can't be opened" is fixed.** The 0.2.0 app bundle was not signed as a whole, so Gatekeeper rejected the download as damaged. The bundle is now ad-hoc signed (`bundle.macOS.signingIdentity: "-"`), and the release job fails unless `codesign --verify --deep --strict` passes on the `.app` inside the `.dmg`. It is still not notarised: the first launch needs right-click → Open (macOS 15 and later: Privacy & Security → Open Anyway) or `xattr -cr /Applications/Loci.app` ([details](https://github.com/ZahakJ/loci-rs/blob/main/docs/macos-gatekeeper.md)).
 - Android versionCode 2001.
 
 ## v0.2.0 — 11 October 2026
