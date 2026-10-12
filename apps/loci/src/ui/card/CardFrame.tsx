@@ -112,8 +112,8 @@ const FRAME_CSS = `
 .card .loci-io { position: relative; display: block; inline-size: 100%; line-height: 0; margin-block: .25em; }
 .card .loci-io img { display: block; inline-size: 100%; max-inline-size: 100%; block-size: auto; border-radius: var(--r-sm, 6px); cursor: default; }
 .card .loci-io > svg.loci-io-overlay { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; overflow: visible; }
-.card .loci-io-mask { fill: var(--loci-io-fill); stroke: var(--loci-io-stroke); stroke-width: 1.25px; vector-effect: non-scaling-stroke; transition: fill var(--d-base, 200ms) var(--ease, ease), stroke var(--d-base, 200ms) var(--ease, ease); }
-.card .loci-io-mask.is-active { fill: var(--loci-io-active); stroke: var(--accent-strong, var(--_accent)); stroke-width: 2px; }
+.card .loci-io-mask { fill: var(--loci-io-fill); stroke: var(--loci-io-stroke); stroke-width: var(--loci-io-stroke-width, 1px); vector-effect: non-scaling-stroke; transition: fill var(--d-base, 200ms) var(--ease, ease), stroke var(--d-base, 200ms) var(--ease, ease); }
+.card .loci-io-mask.is-active { fill: var(--loci-io-active); stroke: var(--loci-io-active-stroke, var(--_accent)); stroke-width: 2px; }
 .card .loci-io-mask.is-revealed { fill: transparent; stroke: var(--accent, var(--_accent)); stroke-width: 2px; stroke-dasharray: 5 4; }
 .card .loci-io-text {
   position: absolute; line-height: 1.3; padding: .05em .35em; border-radius: 4px; white-space: nowrap;

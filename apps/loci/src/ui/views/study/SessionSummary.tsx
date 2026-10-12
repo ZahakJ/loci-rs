@@ -16,6 +16,13 @@ export interface SessionSummaryProps {
 
 const ORDER: GradeKey[] = ['again', 'hard', 'good', 'easy'];
 
+/** A translated phrase with its figure set in the data numeral face ("about <58> cards"). */
+function FigureIn({ text, figure }: { text: string; figure: string }) {
+  const at = text.indexOf(figure);
+  if (at < 0) return <>{text}</>;
+  return <>{text.slice(0, at)}<span className="num-lg">{figure}</span>{text.slice(at + figure.length)}</>;
+}
+
 /** The quiet end of a session: what you did, how it went, what tomorrow holds. No confetti. */
 export function SessionSummary({ summary, onHome, onMore }: SessionSummaryProps) {
   const heading = useRef<HTMLHeadingElement>(null);
@@ -56,7 +63,7 @@ export function SessionSummary({ summary, onHome, onMore }: SessionSummaryProps)
       <dl className={s.summaryFacts}>
         <div>
           <dt>{t('studyScreen.summary.tomorrow')}</dt>
-          <dd>{t('studyScreen.summary.tomorrowValue', { count: summary.tomorrowDue })}</dd>
+          <dd><FigureIn text={t('studyScreen.summary.tomorrowValue', { count: summary.tomorrowDue })} figure={summary.tomorrowDue.toLocaleString()} /></dd>
         </div>
       </dl>
 

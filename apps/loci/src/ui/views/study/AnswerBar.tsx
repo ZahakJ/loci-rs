@@ -19,6 +19,10 @@ export interface AnswerBarProps {
   mode: BarMode;
   /** keycaps only on fine pointers (DESIGN §8) */
   showKeys: boolean;
+  /** keycaps rendered but faded out (after the first cards of a session; see keyHints) */
+  keysFaded?: boolean;
+  /** the mouse entered or left the bar (brings faded keycaps back) */
+  onHoverChange?: (hover: boolean) => void;
   busy?: boolean;
   onShow: () => void;
   onRevealNext: () => void;
@@ -28,11 +32,18 @@ export interface AnswerBarProps {
 }
 
 /** Bottom bar: always the same height so nothing moves between question and answer. */
-export function AnswerBar({ mode, showKeys, busy, onShow, onRevealNext, onGrade, explainer }: AnswerBarProps) {
+export function AnswerBar({ mode, showKeys, keysFaded, onHoverChange, busy, onShow, onRevealNext, onGrade, explainer }: AnswerBarProps) {
   const bar = useRef<HTMLDivElement>(null);
   useBottomBar(bar); // toasts sit above this bar, never over the grade buttons
   return (
-    <div ref={bar} className={s.bar} data-mode={mode.kind}>
+    <div
+      ref={bar}
+      className={s.bar}
+      data-mode={mode.kind}
+      data-keys={showKeys && keysFaded ? 'faded' : undefined}
+      onPointerEnter={(e) => { if (e.pointerType === 'mouse') onHoverChange?.(true); }}
+      onPointerLeave={(e) => { if (e.pointerType === 'mouse') onHoverChange?.(false); }}
+    >
       <div className={s.barInner}>
         {mode.kind === 'front' && (
           // While the typed-answer box has focus, Space types a space and Enter checks the answer.
@@ -75,7 +86,7 @@ export function AnswerBar({ mode, showKeys, busy, onShow, onRevealNext, onGrade,
         {mode.kind === 'idle' && <div className={s.barSpacer} aria-hidden />}
         {explainer && (
           <p className={s.explainer}>
-            <span>{t('studyScreen.explainer')}</span>
+            <span className={s.explainerText}>{t('studyScreen.explainer')}</span>
             <Tooltip content={t('studyScreen.explainerDismissAria')}>
               <button type="button" className={s.explainerDismiss} onClick={explainer.onDismiss} aria-label={t('studyScreen.explainerDismissAria')}>
                 <Icon name="close" size={14} />

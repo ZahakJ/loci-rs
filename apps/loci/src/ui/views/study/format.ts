@@ -189,3 +189,36 @@ export function frontFieldOrd(
   }
   return 0;
 }
+
+/** Top-bar count text: a zero is a plain '0' (styled quiet), never a dash. */
+export function countText(n: number): { text: string; zero: boolean } {
+  const v = Number.isFinite(n) ? Math.max(0, Math.floor(n)) : 0;
+  return { text: v.toLocaleString(), zero: v === 0 };
+}
+
+/** How many answered cards of a session keep the keycaps fully shown. */
+export const KEY_HINT_CARDS = 12;
+
+export interface KeyHintInput {
+  /** cards answered so far in this session */
+  answered: number;
+  /** the mouse is over the answer bar */
+  hover: boolean;
+  /** the shortcuts help has been opened during this session */
+  helpOpened: boolean;
+  /** Settings › Keyboard hints */
+  setting: boolean;
+  /** touch-only device (never keycaps) */
+  touch: boolean;
+}
+
+/**
+ * Keycaps on "Show answer" and the grades: 'off' (never rendered: touch, or hints turned off),
+ * 'shown' for the first KEY_HINT_CARDS answers of a session, while hovering the bar, or once
+ * help has been opened this session; otherwise 'faded' (still there, at opacity 0).
+ */
+export function keyHints(i: KeyHintInput): 'off' | 'shown' | 'faded' {
+  if (i.touch || !i.setting) return 'off';
+  if (i.answered < KEY_HINT_CARDS || i.hover || i.helpOpened) return 'shown';
+  return 'faded';
+}

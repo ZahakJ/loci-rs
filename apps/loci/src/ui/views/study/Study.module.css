@@ -70,7 +70,7 @@
   block-size: var(--top-h);
   padding-inline: var(--s-2) var(--s-2);
 }
-@media (pointer: coarse) { .topInner { block-size: 52px; } }
+@media (pointer: coarse) { .topInner { block-size: 56px; } }
 .leave { flex-shrink: 0; }
 .deck {
   display: flex;
@@ -139,6 +139,8 @@
 .countWrap:nth-child(1) { color: var(--new); }
 .countWrap:nth-child(2) { color: var(--learn); }
 .countWrap:nth-child(3) { color: var(--due); }
+/* a zero is a quiet 0, never a dash: the bar is not a table with missing data */
+.countWrap .countZero { background: transparent; color: var(--faint); }
 .tick { display: inline-block; animation: tick var(--d-base) var(--ease) both; }
 @keyframes tick { from { opacity: 0; transform: translateY(-40%); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .tick { animation-name: loci-fade-in; } }
@@ -155,7 +157,8 @@
   inline-size: 100%;
   max-inline-size: calc(var(--content-max) + 2 * var(--s-6));
   margin-inline: auto;
-  padding: clamp(var(--s-4), 6vh, var(--s-16)) var(--s-6) var(--s-10);
+  /* symmetric, so the placement below alone decides where the card sits */
+  padding: clamp(var(--s-4), 4vh, var(--s-10)) var(--s-6);
 }
 .cardMotion { animation: study-in calc(var(--d-base) * 0.8) var(--ease) both; }
 .cardMotion[data-leaving] { animation: study-out calc(var(--d-base) * 0.8) var(--ease-in) both; pointer-events: none; }
@@ -165,14 +168,19 @@
   .cardMotion[data-leaving] { animation-name: loci-fade-out; }
 }
 
+/* The desk is flat --bg; the card is a sheet of paper on it, sized by what is written on it. */
 .panel {
+  display: grid;
+  align-content: center;
+  min-block-size: 7rem;
   background: var(--surface);
-  border: 1px solid var(--line);
   border-radius: var(--r-lg);
+  box-shadow: var(--paper-shadow);
   padding: var(--s-10) var(--s-12);
-  min-block-size: min(16rem, 40vh);
 }
-.panelLoading { display: grid; align-content: center; gap: var(--s-3); justify-items: center; }
+.panel > * { min-inline-size: 0; }
+@media (min-width: 720px) and (max-width: 1023px) { .panel { padding: var(--s-8) var(--s-6); } }
+.panelLoading { gap: var(--s-3); justify-items: center; }
 .loadingLine {
   display: block;
   inline-size: 60%;
@@ -185,8 +193,8 @@
 .loadingLine + .loadingLine { inline-size: 40%; }
 
 @media (max-width: 719px) {
-  .cardColumn { padding: var(--s-6) var(--gutter) var(--s-8); }
-  .panel { background: none; border: 0; border-radius: 0; padding: 0; min-block-size: 0; }
+  .cardColumn { padding: var(--s-6) var(--gutter); }
+  .panel { background: none; box-shadow: none; border-radius: 0; padding: 0; min-block-size: 0; }
 }
 
 /* ── bottom bar ── */
@@ -228,6 +236,10 @@
 .showButton:disabled { opacity: 0.6; }
 .revealCount { color: var(--muted); font-size: var(--text-sm); font-weight: 500; font-variant-numeric: tabular-nums; }
 .barKbd { margin-inline-start: var(--s-1); }
+/* Keycaps teach for the first cards of a session, then step back; hovering the bar or opening
+   the shortcuts help brings them back. Opacity only, so nothing in the bar moves. */
+.barKbd, .gradeKbd { transition: opacity var(--d-base) var(--ease); }
+.bar[data-keys='faded'] :is(.barKbd, .gradeKbd) { opacity: 0; }
 
 .grades {
   display: grid;
@@ -277,7 +289,7 @@
   letter-spacing: -0.003em;
 }
 .gradeKbd { font-size: var(--text-3xs); min-inline-size: 18px; block-size: 18px; }
-.gradeInterval {
+.grade .gradeInterval {
   font-size: var(--text-sm);
   color: var(--muted);
   font-variant-numeric: tabular-nums;
@@ -291,13 +303,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--s-2);
+  gap: var(--s-1);
   min-block-size: 24px;
+  min-inline-size: 0;
   color: var(--muted);
   font-size: var(--text-sm);
   text-align: center;
   line-height: 1.4;
 }
+.explainerText { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .bar[data-mode='front'] .explainer, .bar[data-mode='reveal-next'] .explainer { visibility: hidden; }
 .explainerDismiss {
   display: inline-grid;
@@ -310,14 +324,16 @@
   transition: color var(--d-fast) var(--ease), background-color var(--d-fast) var(--ease);
 }
 .explainerDismiss:hover { color: var(--ink); background: var(--surface-2); }
+/* a 44px target that does not grow the bar: it overhangs the line it sits on */
 @media (pointer: coarse) {
-  .explainerDismiss { inline-size: 32px; block-size: 32px; margin-block: -4px; }
+  .explainerDismiss { inline-size: 44px; block-size: 44px; margin-block: -10px; margin-inline-end: -10px; }
 }
 
 @media (max-width: 719px) {
-  .root { --bar-h: 64px; }
+  /* thumb-first: 56px grades, 8px apart, 12px from the edges */
+  .root { --bar-h: 56px; }
   .barInner { padding: var(--s-2) var(--s-3); }
-  .grades { gap: 6px; }
+  .grades { gap: var(--s-2); }
   .grade { border-radius: var(--r-md); }
   .explainer { font-size: var(--text-xs); text-align: start; justify-content: space-between; padding-inline: var(--s-1); }
 }
@@ -385,7 +401,8 @@
 .seg_good { background: var(--good); }
 .seg_easy { background: var(--easy); }
 .legend { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); font-size: var(--text-sm); color: var(--ink-2); }
-.legend li { display: inline-flex; align-items: center; gap: 6px; }
+.legend li { display: inline-flex; align-items: baseline; gap: 6px; }
+.legend li > :first-child { align-self: center; }
 .legendName { color: var(--muted); }
 .dot_again, .dot_hard, .dot_good, .dot_easy { inline-size: 8px; block-size: 8px; border-radius: 50%; }
 .dot_again { background: var(--again); }
@@ -395,7 +412,8 @@
 .summaryFacts { display: grid; gap: var(--s-2); }
 .summaryFacts > div { display: flex; justify-content: space-between; gap: var(--s-4); align-items: baseline; }
 .summaryFacts dt { color: var(--muted); }
-.summaryFacts dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.summaryFacts dd { margin: 0; color: var(--ink-2); }
+.summaryFacts dd .num-lg { color: var(--ink); font-weight: 600; }
 .summaryInsight {
   display: flex;
   gap: var(--s-3);
@@ -408,7 +426,7 @@
   border: 1px solid var(--line);
 }
 .summaryInsight svg { color: var(--accent-strong); margin-block-start: 2px; }
-.summaryActions { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.summaryActions { display: flex; flex-wrap: wrap; gap: var(--s-3); padding-block-start: var(--s-6); border-block-start: 1px solid var(--line); }
 @media (max-width: 719px) { .summaryActions > * { flex: 1 1 100%; } }
 
 /* ── custom session ── */
@@ -479,9 +497,9 @@
 }
 
 /* ── card placement ── */
-/* Desktop: a short card sits in the optical centre of the space between the bars (a little above
-   the middle); a tall one starts at the top and the stage scrolls. Phones keep top alignment. */
-@media (min-width: 720px) and (min-height: 521px) {
+/* A short card sits in the optical centre of the space between the bars (a little above the
+   middle), on phones too; a tall one starts at the top and the stage scrolls. */
+@media (min-height: 521px) {
   .root:is([data-status='study'], [data-status='loading'], [data-status='leech']) .stage { display: flex; flex-direction: column; }
   .root:is([data-status='study'], [data-status='loading'], [data-status='leech']) .stage::before,
   .root:is([data-status='study'], [data-status='loading'], [data-status='leech']) .stage::after { content: ''; flex: 45 1 0; min-block-size: 0; }

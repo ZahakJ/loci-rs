@@ -16,13 +16,10 @@
 /* retrievability ring */
 .recall { display: flex; align-items: center; gap: var(--s-4); }
 .ring { position: relative; inline-size: 72px; block-size: 72px; flex-shrink: 0; display: grid; place-items: center; --tone: var(--accent); }
-.ring[data-tone='good'] { --tone: var(--good); }
-.ring[data-tone='hard'] { --tone: var(--hard); }
-.ring[data-tone='again'] { --tone: var(--again); }
 .ring svg { position: absolute; inset: 0; }
 .ringTrack { fill: none; stroke: var(--line); stroke-width: 4; }
 .ringArc { fill: none; stroke: var(--tone); stroke-width: 4; stroke-linecap: round; transition: stroke-dasharray var(--d-slow) var(--ease); }
-.ringValue { font-size: var(--text-md); font-weight: 650; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.ring .ringValue { font-size: var(--text-md); font-weight: 600; }
 .recallText { display: grid; gap: 2px; min-inline-size: 0; }
 .recallLabel { font-weight: 600; color: var(--ink); }
 .recallHelp { color: var(--muted); font-size: var(--text-sm); line-height: 1.45; }
@@ -47,10 +44,12 @@
 .history { display: grid; gap: var(--s-2); }
 .historyTitle { font-size: var(--text-sm); font-weight: 600; color: var(--ink-2); letter-spacing: 0.01em; }
 .historyEmpty { color: var(--muted); font-size: var(--text-sm); }
-.historyList { display: grid; }
+/* one 4-column grid for the whole list (date · grade · kind · interval), rows share its tracks */
+.historyList { display: grid; grid-template-columns: 4.75rem minmax(0, 1fr) auto minmax(3.5ch, auto); column-gap: var(--s-3); }
 .historyRow {
+  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 4.75rem minmax(0, 1fr) auto auto;
+  grid-template-columns: subgrid;
   align-items: center;
   gap: var(--s-3);
   min-block-size: 36px;
@@ -61,7 +60,7 @@
 .historyDate { color: var(--muted); font-variant-numeric: tabular-nums; }
 .historyGrade { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--ink); font-weight: 550; min-inline-size: 0; }
 .historyKind { color: var(--faint); font-size: var(--text-xs); }
-.historyIvl { color: var(--ink-2); min-inline-size: 3.5ch; text-align: end; }
+.historyIvl { color: var(--ink-2); text-align: end; }
 .gradeDot { inline-size: 8px; block-size: 8px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
 .again { background: var(--again); }
 .hard { background: var(--hard); }

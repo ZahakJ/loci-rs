@@ -18,6 +18,13 @@ interface UiState {
   helpOpen: boolean;
   setHelpOpen: (open: boolean) => void;
 
+  /** Study keycap hints for the current session: cards answered, and whether help was opened. */
+  studyHints: { answered: number; helpOpened: boolean };
+  /** a new study session starts: keycaps teach again */
+  resetStudyHints: () => void;
+  /** one card answered in the current session */
+  countStudyAnswer: () => void;
+
   busy: Record<string, BusyOp>;
   setBusy: (op: string, progress: Progress | null) => void;
 
@@ -52,7 +59,11 @@ export const useUi = create<UiState>((set, get) => ({
   closeAdd: () => set({ addSheet: { open: false } }),
 
   helpOpen: false,
-  setHelpOpen: (helpOpen) => set({ helpOpen }),
+  setHelpOpen: (helpOpen) => set(helpOpen ? { helpOpen, studyHints: { ...get().studyHints, helpOpened: true } } : { helpOpen }),
+
+  studyHints: { answered: 0, helpOpened: false },
+  resetStudyHints: () => set({ studyHints: { answered: 0, helpOpened: false } }),
+  countStudyAnswer: () => set({ studyHints: { ...get().studyHints, answered: get().studyHints.answered + 1 } }),
 
   busy: {},
   setBusy: (op, progress) => {

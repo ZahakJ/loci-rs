@@ -6,9 +6,13 @@
   --loci-again: var(--again);
   --loci-hard: var(--hard);
   --loci-mono: var(--font-mono);
-  --loci-io-fill: color-mix(in oklab, var(--line-strong) 72%, var(--surface));
-  --loci-io-stroke: color-mix(in oklab, var(--muted) 70%, var(--surface));
-  --loci-io-active: color-mix(in oklab, var(--accent) 62%, var(--surface));
+  /* image-occlusion masks: an opaque stone (light) or slate (dark) block with a visible edge; the
+     one being asked is brass-tinted with a 2px brass rule; revealed masks are dashed brass */
+  --loci-io-fill: color-mix(in oklab, var(--line-strong) 85%, var(--surface));
+  --loci-io-stroke: var(--muted);
+  --loci-io-stroke-width: 1px;
+  --loci-io-active: color-mix(in oklab, var(--accent) 22%, var(--loci-io-fill));
+  --loci-io-active-stroke: var(--accent);
 }
 :global(:root[data-card-align='center']) .host { --loci-card-align: center; }
 :global(:root[data-card-align='start']) .host { --loci-card-align: start; }

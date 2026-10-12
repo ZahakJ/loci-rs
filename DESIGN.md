@@ -152,6 +152,17 @@ positions* Again · Hard · Good · Easy (keys 1 2 3 4, space = Good), each show
 interval it would give, tinted by a 2px top rule in the grade colour (not filled; the
 screen stays calm). Keyboard caps shown on pointer devices, hidden on touch. Tap
 targets ≥ 48px.
+Keycaps teach, then step back: they show for the first 12 answers of a session, then fade
+(opacity, 200ms) and return while the pointer is over the bar or once `?` has been opened
+that session; never with Keyboard hints off. On phones the grade buttons are 56px tall,
+8px apart, with a 12px gutter and the safe-area inset below. **[changed in 0.2]**
+
+Desk and paper **[changed in 0.2]**: the stage is the flat `--bg` desk; on desktop the card is
+a `--surface` sheet with radius 16 and `--paper-shadow` (light: hairline plus a 1–2px lift; dark:
+hairline plus a faint inset top highlight), sized by its content (40/48px padding, 32/24 at
+720–1023px, at least 7rem), placed at the optical centre (45/55). Phones have no sheet; a short
+card is centred the same way, a tall one starts at the top and scrolls. Top-bar counts show a
+zero as a quiet `0` in `--faint`, never a dash.
 
 Keys: `space/enter` show or Good · `1–4` grade · `z` undo · `e` edit · `s` suspend ·
 `b` bury · `f` toggle flag, `ctrl+1..7` flag colours · `m` mark (tag `marked`) · `i`
@@ -290,6 +301,7 @@ Additions in 0.2 **[changed in 0.2]**:
 - `--text-2xs` 0.6875rem (11) and `--text-3xs` 0.625rem (10, keycaps and chart axes only); no `px` font sizes. **[changed in 0.2]**
 - `.num` / `.num-lg`: JetBrains Mono, tabular, weight 500, for numbers read as data. **[changed in 0.2]**
 - One Arabic stack, `--font-arabic: 'Noto Naskh Arabic', serif`, referenced by every other stack and by the card (`--loci-arabic-font`). **[changed in 0.2]**
+- `--paper-shadow` (study card, card previews) in both themes; in dark the cloze colour is `--accent` (`--accent-strong` is too pale on slate paper). Image-occlusion masks: `--line-strong` 85% over surface with a 1px `--muted` edge; the asked mask brass 22% with a 2px brass rule. **[changed in 0.2]**
 - Contrast (`pnpm contrast`, `docs/design/contrast-0.2.md`): light counts darkened to new `oklch(54% .15 250)`, learn `oklch(55% .16 50)`, due `oklch(52% .14 150)`; light grades to hard `oklch(66% .14 65)`, good `oklch(63% .14 150)`, easy `oklch(64% .12 230)`; light danger `oklch(56% .19 25)`; pill text mixes 68% tone into ink (was 82%). Hues unchanged. **[changed in 0.2]**
 
 Theme follows the system by default; both themes are designed (not inverted): the

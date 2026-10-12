@@ -56,9 +56,9 @@ function Ring({ value }: { value: number | null }) {
   const r = 26;
   const c = 2 * Math.PI * r;
   const v = value === null ? 0 : Math.max(0, Math.min(1, value));
-  const tone = value === null ? 'none' : v >= 0.85 ? 'good' : v >= 0.7 ? 'hard' : 'again';
+  // brass, whatever the value: the number says how likely, the colour does not judge it
   return (
-    <div className={s.ring} data-tone={tone}>
+    <div className={s.ring}>
       <svg viewBox="0 0 64 64" width="72" height="72" aria-hidden>
         <circle cx="32" cy="32" r={r} className={s.ringTrack} />
         {value !== null && (

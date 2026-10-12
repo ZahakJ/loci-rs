@@ -17,7 +17,7 @@ export function EmptyState({ icon = 'palace', title, body, actions, compact, cla
   const H = headingLevel === 2 ? 'h2' : 'h3';
   return (
     <div className={cx(s.empty, compact && s.compact, className)}>
-      <div className={s.mark} aria-hidden><Icon name={icon} size={26} /></div>
+      <div className={s.mark} aria-hidden><Icon name={icon} size={20} /></div>
       <H className={s.title}>{title}</H>
       {body && <p className={s.body}>{body}</p>}
       {actions && <div className={s.actions}>{actions}</div>}

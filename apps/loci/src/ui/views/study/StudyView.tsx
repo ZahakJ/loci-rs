@@ -30,7 +30,7 @@ import { SessionSummary } from './SessionSummary';
 import { SetDueSheet } from './SetDueSheet';
 import { TopBar, type QueueKind } from './TopBar';
 import {
-  cappedElapsed, countOneByOne, frontFieldOrd, gradedAnnouncement, moreNewOffer, parseCustom, sessionProgress, totalRemaining, undoSubject,
+  cappedElapsed, countOneByOne, frontFieldOrd, gradedAnnouncement, keyHints, moreNewOffer, parseCustom, sessionProgress, totalRemaining, undoSubject,
   type CustomKind,
 } from './format';
 import { isInteractiveElement, matchStudyKey, type StudyAction } from './keys';
@@ -117,6 +117,8 @@ function StudySession({ deckId, custom, onRestart }: { deckId: number | null; cu
   const [explainer, setExplainer] = useState<ExplainerState>(() => readExplainer());
 
   const settings = useUi((st) => st.settings);
+  const studyHints = useUi((st) => st.studyHints);
+  const [barHover, setBarHover] = useState(false);
   const finePointer = useMedia('(pointer: fine)');
   const touchOnly = useTouchOnly();
   const frame = useRef<CardFrameHandle>(null);
@@ -192,6 +194,9 @@ function StudySession({ deckId, custom, onRestart }: { deckId: number | null; cu
     })();
     return () => { alive = false; };
   }, [deckId, custom, show]);
+
+  // Keycaps teach again in every new session (count of answers, help opened).
+  useEffect(() => { useUi.getState().resetStudyHints(); }, []);
 
   // End the session when leaving the screen.
   useEffect(() => () => { if (sessionOpen.current) { sessionOpen.current = false; void api.endStudy().catch(() => undefined); } }, []);
@@ -287,6 +292,7 @@ function StudySession({ deckId, custom, onRestart }: { deckId: number | null; cu
       const [res] = await Promise.all([api.answerCard(card.card.id, r, elapsedMs), wait(motionMs('--d-base', 0.8))]);
       history.current.push('grade');
       setDone((d) => d + 1);
+      useUi.getState().countStudyAnswer();
       setCounts(res.counts);
       const said = gradedAnnouncement(r, card.preview);
       if (res.becameLeech) {
@@ -563,6 +569,10 @@ function StudySession({ deckId, custom, onRestart }: { deckId: number | null; cu
   const remaining = totalRemaining(counts);
   const progress = status === 'summary' ? 1 : sessionProgress(done, remaining);
   const showKeys = !touchOnly;
+  const hints = keyHints({
+    answered: studyHints.answered, hover: barHover, helpOpened: studyHints.helpOpened,
+    setting: settings?.showKeyboardHints ?? true, touch: touchOnly,
+  });
   const hasCard = !!current && status === 'study';
   const pending = oneByOnePending(obo);
 
@@ -707,7 +717,9 @@ function StudySession({ deckId, custom, onRestart }: { deckId: number | null; cu
       {(status === 'study' || status === 'loading' || status === 'leech') && (
         <AnswerBar
           mode={status === 'study' ? barMode : { kind: 'idle' }}
-          showKeys={showKeys}
+          showKeys={hints !== 'off'}
+          keysFaded={hints === 'faded'}
+          onHoverChange={setBarHover}
           busy={busy}
           onShow={reveal}
           onRevealNext={revealNext}

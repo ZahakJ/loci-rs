@@ -262,7 +262,7 @@ export const LOCI_CARD_BASE_CSS = `
 .card :where(li) { margin: .15em 0; }
 .card :where(li::marker) { color: var(--_muted); }
 .card :where(a) { color: var(--_accent); text-decoration-thickness: 1px; text-underline-offset: .18em; }
-.card :where(blockquote) { margin: .75em 0; padding-inline-start: 1em; border-inline-start: 2px solid var(--_line); color: var(--_muted); }
+.card :where(blockquote) { margin: .75em 0; padding-inline-start: 1em; border-inline-start: 2px solid color-mix(in oklch, var(--_muted) 45%, transparent); color: var(--_muted); }
 .card :where(small, sub, sup) { font-size: .75em; }
 .card :where(mark) { background: color-mix(in oklch, var(--_accent) 22%, transparent); color: inherit; padding: 0 .1em; border-radius: 2px; }
 
@@ -285,7 +285,7 @@ export const LOCI_CARD_BASE_CSS = `
 .card :where(code, kbd, samp, pre) { font-family: var(--_mono); font-size: .82em; }
 .card :where(code, kbd) { background: color-mix(in oklch, var(--_line) 45%, transparent); padding: .08em .3em; border-radius: 4px; }
 .card :where(kbd) { border: 1px solid var(--_line); border-bottom-width: 2px; }
-.card :where(pre) { text-align: start; direction: ltr; background: var(--_surface); border: 1px solid var(--_line); border-radius: 10px; padding: .8em 1em; overflow-x: auto; line-height: 1.5; white-space: pre; }
+.card :where(pre) { text-align: start; direction: ltr; background: color-mix(in oklch, var(--_line) 25%, var(--_surface)); border: 1px solid var(--_line); border-radius: 10px; padding: .8em 1em; overflow-x: auto; line-height: 1.5; white-space: pre; }
 .card :where(pre code) { background: none; padding: 0; font-size: 1em; }
 
 /* ruby (furigana) */

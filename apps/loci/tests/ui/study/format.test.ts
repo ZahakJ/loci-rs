@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { SchedulingPreview } from '@core/types';
 import {
-  answerAudio, cappedElapsed, countOneByOne, formatClock, formatCustom, frontFieldOrd, gradeLabel, gradeShares,
-  gradedAnnouncement, intervalWords, isDueSyntax, labelWords, moreNewOffer, parseCustom, sessionProgress, splitDeckName, undoSubject,
+  KEY_HINT_CARDS, answerAudio, cappedElapsed, countOneByOne, countText, formatClock, formatCustom, frontFieldOrd, gradeLabel, gradeShares,
+  gradedAnnouncement, intervalWords, isDueSyntax, labelWords, keyHints, moreNewOffer, parseCustom, sessionProgress, splitDeckName, undoSubject,
+  type KeyHintInput,
 } from '@ui/views/study/format';
 
 const preview: SchedulingPreview = {
@@ -129,5 +130,41 @@ describe('frontFieldOrd', () => {
   });
   it('uses the field holding this cloze', () => {
     expect(frontFieldOrd([], true, 1, ['Text', 'Extra'], ['{{c1::a}}', '{{c2::b}}'])).toBe(1);
+  });
+});
+
+describe('top-bar counts', () => {
+  it('shows a zero as a quiet 0, never a dash', () => {
+    expect(countText(0)).toEqual({ text: '0', zero: true });
+    expect(countText(0).text).not.toMatch(/[–-]/);
+    expect(countText(7)).toEqual({ text: '7', zero: false });
+    expect(countText(1234).text).toBe((1234).toLocaleString());
+  });
+  it('treats negatives and non-numbers as zero', () => {
+    expect(countText(-3)).toEqual({ text: '0', zero: true });
+    expect(countText(Number.NaN)).toEqual({ text: '0', zero: true });
+  });
+});
+
+describe('keycap hints that fade', () => {
+  const base: KeyHintInput = { answered: 0, hover: false, helpOpened: false, setting: true, touch: false };
+  it('shows the caps for the first cards of a session', () => {
+    expect(KEY_HINT_CARDS).toBe(12);
+    expect(keyHints(base)).toBe('shown');
+    expect(keyHints({ ...base, answered: KEY_HINT_CARDS - 1 })).toBe('shown');
+  });
+  it('fades them after that', () => {
+    expect(keyHints({ ...base, answered: KEY_HINT_CARDS })).toBe('faded');
+    expect(keyHints({ ...base, answered: 500 })).toBe('faded');
+  });
+  it('brings them back while hovering the bar or once help was opened', () => {
+    expect(keyHints({ ...base, answered: 40, hover: true })).toBe('shown');
+    expect(keyHints({ ...base, answered: 40, helpOpened: true })).toBe('shown');
+  });
+  it('never shows them when the setting is off or on touch screens', () => {
+    expect(keyHints({ ...base, setting: false })).toBe('off');
+    expect(keyHints({ ...base, setting: false, hover: true, helpOpened: true })).toBe('off');
+    expect(keyHints({ ...base, touch: true })).toBe('off');
+    expect(keyHints({ ...base, touch: true, answered: 40, hover: true })).toBe('off');
   });
 });

@@ -138,6 +138,7 @@ export default function BacklogView({ deckId }: { deckId: number | null }) {
               <PlanCard
                 title={t('catchUp.lowerRetention')}
                 sentence={planSentence(plans['lower-retention'], r, current)}
+                figures={[`${Math.round(lowered * 100)}%`, `${Math.round(current * 100)}%`]}
                 busy={applying === 'lower-retention'}
                 disabled={applying !== null}
                 onChoose={() => void apply('lower-retention')}
@@ -183,11 +184,11 @@ export default function BacklogView({ deckId }: { deckId: number | null }) {
           <div className={s.result}>
             <div className={s.resultFigures}>
               <div className={s.figure}>
-                <span className={s.figureValue}>{formatCount(result.result.keptToday)}</span>
+                <span className={cx(s.figureValue, 'num-lg')}>{formatCount(result.result.keptToday)}</span>
                 <span className={s.figureLabel}>{t('catchUpView.keptToday')}</span>
               </div>
               <div className={s.figure}>
-                <span className={s.figureValue}>{formatCount(result.result.postponed)}</span>
+                <span className={cx(s.figureValue, 'num-lg')}>{formatCount(result.result.postponed)}</span>
                 <span className={s.figureLabel}>{t('catchUpView.postponed')}</span>
               </div>
             </div>
@@ -200,8 +201,22 @@ export default function BacklogView({ deckId }: { deckId: number | null }) {
   );
 }
 
-function PlanCard({ title, sentence, control, recommended, busy, disabled, onChoose }: {
-  title: string; sentence: string; control?: ReactNode; recommended?: boolean; busy: boolean; disabled: boolean; onChoose: () => void;
+/** The sentence with its key figures in <strong>, as Settings writes the retention sentence. */
+function withFigures(text: string, figures: string[] = []): ReactNode {
+  const out: ReactNode[] = [];
+  let rest = text;
+  for (const f of figures) {
+    const at = rest.indexOf(f);
+    if (at < 0) continue;
+    out.push(rest.slice(0, at), <strong key={out.length}>{f}</strong>);
+    rest = rest.slice(at + f.length);
+  }
+  out.push(rest);
+  return out;
+}
+
+function PlanCard({ title, sentence, figures, control, recommended, busy, disabled, onChoose }: {
+  title: string; sentence: string; figures?: string[]; control?: ReactNode; recommended?: boolean; busy: boolean; disabled: boolean; onChoose: () => void;
 }) {
   return (
     <li className={cx(s.plan, recommended && s.recommended)}>
@@ -210,7 +225,7 @@ function PlanCard({ title, sentence, control, recommended, busy, disabled, onCho
         {recommended && <Pill tone="accent">{t('common.recommended')}</Pill>}
       </div>
       {control && <div className={s.planControl}>{control}</div>}
-      <p className={s.planSentence} aria-live="polite">{sentence}</p>
+      <p className={s.planSentence} aria-live="polite">{withFigures(sentence, figures)}</p>
       <div className={s.planFoot}>
         <Button variant={recommended ? 'primary' : 'secondary'} onClick={onChoose} loading={busy} disabled={disabled && !busy} block>
           {t('catchUpView.choosePlan')}

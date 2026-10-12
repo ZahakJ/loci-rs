@@ -5,7 +5,7 @@ import { IconButton } from '../../design/primitives/Button';
 import { Menu, type MenuEntry } from '../../design/primitives/Menu';
 import { Pill } from '../../design/primitives/Pill';
 import { cx } from '../../design/primitives/layer';
-import { formatClock, splitDeckName } from './format';
+import { countText, formatClock, splitDeckName } from './format';
 import s from './Study.module.css';
 import { Tooltip } from '../../design/primitives/Tooltip';
 
@@ -29,16 +29,13 @@ export interface TopBarProps {
 
 /** One count pill whose number ticks when it changes. */
 function CountPill({ tone, value, label, current }: { tone: 'new' | 'learn' | 'due'; value: number; label: string; current: boolean }) {
+  const { text, zero } = countText(value);
   return (
     <Tooltip content={label} placement="bottom">
       <span className={cx(s.countWrap, current && s.countCurrent)}>
-        {value === 0
-          ? <Pill tone={tone} value={0} label={label} />
-          : (
-            <Pill tone={tone} label={label} num>
-              <span key={value} className={s.tick}>{value.toLocaleString()}</span>
-            </Pill>
-          )}
+        <Pill tone={tone} label={label} num className={zero ? s.countZero : undefined}>
+          <span key={value} className={s.tick}>{text}</span>
+        </Pill>
       </span>
     </Tooltip>
   );
