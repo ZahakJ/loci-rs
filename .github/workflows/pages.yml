@@ -1,4 +1,5 @@
-# Builds the project site (landing page + manual) and publishes it to GitHub Pages.
+# Builds the project site (landing page + manual + the browser app under /app/) and publishes it
+# to GitHub Pages.
 name: pages
 
 on:
@@ -20,6 +21,49 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: C toolchain for SQLite on wasm32 (clang, llvm-ar)
+        run: sudo apt-get update && sudo apt-get install -y clang llvm
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.0
+          targets: wasm32-unknown-unknown
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ". -> target"
+          key: pages-wasm
+
+      # Must match the wasm-bindgen version in Cargo.lock.
+      - name: Install wasm-bindgen-cli 0.2.129
+        run: |
+          curl -fsSL https://github.com/wasm-bindgen/wasm-bindgen/releases/download/0.2.129/wasm-bindgen-0.2.129-x86_64-unknown-linux-musl.tar.gz \
+            | sudo tar xz -C /usr/local/bin --strip-components=1 wasm-bindgen-0.2.129-x86_64-unknown-linux-musl/wasm-bindgen
+          wasm-bindgen --version
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: pnpm
+          cache-dependency-path: apps/loci/pnpm-lock.yaml
+
+      - name: Build the browser app (engine as WebAssembly, PWA)
+        working-directory: apps/loci
+        env:
+          CARGO_BUILD_JOBS: 4
+          CC_wasm32_unknown_unknown: clang
+          AR_wasm32_unknown_unknown: llvm-ar
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build:wasm
+          pnpm test:wasm
+          pnpm build:web
+
       - name: Install mdBook
         run: |
           curl -fsSL https://github.com/rust-lang/mdBook/releases/download/v0.5.4/mdbook-v0.5.4-x86_64-unknown-linux-musl.tar.gz \

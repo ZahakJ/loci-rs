@@ -34,7 +34,8 @@ async function fail(res: Response): Promise<never> {
   throw { code: err?.code ?? 'io', message: err?.message ?? `The engine answered ${res.status}` };
 }
 
-function downloadBlob(bytes: Uint8Array, filename: string, mime: string): void {
+/** Saves bytes as a browser download. */
+export function downloadBlob(bytes: Uint8Array, filename: string, mime: string): void {
   const blob = new Blob([bytes as BlobPart], { type: mime });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');

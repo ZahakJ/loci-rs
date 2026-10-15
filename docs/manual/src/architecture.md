@@ -10,8 +10,11 @@ crates/loci-core    the engine: SQLite (rusqlite, FTS5), FSRS-6 and SM-2, Anki p
                     catch-up, rotating backups, integrity check. A pure library with its own tests.
 crates/loci-cli     `loci`: import, export, due, study, stats, backup, integrity, and `serve`
                     (the engine over local HTTP for development and the end-to-end tests).
+crates/loci-web     the engine compiled to WebAssembly for the browser build: a Web Worker runs it,
+                    SQLite keeps the collection, media and backups in the origin-private file system.
 apps/loci           the Tauri 2 app for Linux, Windows, macOS and Android: React UI calling the
-                    engine through Tauri `invoke`.
+                    engine through Tauri `invoke`; the same UI with `VITE_LOCI_TARGET=web` is the
+                    browser build (`pnpm build:wasm && pnpm build:web`, served at /loci-rs/app/).
 ```
 
 The engine is entirely Rust. The interface stays web technology, React in a Tauri webview, because Anki cards are HTML and need a real HTML renderer. Everything that is logic lives in `loci-core`, so the desktop app, the Android app and the CLI share one tested implementation. The three are members of one Cargo workspace (`crates/loci-core`, `crates/loci-cli`, `apps/loci/src-tauri`), and the toolchain is pinned to Rust 1.99.0 by `rust-toolchain.toml`.

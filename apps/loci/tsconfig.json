@@ -15,7 +15,7 @@
     "skipLibCheck": true,
     "noEmit": true,
     "types": ["vite/client", "node"],
-    "paths": { "@core/*": ["./src/core/*"], "@ui/*": ["./src/ui/*"] },
+    "paths": { "@core/*": ["./src/core/*"], "@ui/*": ["./src/ui/*"], "@loci-web-spawn": ["./src/bridge/wasm-spawn.ts"] },
     "baseUrl": "."
   },
   "include": ["src", "tests"]

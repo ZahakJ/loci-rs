@@ -86,6 +86,8 @@
   "boot.failedBody": "Nothing has been changed or lost. This usually means the browser blocked storage for this site, or another tab is holding the collection open.",
   "boot.failedTitle": "Loci could not open your collection",
   "boot.opening": "Opening your collection",
+  "boot.otherTabBody": "Close it there, then try again here.",
+  "boot.otherTabTitle": "Loci is open in another tab",
   "boot.retry": "Try again",
   "browse": {
     "title": "Browse",

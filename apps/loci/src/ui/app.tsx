@@ -1,7 +1,7 @@
 import { Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { t } from '@core/i18n/i18n';
 import type { IntegrityReport } from '@core/types';
-import { api, errorCode, errorMessage, isCallerError, onCollectionEvent, openReport, ready } from './api';
+import { api, errorCode, errorMessage, isCallerError, isOtherTabError, onCollectionEvent, openReport, ready } from './api';
 import { Toaster, toast } from './design/primitives/Toast';
 import { useMedia } from './design/primitives/layer';
 import { useGlobalKeys } from './keys/useGlobalKeys';
@@ -40,7 +40,7 @@ function renderView(route: Route): ReactNode {
 export function App() {
   const route = useRoute();
   const [boot, setBoot] = useState<'loading' | 'ready' | 'error'>('loading');
-  const [bootError, setBootError] = useState<string>('');
+  const [bootError, setBootError] = useState<{ message: string; otherTab: boolean }>({ message: '', otherTab: false });
   const [integrity, setIntegrity] = useState<IntegrityReport | null>(null);
   const isPhone = useMedia('(max-width: 719px)');
   const addSheet = useUi((s) => s.addSheet);
@@ -71,7 +71,7 @@ export function App() {
         void import('../bridge').then((b) => b.reportReady());
       } catch (e) {
         if (!alive) return;
-        setBootError(errorMessage(e));
+        setBootError({ message: errorMessage(e), otherTab: isOtherTabError(e) });
         setBoot('error');
       }
     })();
@@ -149,7 +149,7 @@ export function App() {
   }, [routeKey, boot]);
 
   if (boot === 'loading') return <Splash />;
-  if (boot === 'error') return <BootError message={bootError} />;
+  if (boot === 'error') return <BootError message={bootError.message} otherTab={bootError.otherTab} />;
 
   const addOpen = route.name === 'add' || addSheet.open;
   const underlying = route.name === 'add' ? lastRoute.current : route;

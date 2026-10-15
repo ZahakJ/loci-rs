@@ -1,4 +1,6 @@
 > Rust edition: where this document says the collection lives in the browser's origin-private file system, it now lives as real files in the platform app-data directory (`collection.sqlite`, `media/`, `backups/`), app-internal storage on Android. Everything else is unchanged.
+>
+> The browser build (`crates/loci-web`, served at /loci-rs/app/) keeps `collection.sqlite` and `blobs.sqlite` (media and backups as rows, each write one transaction) in the origin-private file system through sqlite-wasm-rs's SyncAccessHandle-pool VFS (pool directory `.loci-rs`), takes the Web Lock `loci-rs-collection`, asks for `navigator.storage.persist()` on the first write, and restores a backup through SQLite's backup API in one transaction instead of a file rename. Its paths are tested by `crates/loci-web/tests/smoke.mjs` (Node, in-memory VFS) and `apps/loci/tests/web/pwa.spec.ts` (Chrome, OPFS).
 
 # Data safety
 

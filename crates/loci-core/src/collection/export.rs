@@ -8,7 +8,6 @@ use crate::anki::{
     extract_media_references, extract_template_media_references, percent_decode, write_legacy_package, AnkiCollectionConfig,
     AnkiDeck, AnkiDeckConfig, AnkiImage, AnkiMediaEntry, WriteLegacyOptions,
 };
-use crate::blobs::BlobStore;
 use crate::collection::import::source_today;
 use crate::collection::internals::{meta, CollectionCore};
 use crate::collection::media::MEDIA_PREFIX;
@@ -167,7 +166,7 @@ pub fn build_export_image(core: &CollectionCore, options: &ExportOptions) -> Res
             }
         }
     }
-    let blobs = BlobStore::new(core.blobs.root().to_path_buf());
+    let blobs = core.blobs.clone();
     let media_reader = Box::new(move |name: &str| -> Result<Vec<u8>> {
         blobs
             .get(&format!("{MEDIA_PREFIX}{name}"))?

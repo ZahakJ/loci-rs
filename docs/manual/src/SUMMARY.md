@@ -2,6 +2,7 @@
 
 - [Introduction](introduction.md)
 - [Getting started](getting-started.md)
+- [Loci in the browser](browser.md)
 - [The data model and Anki compatibility](data-model.md)
 - [FSRS-6, from first principles](fsrs.md)
 - [Import, export and backups](import-export-backups.md)

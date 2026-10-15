@@ -228,6 +228,7 @@ impl Engine {
     /// The schema is created or migrated by the first `open` call (or lazily by the first method).
     pub fn open(dir: impl AsRef<Path>) -> Result<Engine> {
         let dir = dir.as_ref().to_path_buf();
+        #[cfg(not(target_arch = "wasm32"))]
         std::fs::create_dir_all(&dir)?;
         let collection = Collection::open_dir(&dir, None, None)?;
         Ok(Engine { dir, collection, opened: false })

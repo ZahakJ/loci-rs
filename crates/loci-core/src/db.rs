@@ -78,6 +78,8 @@ impl Db {
     /// Opens (creating if needed) a database file. Parent directories are created.
     pub fn open(path: impl AsRef<Path>) -> Result<Db> {
         let path = path.as_ref().to_path_buf();
+        // wasm32 has no file system: the path names a file in SQLite's default VFS.
+        #[cfg(not(target_arch = "wasm32"))]
         if let Some(parent) = path.parent() {
             if !parent.as_os_str().is_empty() {
                 std::fs::create_dir_all(parent)?;
@@ -215,10 +217,35 @@ impl Db {
         self.conn.close().map_err(|(_, e)| LociError::from(e))
     }
 
-    /// Atomically replaces the database file at `path` with `bytes` (temp file + rename) and
-    /// opens it. Every connection to `path` must be closed first.
+    /// Atomically replaces the database file at `path` with `bytes` and opens it. Every
+    /// connection to `path` must be closed first. Native: temp file + rename. wasm32 (no file
+    /// system): `replace_contents`.
     pub fn replace_file(path: impl AsRef<Path>, bytes: &[u8]) -> Result<Db> {
-        let path = path.as_ref();
+        #[cfg(target_arch = "wasm32")]
+        return Db::replace_contents(path, bytes);
+        #[cfg(not(target_arch = "wasm32"))]
+        Db::replace_file_by_rename(path.as_ref(), bytes)
+    }
+
+    /// Replaces the contents of the database at `path` with `bytes` through SQLite's backup API, in
+    /// one write transaction of the destination (a crash leaves the old contents, rolled back from
+    /// the journal), and returns the open database. Works in any VFS.
+    pub fn replace_contents(path: impl AsRef<Path>, bytes: &[u8]) -> Result<Db> {
+        let src = Db::open_from_bytes(bytes)?;
+        let mut dst = Db::open(path)?;
+        {
+            let backup = rusqlite::backup::Backup::new(&src.conn, &mut dst.conn)?;
+            match backup.step(-1)? {
+                rusqlite::backup::StepResult::Done => {}
+                _ => return Err(LociError::busy("The database is in use and cannot be replaced")),
+            }
+        }
+        src.close()?;
+        Ok(dst)
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    fn replace_file_by_rename(path: &Path, bytes: &[u8]) -> Result<Db> {
         if !is_sqlite_image(bytes) {
             return Err(LociError::corrupt("Not an SQLite database"));
         }
@@ -280,6 +307,25 @@ mod tests {
         db.execute_batch("CREATE TABLE u (name TEXT COLLATE unicase)").unwrap();
         db.run("INSERT INTO u VALUES ('Straße')", []).unwrap();
         assert_eq!(db.count("SELECT count(*) FROM u WHERE name = 'STRASSE'", []).unwrap(), 1);
+    }
+
+    #[test]
+    fn replace_contents_swaps_the_database_in_place() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("c.sqlite");
+        let live = Db::open(&path).unwrap();
+        live.execute_batch("CREATE TABLE old (x); INSERT INTO old VALUES (1)").unwrap();
+        live.close().unwrap();
+        let image = Db::memory().unwrap();
+        image.execute_batch("CREATE TABLE t (x); INSERT INTO t VALUES (7), (8)").unwrap();
+        let bytes = image.serialize().unwrap();
+        let db = Db::replace_contents(&path, &bytes).unwrap();
+        assert_eq!(db.count("SELECT count(*) FROM t", []).unwrap(), 2);
+        assert!(db.count("SELECT count(*) FROM old", []).is_err());
+        db.close().unwrap();
+        let reopened = Db::open(&path).unwrap();
+        assert_eq!(reopened.scalar::<i64, _>("SELECT max(x) FROM t", []).unwrap(), Some(8));
+        assert!(Db::replace_contents(&path, b"garbage").is_err());
     }
 
     #[test]

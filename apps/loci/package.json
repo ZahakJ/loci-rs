@@ -11,10 +11,14 @@
   "scripts": {
     "dev": "vite --port 5740 --strictPort",
     "build": "tsc -p tsconfig.json --noEmit && vite build",
+    "build:wasm": "sh scripts/build-wasm.sh",
+    "build:web": "tsc -p tsconfig.json --noEmit && VITE_LOCI_TARGET=web vite build",
     "preview": "vite preview --port 5742 --strictPort --host 127.0.0.1",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "test:wasm": "node ../../crates/loci-web/tests/smoke.mjs wasm",
+    "test:web": "playwright test -c playwright.web.config.ts",
     "contrast": "node --experimental-strip-types scripts/contrast.ts",
     "tauri": "tauri"
   },
