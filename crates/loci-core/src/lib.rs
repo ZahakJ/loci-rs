@@ -14,6 +14,7 @@ pub mod rpc;
 pub mod scheduler;
 pub mod search;
 pub mod stats;
+pub mod sync;
 pub mod template;
 pub mod text;
 pub mod types;

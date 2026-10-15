@@ -23,6 +23,7 @@
 use crate::collection::settings::parse_patch;
 use crate::collection::Collection;
 use crate::error::{LociError, Result};
+use crate::sync::SyncExportOptions;
 use crate::types::*;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
@@ -131,12 +132,18 @@ pub const METHODS: &[&str] = &[
     "updateNote",
     "backupOnLeave",
     "autoBackup",
+    "syncStatus",
+    "setSyncFolder",
+    "exportSyncBundle",
+    "mergeSyncBundle",
+    "syncMediaState",
+    "addSyncMedia",
 ];
 
 /// Methods whose byte argument travels outside `args`.
-pub const TAKES_BYTES: &[&str] = &["previewImport", "importPackage", "addMedia"];
+pub const TAKES_BYTES: &[&str] = &["previewImport", "importPackage", "addMedia", "mergeSyncBundle", "addSyncMedia"];
 /// Methods whose result is `Payload::Bytes`.
-pub const RETURNS_BYTES: &[&str] = &["getMedia", "exportPackage", "exportFullBackup"];
+pub const RETURNS_BYTES: &[&str] = &["getMedia", "exportPackage", "exportFullBackup", "exportSyncBundle"];
 
 pub fn is_method(name: &str) -> bool {
     METHODS.contains(&name)
@@ -190,6 +197,9 @@ pub fn is_write(name: &str) -> bool {
             | "startStudy"
             | "startCustomStudy"
             | "endStudy"
+            | "syncStatus"
+            | "syncMediaState"
+            | "exportSyncBundle"
     )
 }
 
@@ -284,6 +294,20 @@ impl Engine {
             _ => {}
         }
         self.ensure_open()?;
+        let out = self.dispatch_open(method, args, bytes, progress)?;
+        if is_write(method) && method != "mergeSyncBundle" {
+            self.collection.sync_after_write();
+        }
+        Ok(out)
+    }
+
+    fn dispatch_open(
+        &mut self,
+        method: &str,
+        args: &[Value],
+        bytes: Option<&[u8]>,
+        progress: &mut dyn FnMut(Progress),
+    ) -> Result<Payload> {
         let c = &mut self.collection;
         let m = method;
         match method {
@@ -459,6 +483,15 @@ impl Engine {
             )?),
             "backupOnLeave" => json(c.backup_on_leave()?),
             "autoBackup" => json(c.auto_backup()?),
+            "syncStatus" => json(c.sync_status()?),
+            "setSyncFolder" => json(c.set_sync_folder(arg::<Option<String>>(args, 0, m, "folder")?.as_deref())?),
+            "exportSyncBundle" => {
+                let options: Option<SyncExportOptions> = arg(args, 0, m, "options")?;
+                Ok(Payload::Bytes(Some(c.export_sync_bundle(&options.unwrap_or_default())?)))
+            }
+            "mergeSyncBundle" => json(c.merge_sync_bundle(need_bytes(bytes, m)?)?),
+            "syncMediaState" => json(c.sync_media_state()?),
+            "addSyncMedia" => json(c.add_sync_media(&arg::<String>(args, 0, m, "sha1")?, need_bytes(bytes, m)?)?),
             other => Err(LociError::invalid(format!("Unknown method {other}"))),
         }
     }
@@ -475,7 +508,7 @@ mod tests {
 
     #[test]
     fn method_table_is_complete_and_sorted_enough() {
-        assert_eq!(METHODS.len(), 78);
+        assert_eq!(METHODS.len(), 84);
         assert!(is_method("answerCard"));
         assert!(!is_method("dropTables"));
         assert!(takes_bytes("addMedia") && returns_bytes("getMedia"));

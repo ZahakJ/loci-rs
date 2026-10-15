@@ -102,7 +102,7 @@ pub struct UndoSnapshot {
     pub presets: Vec<PresetRow>,
 }
 
-fn sql_to_json(v: rusqlite::types::ValueRef<'_>) -> Value {
+pub(crate) fn sql_to_json(v: rusqlite::types::ValueRef<'_>) -> Value {
     use rusqlite::types::ValueRef as V;
     match v {
         V::Null => Value::Null,
@@ -113,7 +113,7 @@ fn sql_to_json(v: rusqlite::types::ValueRef<'_>) -> Value {
     }
 }
 
-fn json_to_sql(v: &Value) -> SqlValue {
+pub(crate) fn json_to_sql(v: &Value) -> SqlValue {
     match v {
         Value::Null => SqlValue::Null,
         Value::Bool(b) => SqlValue::Integer(*b as i64),

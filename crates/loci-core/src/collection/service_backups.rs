@@ -115,6 +115,7 @@ impl Collection {
         self.session = None;
         self.backup_before_replacing()?;
         let last_backup = self.core.get_meta(meta::LAST_BACKUP)?;
+        let carry = crate::sync::state::carry(self.core.db());
         {
             let db = self.core.db();
             db.transaction(|| {
@@ -144,6 +145,7 @@ impl Collection {
         }
         self.core.invalidate_caches();
         self.open()?;
+        crate::sync::state::after_replace(&self.core, &carry)?;
         if let Some(lb) = last_backup {
             self.core.set_meta(meta::LAST_BACKUP, Some(&lb))?;
         }
@@ -167,6 +169,7 @@ impl Collection {
     pub fn replace_database(&mut self, bytes: &[u8]) -> Result<()> {
         self.session = None;
         self.reconnect_if_closed().ok();
+        let carry = crate::sync::state::carry(self.core.db());
         let old = self.core.set_db(Db::memory()?);
         old.close()?;
         self.closed = true;
@@ -177,6 +180,7 @@ impl Collection {
         self.core.set_db(next);
         self.closed = false;
         undo::clear(self.core.db())?;
+        crate::sync::state::after_replace(&self.core, &carry)?;
         Ok(())
     }
 }

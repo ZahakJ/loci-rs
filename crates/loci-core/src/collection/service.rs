@@ -135,6 +135,7 @@ impl Collection {
         let core = &self.core;
         core.db().execute_batch(SCHEMA_SQL)?;
         core.db().execute_batch(EXTRA_SQL)?;
+        core.db().execute_batch(&crate::sync::schema_sql())?;
         core.invalidate_caches();
         match core.get_meta(meta::SCHEMA_VERSION)? {
             None => self.seed()?,
