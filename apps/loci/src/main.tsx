@@ -25,3 +25,8 @@ createRoot(document.getElementById('root')!).render(
 );
 
 installLeaveBackup();
+
+// The browser build works offline: the service worker precaches the whole app.
+if (import.meta.env.VITE_LOCI_TARGET === 'web' && import.meta.env.PROD && 'serviceWorker' in navigator) {
+  navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch((e: unknown) => console.warn('service worker', e));
+}

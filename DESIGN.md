@@ -63,6 +63,10 @@ decks as persistent objects (import converts them back to home decks; a lightwei
 | `cargo test` + `vitest` + Playwright (system Chrome, against `loci serve`) | Core behaviour in Rust tests; UI helpers in vitest; the 16 end-to-end flows against the real engine. |
 
 No service worker, no OPFS, no `sqlite-wasm`, no worker RPC: the engine runs in-process.
+The browser build is the exception: `crates/loci-web` compiles the engine to WebAssembly, a
+dedicated worker runs it (`apps/loci/src/bridge/wasm.ts`), SQLite uses sqlite-wasm-rs with the
+OPFS SyncAccessHandle-pool VFS, the blob store becomes a table in `blobs.sqlite`, and a service
+worker precaches the build.
 
 ## 5. Architecture **[changed in Rust]**
 

@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/loci-core", "crates/loci-cli", "apps/loci/src-tauri"]
+members = ["crates/loci-core", "crates/loci-cli", "crates/loci-web", "apps/loci/src-tauri"]
 
 [workspace.package]
 version = "0.2.1"

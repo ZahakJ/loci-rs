@@ -12,6 +12,8 @@ Loci is a local-first spaced-repetition app, written in Rust, that imports your 
 
 ## Install
 
+Try it in the browser: [zahakj.github.io/loci-rs/app](https://zahakj.github.io/loci-rs/app/)
+
 Download one file for your platform from the [latest release](https://github.com/ZahakJ/loci-rs/releases/latest), or paste the matching line.
 
 **Linux** (AppImage; `.deb` and `.rpm` are on the release page too)

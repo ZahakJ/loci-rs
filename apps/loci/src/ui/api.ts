@@ -173,6 +173,10 @@ export function errorMessage(e: unknown): string {
   if (e && typeof e === 'object' && 'message' in e && typeof (e as { message: unknown }).message === 'string') return (e as { message: string }).message;
   return String(e);
 }
+/** True for the browser build's "Loci is open in another tab" refusal. */
+export function isOtherTabError(e: unknown): boolean {
+  return errorCode(e) === 'busy' && !!e && typeof e === 'object' && (e as { detail?: unknown }).detail === 'other-tab';
+}
 export function errorCode(e: unknown): string | undefined {
   return e && typeof e === 'object' && 'code' in e ? String((e as { code: unknown }).code) : undefined;
 }

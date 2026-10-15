@@ -28,15 +28,15 @@ export function ViewFallback() {
   );
 }
 
-export function BootError({ message }: { message: string }) {
+export function BootError({ message, otherTab = false }: { message: string; otherTab?: boolean }) {
   const mockHref = `${location.pathname}?mock=1${location.hash}`;
   return (
     <div className={s.error}>
       <div className={s.errorCard} role="alert">
         <Wordmark />
-        <h1>{t('boot.failedTitle')}</h1>
-        <p>{t('boot.failedBody')}</p>
-        <code>{message}</code>
+        <h1>{t(otherTab ? 'boot.otherTabTitle' : 'boot.failedTitle')}</h1>
+        <p>{t(otherTab ? 'boot.otherTabBody' : 'boot.failedBody')}</p>
+        {!otherTab && <code>{message}</code>}
         <div className={s.actions}>
           <Button variant="primary" icon="history" onClick={() => location.reload()}>{t('boot.retry')}</Button>
           <LinkButton variant="secondary" href={mockHref}>{t('boot.demo')}</LinkButton>

@@ -7,6 +7,8 @@
  *   a `Channel`, files saved through `invoke('save_bytes', …)` (native dialog on desktop).
  * - **HTTP** (`loci serve`, used by `pnpm dev` without Tauri and by the Playwright suite): the same
  *   calls as JSON over `fetch` to a local port.
+ * - **wasm** (the browser build, `VITE_LOCI_TARGET=web`): the engine compiled to WebAssembly in a
+ *   dedicated worker, the collection in the origin-private file system (`wasm.ts`).
  *
  * Events: after a successful call the bridge emits `changed` for whatever the protocol table says the
  * method may have touched, `backup` after backups, `optimised` after maintenance, and `error` when a
@@ -18,6 +20,8 @@ import type { BackupInfo, OptimiseResult, Progress } from '@core/types';
 import { BYTES_IN, BYTES_IN_SECOND, BYTES_OUT, CHANGES, isRpcMethod, type RpcMethod, type SerializedError } from './protocol';
 import { createTauriTransport, isTauri } from './tauri';
 import { createHttpTransport, httpBridgeUrl } from './http';
+import { createBrowserWasmTransport } from './wasm';
+import { spawnEngineWorker } from '@loci-web-spawn';
 
 export type EventType = CollectionEvent['type'] | '*';
 export interface BridgeEvents { on(type: EventType, cb: (e: CollectionEvent) => void): () => void }
@@ -26,7 +30,7 @@ export interface BridgeHandle { api: BridgeCollectionApi; events: BridgeEvents; 
 
 /** What a transport must do. Bytes travel as `Uint8Array`; JSON as plain values. */
 export interface Transport {
-  readonly kind: 'tauri' | 'http';
+  readonly kind: 'tauri' | 'http' | 'wasm';
   /** JSON call. `bytes` is the staged payload for BYTES_IN methods. */
   call(method: RpcMethod, args: unknown[], bytes: Uint8Array | null, onProgress?: (p: Progress) => void): Promise<unknown>;
   /** Call returning bytes (null when the engine returned nothing). */
@@ -158,9 +162,10 @@ function asBytes(v: unknown): Uint8Array {
 let bridge: Bridge | null = null;
 let handlePromise: Promise<BridgeHandle> | null = null;
 
-/** Picks the transport: Tauri when running inside the app, otherwise the local HTTP bridge. */
+/** Picks the transport: Tauri inside the app, the WebAssembly engine in the browser build, otherwise the local HTTP bridge. */
 export function selectTransport(): Transport {
   if (isTauri()) return createTauriTransport();
+  if (import.meta.env.VITE_LOCI_TARGET === 'web') return createBrowserWasmTransport(spawnEngineWorker);
   return createHttpTransport(httpBridgeUrl());
 }
 
