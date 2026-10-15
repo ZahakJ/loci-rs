@@ -15,13 +15,13 @@ export default defineConfig({
   use: {
     channel: 'chrome',
     headless: true,
-    baseURL: 'http://127.0.0.1:5744/loci-rs/app/',
+    baseURL: 'http://127.0.0.1:5767/loci-rs/app/',
     colorScheme: 'light',
     viewport: { width: 1280, height: 860 },
   },
   webServer: {
-    command: 'VITE_LOCI_TARGET=web pnpm exec vite preview --port 5744 --strictPort --host 127.0.0.1',
-    url: 'http://127.0.0.1:5744/loci-rs/app/',
+    command: 'VITE_LOCI_TARGET=web pnpm exec vite preview --port 5767 --strictPort --host 127.0.0.1',
+    url: 'http://127.0.0.1:5767/loci-rs/app/',
     reuseExistingServer: false,
     timeout: 60_000,
   },

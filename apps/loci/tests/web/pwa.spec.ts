@@ -39,7 +39,10 @@ test('the browser build imports, studies, keeps its data across reloads and work
   await context.setOffline(true);
   await page.reload();
   await page.goto('./#/');
-  await expect(page.getByRole('heading', { level: 2, name: /to clear today/ })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: /to clear today/ })).toBeVisible().catch(async (e: unknown) => {
+    console.log('OFFLINE BODY:', await page.locator('body').innerText().catch(() => '?'), '\nERRORS:', errors.join('\n'));
+    throw e;
+  });
   await context.setOffline(false);
 
   expect(errors.filter((e) => !/Failed to load resource/.test(e))).toEqual([]);

@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'node:url';
-import { pwa } from './scripts/pwa';
+import { pwa } from './scripts/pwa.ts';
 
 const r = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 const host = process.env.TAURI_DEV_HOST;

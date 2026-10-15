@@ -62,10 +62,10 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin || !url.pathname.startsWith(new URL(self.registration.scope).pathname)) return;
   if (req.mode === 'navigate') {
-    event.respondWith(caches.match('./', { ignoreSearch: true }).then((hit) => hit || fetch(req)).catch(() => fetch(req)));
+    event.respondWith(caches.match('./', { ignoreSearch: true, ignoreVary: true }).then((hit) => hit || fetch(req)).catch(() => fetch(req)));
     return;
   }
-  event.respondWith(caches.match(req, { ignoreSearch: true }).then((hit) => hit || fetch(req)));
+  event.respondWith(caches.match(req, { ignoreSearch: true, ignoreVary: true }).then((hit) => hit || fetch(req)));
 });
 `;
 }
