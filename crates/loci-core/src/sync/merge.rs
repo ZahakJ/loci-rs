@@ -5,7 +5,7 @@
 //! merged state, so every device makes the same ones) and are stamped as this device's changes.
 
 use super::bundle::Bundle;
-use super::clock::{covers, dominates, join, Stamp};
+use super::clock::{covers, dominates, hlc_ms, join, Stamp};
 use super::state::{self, RowState};
 use super::tables::{self, payload_hash, Kind, Payload};
 use crate::anki::add_hash_suffix;
@@ -80,7 +80,9 @@ pub fn plan(core: &CollectionCore, b: &Bundle) -> Result<(Vec<Step>, i64, bool)>
                 Some(l) => beats(kind, &stamp, deleted, l),
             };
             if let Some(l) = &local {
-                if l.stamp != stamp && !covers(&b.header.vector, &l.stamp) && !covers(&mine, &stamp) {
+                // Rows a new device started with (stamped at time zero) are not conflicts.
+                let started_with = hlc_ms(l.stamp.hlc) == 0;
+                if !started_with && l.stamp != stamp && !covers(&b.header.vector, &l.stamp) && !covers(&mine, &stamp) {
                     conflicts += 1;
                 }
             }
@@ -206,6 +208,15 @@ pub fn apply(core: &CollectionCore, b: &Bundle, steps: &[Step], complete: bool) 
             join(&mut v, &b.header.vector);
             state::store_vector(db, &v)?;
         }
+        // A device that has not synced before joins the other's collection id; after that, ids
+        // converge on the smaller.
+        let first_sync = db.count("SELECT count(*) FROM sync_peers", [])? == 0;
+        if let Some(cur) = core.get_meta(meta::COLLECTION_ID)? {
+            let theirs = &b.header.collection;
+            if b.header.device != own && !theirs.is_empty() && *theirs != cur && (first_sync || *theirs < cur) {
+                core.set_meta(meta::COLLECTION_ID, Some(theirs))?;
+            }
+        }
         if b.header.device != own {
             db.run(
                 "INSERT INTO sync_peers (dev, vector, wants, seen) VALUES (?, ?, ?, ?)
@@ -217,12 +228,6 @@ pub fn apply(core: &CollectionCore, b: &Bundle, steps: &[Step], complete: bool) 
                     ctx.now_s
                 ],
             )?;
-        }
-        // Collections that sync converge on one id: the smaller.
-        if let Some(cur) = core.get_meta(meta::COLLECTION_ID)? {
-            if !b.header.collection.is_empty() && b.header.collection < cur {
-                core.set_meta(meta::COLLECTION_ID, Some(&b.header.collection))?;
-            }
         }
         state::set(db, state::key::LAST_SYNC, Some(&ctx.now_s.to_string()))?;
         if out.rows_in > 0 {

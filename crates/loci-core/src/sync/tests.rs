@@ -104,6 +104,7 @@ fn stamp(d: &Dev) {
 fn trio(seed_notes: usize) -> (Dev, Dev, Dev) {
     let c = clock();
     let a = new_dev(&c);
+    let first_id = a.col.sync_status().unwrap().collection_id;
     let nt = basic(&a);
     let spanish = a.col.create_deck("Spanish", None).unwrap().id;
     for i in 0..seed_notes {
@@ -127,6 +128,8 @@ fn trio(seed_notes: usize) -> (Dev, Dev, Dev) {
     merge(&mut cc, &all);
     assert_eq!(dump(&a), dump(&b));
     assert_eq!(dump(&a), dump(&cc));
+    let ids: Vec<String> = [&a, &b, &cc].iter().map(|d| d.col.sync_status().unwrap().collection_id).collect();
+    assert_eq!(ids, vec![first_id.clone(), first_id.clone(), first_id], "new devices join the first collection id");
     (a, b, cc)
 }
 

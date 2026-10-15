@@ -93,8 +93,8 @@ something since its newest backup).
    state); duplicate cards of one template keep the one with most reviews; tags are registered.
 7. Repairs and renames are this device's changes and get its stamps. Then the vector absorbs the
    sender's (complete bundles only), the peer's header is recorded, the collection id becomes
-   the smaller of the two, the undo stack is cleared if anything changed, and a running study
-   session re-syncs.
+   the sender's on this device's first sync and the smaller of the two after that, the undo
+   stack is cleared if anything changed, and a running study session re-syncs.
 
 Properties: without repairs the merge is a join (commutative, associative, idempotent; merging a
 bundle twice changes nothing). Repairs depend only on the merged state, so every device makes the

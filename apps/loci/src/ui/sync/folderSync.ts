@@ -58,7 +58,8 @@ export async function syncFolder(api: SyncApi, io: SyncFolderIO): Promise<Folder
   const mine = new Set([status.deviceId, ...status.formerDevices].filter((d): d is string => !!d));
   const dirs = (await io.list([SYNC_DIR])).filter((e) => e.dir && COLLECTION_DIR.test(e.name)).map((e) => e.name).sort();
 
-  // 1. Merge every other device's file.
+  // 1. Merge every other device's file. Every device with a file counts as a reader of ours,
+  // even when its file could not be read this time.
   const peers = new Set<string>();
   const stale: string[][] = [];
   for (const dir of dirs) {
@@ -66,6 +67,7 @@ export async function syncFolder(api: SyncApi, io: SyncFolderIO): Promise<Folder
       const dev = e.dir ? null : deviceOfFile(e.name);
       if (!dev) continue;
       if (mine.has(dev)) { stale.push([SYNC_DIR, dir, e.name]); continue; }
+      peers.add(dev);
       let report: SyncReport;
       try {
         const bytes = await io.read([SYNC_DIR, dir, e.name]);
@@ -75,7 +77,6 @@ export async function syncFolder(api: SyncApi, io: SyncFolderIO): Promise<Folder
         res.skipped++;
         continue;
       }
-      peers.add(dev);
       res.devices++;
       res.rowsIn += report.rowsIn;
       res.conflictsResolved += report.conflictsResolved;

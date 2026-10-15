@@ -253,7 +253,7 @@ impl Collection {
         // is one (several files merged in a row).
         let last_backup = core.get_meta(meta::LAST_BACKUP)?.and_then(|v| v.parse::<f64>().ok()).map(|v| v as i64);
         let changed_since = match last_backup {
-            Some(at) => last_change_seconds(core)?.is_some_and(|c| c > at),
+            Some(at) => last_change_seconds(core)?.is_some_and(|c| c >= at),
             None => true,
         };
         if !steps.is_empty() && changed_since {
