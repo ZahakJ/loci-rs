@@ -1,5 +1,5 @@
 /**
- * Add sheet (DESIGN §10): a 520px side sheet on desktop, full screen on phones. Opened by `a`.
+ * Add sheet (internals §8): a 520px side sheet on desktop, full screen on phones. Opened by `a`.
  * With `noteId` it edits that note in place (used from Study's `e` and Browse).
  */
 import { useMedia } from '@ui/design/primitives/layer';

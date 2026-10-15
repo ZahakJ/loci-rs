@@ -1,8 +1,8 @@
 //! The scheduler: FSRS-6, Anki's SM-2 variant, the v3 card-state machine, queue gathering, the
-//! revlog → FSRS item builder, the parameter optimizer and the workload forecast (recall
-//! `src/core/scheduler/*`, specified by `research/fsrs-spec.md`).
+//! revlog → FSRS item builder, the parameter optimizer and the workload forecast
+//! (specified by `research/fsrs-spec.md`).
 //!
-//! Module map (each mirrors one TypeScript file):
+//! Module map:
 //! - [`fsrs`]: the FSRS-6 formulas, parameter upgrade/clipping and the `Fsrs6` model;
 //! - [`fuzz`]: Anki's interval fuzz with Anki's exact PRNG (`StdRng`/ChaCha12 seeded by id + reps);
 //! - [`sm2`], [`steps`]: SM-2 review arithmetic and learning-step semantics;
@@ -10,9 +10,9 @@
 //! - [`queue`]: v3 gathering with limits, burying and display orders, plus the SQLite loaders;
 //! - [`items`], [`convert`]: revlog → FSRS items, day numbering, labels, SM-2 → FSRS memory;
 //! - [`optimizer`], [`workload`]: fsrs-rs's optimizer pipeline and the expected-value forecast;
-//! - [`clock`]: `SchedClock`, the context phase 2 supplies from the collection's settings.
+//! - [`clock`]: `SchedClock`, the context the collection builds from the collection's settings.
 //!
-//! Phase 2 (`collection::study`, import, stats, backlog, catch-up) calls the re-exports below.
+//! The collection (`collection::study`, import, stats, backlog, catch-up) calls the re-exports below.
 
 pub mod clock;
 pub mod convert;

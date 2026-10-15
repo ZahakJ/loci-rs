@@ -6,7 +6,7 @@
 
 - [ ] `./verify --quick` passes (fmt, clippy, `cargo test`, frontend typecheck and vitest)
 - [ ] `./verify` passes if the change touches the app or the end-to-end flows
-- [ ] Behaviour that changed is reflected in `DESIGN.md` or the manual (`docs/manual/`)
+- [ ] Changed behaviour is reflected in `docs/internals.md` or the manual (`docs/manual/`)
 
 ## Anki compatibility
 

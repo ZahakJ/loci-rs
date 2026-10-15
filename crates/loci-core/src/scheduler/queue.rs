@@ -1,6 +1,5 @@
-//! Study-queue gathering and counts (Anki v3 queue builder; research/fsrs-spec.md §9.2–§9.3;
-//! recall `src/core/scheduler/queue.ts` plus the card/revlog loaders of
-//! `collection/sched-context.ts`). The gathering itself is pure: it operates on card rows and
+//! Study-queue gathering and counts (Anki v3 queue builder; research/fsrs-spec.md §9.2–§9.3).
+//! The gathering itself is pure: it operates on card rows and
 //! deck descriptions and is deterministic for a seed. The loaders at the bottom query SQLite.
 //!
 //! Order of the produced queue: intraday learning due now (by due) → the main queue (interday
@@ -186,7 +185,7 @@ fn build_nodes<'a>(decks: &'a [QueueDeck], today: CollectionDay) -> Nodes<'a> {
 }
 
 // ───────────────────────── ordering helpers ─────────────────────────
-/// Deterministic 32-bit tiebreak hash of an id under a seed (TS `tieHash`).
+/// Deterministic 32-bit tiebreak hash of an id under a seed.
 pub fn tie_hash(id: i64, seed: i64) -> f64 {
     seed32(id.wrapping_add((seed as u32 as i64) * 1_000_003)) as f64
 }
@@ -518,7 +517,7 @@ pub fn due_counts(input: &QueueInput<'_>) -> BTreeMap<DeckId, StudyCounts> {
     out
 }
 
-// ───────────────────────── SQLite loaders (sched-context.ts) ─────────────────────────
+// ───────────────────────── SQLite loaders ─────────────────────────
 /// Default answer time when the revlog has no recent reviews, seconds per card.
 pub const DEFAULT_SECONDS_PER_CARD: f64 = 8.0;
 /// Answers older than this many days do not count towards the recent pace.

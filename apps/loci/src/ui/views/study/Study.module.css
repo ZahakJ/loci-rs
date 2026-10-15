@@ -1,4 +1,4 @@
-/* Study screen (DESIGN §8). Calm: one surface, hairlines, typography doing the work. */
+/* Study screen (internals §6). */
 .root, .flagList {
   /* Anki's seven flag colours; local tokens (tokens.css has none), designed for both themes. */
   --flag-1: oklch(62% 0.17 25);

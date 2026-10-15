@@ -7,7 +7,7 @@ import { SHORTCUT_GROUPS } from '../keys/keymap';
 import { useUi } from '../store/ui';
 import s from './ShortcutsHelp.module.css';
 
-/** The `?` overlay: every shortcut, including the study keys from DESIGN §8. */
+/** The `?` overlay: every shortcut, including the study keys from internals §6. */
 export function ShortcutsHelp() {
   const open = useUi((st) => st.helpOpen);
   const setOpen = useUi((st) => st.setHelpOpen);

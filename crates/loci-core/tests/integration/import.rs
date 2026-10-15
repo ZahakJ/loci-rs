@@ -1,4 +1,4 @@
-//! Port of recall `tests/unit/integration/import.test.ts`.
+//! Import integration tests.
 
 use super::helpers::*;
 use loci_core::collection::builtin_notetypes::notetype_to_input;

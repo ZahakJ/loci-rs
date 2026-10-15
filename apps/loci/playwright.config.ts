@@ -2,7 +2,7 @@ import { defineConfig } from '@playwright/test';
 
 /**
  * e2e against the production frontend build served by `vite preview`, talking to the real Rust
- * engine through `loci serve --multi-session` (DESIGN §19). Run `pnpm build` and
+ * engine through `loci serve --multi-session` (internals §17). Run `pnpm build` and
  * `cargo build -p loci-cli` first. One worker, one headless system Chrome; every test gets a
  * fresh browser context, and therefore (through the x-loci-session header) a fresh collection.
  */

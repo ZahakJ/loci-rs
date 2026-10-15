@@ -1,4 +1,4 @@
-//! Note-type CSS → stylesheet for the card's shadow root (recall `src/core/template/css.ts`).
+//! Note-type CSS → stylesheet for the card's shadow root.
 //!
 //! Anki styles target `html`, `body`, `.card` and `.nightMode`/`.night_mode` on body. Inside our
 //! shadow root the card is `<div class="card [nightMode night_mode]">`, so:
@@ -466,7 +466,7 @@ html { font-size: 18px; color: navy }\n\
         }
     }
 
-    // css-dark.test.ts: stock Anki CSS paints nothing in Loci (dark theme safe).
+    // stock Anki CSS paints nothing in Loci (dark theme safe).
     const ANKI_IO_CSS: &str = "#image-occlusion-canvas {\n    --inactive-shape-color: #ffeba2;\n    --active-shape-color: #ff8e8e;\n    --inactive-shape-border: 1px #212121 solid;\n    --active-shape-border: 1px #212121 solid;\n    --highlight-shape-color: #ff8e8e00;\n    --highlight-shape-border: 1px #ff8e8e solid;\n}\n\n.card {\n    font-family: arial;\n    font-size: 20px;\n    text-align: center;\n    color: black;\n    background-color: white;\n}\n";
     const STOCK_BASIC: &str = ".card {\n    font-family: arial;\n    font-size: 20px;\n    line-height: 1.5;\n    text-align: center;\n    color: black;\n    background-color: white;\n}\n";
 

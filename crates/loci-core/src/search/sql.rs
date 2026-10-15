@@ -1,8 +1,8 @@
-//! Search AST → SQL over Loci's schema (recall `src/core/search/sql.ts`; aliases: `c` cards,
+//! Search AST → SQL over Loci's schema (aliases: `c` cards,
 //! `n` notes; subqueries use decks, notetypes, templates, deck_configs, revlog, notes_fts).
 //!
 //! Most operators compile to exact SQL. Some cannot be expressed in plain SQLite without custom
-//! functions (we register none, so the SQL matches the TypeScript build byte for byte):
+//! functions (none are registered):
 //!   `field:value` (needs the field at a per-notetype index), `re:`, `nc:`, `w:`, `sc:`,
 //!   `tag:` with wildcards, `tag:re:`, `dupe:`.
 //! For these the compiler emits a SQL *superset* in `sql` plus `post_filter(row)`, which gives the
@@ -40,7 +40,7 @@ pub struct FieldInfo {
     pub name: String,
 }
 
-/// What the compiler needs from the collection (TypeScript `SearchContext`; phase 2's
+/// What the compiler needs from the collection (the collection's
 /// `CollectionInternals` fills it from `col_meta` and the scheduler's timing).
 #[derive(Debug, Clone, Default)]
 pub struct SearchContext {

@@ -1,4 +1,4 @@
-//! Writer and round-trip tests (recall `tests/unit/anki/write.test.ts`).
+//! Writer and round-trip tests.
 
 use super::image::AnkiImage;
 use super::read::read_package;

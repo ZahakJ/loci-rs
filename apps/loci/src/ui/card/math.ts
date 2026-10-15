@@ -1,5 +1,5 @@
 /**
- * KaTeX for `.loci-math` spans (DESIGN §4: KaTeX + mhchem). The document stylesheet registers
+ * KaTeX for `.loci-math` spans (internals §2: KaTeX + mhchem). The document stylesheet registers
  * KaTeX's fonts (fonts declared inside a shadow root are ignored by browsers); the same CSS as a
  * string is adopted inside each card's shadow root for the layout rules.
  */

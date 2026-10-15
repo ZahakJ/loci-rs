@@ -1,5 +1,5 @@
 /**
- * Statistics that say what to do (DESIGN §12): scope picker, Insights, then panels that are each
+ * Statistics that say what to do (internals §10): scope picker, Insights, then panels that are each
  * a chart, one sentence of meaning and, where useful, one action.
  */
 import { useMemo, useState, type ReactNode } from 'react';

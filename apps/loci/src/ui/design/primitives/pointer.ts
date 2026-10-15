@@ -1,6 +1,6 @@
 /**
  * Touch-only detection, decided once at first paint and kept in sync: keycaps never render on
- * phones and tablets without a mouse, whatever the CSS loading order (DESIGN §8).
+ * phones and tablets without a mouse, whatever the CSS loading order (internals §6).
  */
 import { useSyncExternalStore } from 'react';
 

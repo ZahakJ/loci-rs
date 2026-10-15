@@ -1,4 +1,4 @@
-//! Statistics and insights (recall `src/core/stats/`): the Stats DTO computed with SQL over
+//! Statistics and insights: the Stats DTO computed with SQL over
 //! `revlog` and `cards` (`stats.rs`), the insight rules (`insights.rs`) and the sentence helpers
 //! (`messages.rs`, thin wrappers over `i18n`).
 

@@ -51,7 +51,7 @@ export function TodayHero({ tree, studiedSeconds, budgetMinutes, onCustom }: Tod
             <Pill tone="due" dot size="lg" value={tree.reviewCount} label={t('counts.due', { count: tree.reviewCount })}>{' '}{t('counts.dueShort')}</Pill>
           </div>
           <div className={s.heroActions}>
-            {/* Start is focused on arrival so Enter begins the session (DESIGN §18). */}
+            {/* Start is focused on arrival so Enter begins the session (internals §16). */}
             <Button variant="primary" size="lg" kbd="enter" className={s.startButton} autoFocus onClick={() => navigate('#/study/all')}>
               {t('home.start')}
             </Button>

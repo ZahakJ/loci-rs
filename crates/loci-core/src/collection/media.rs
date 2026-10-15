@@ -1,6 +1,6 @@
-//! Media files (recall `src/core/collection/media-store.ts`): bodies in the BlobStore under
+//! Media files: bodies in the BlobStore under
 //! `media/<name>`, indexed by the `media` table (name, sha1, size, mtime). Names follow Anki's
-//! normalisation (`anki::media_names`, the port of `collection/media.ts`).
+//! normalisation (`anki::media_names`).
 
 use crate::anki::{
     add_hash_suffix, extract_media_references, extract_template_media_references, normalize_media_filename, percent_decode,

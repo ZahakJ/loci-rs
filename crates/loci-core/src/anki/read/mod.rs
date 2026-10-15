@@ -1,9 +1,7 @@
 //! `read_package`: .apkg / .colpkg bytes → `AnkiImage` (research/anki-format.md §1, §2, §7).
-//! Port of recall `src/core/anki/read.ts`.
 //!
 //! Steps: unzip → `meta` (layout) → collection file → zstd (LATEST) → WAL-header fix → open (our
-//! `Db` registers Anki's `unicase` collation, so the TypeScript `stripUnicaseCollation` step is not
-//! needed) → schema 11 JSON or schema 14–18 tables + protobuf blobs → Loci types → v1-scheduler
+//! `Db` registers Anki's `unicase` collation) → schema 11 JSON or schema 14–18 tables + protobuf blobs → Loci types → v1-scheduler
 //! upgrade → filtered decks emptied → media index.
 
 use super::deck_config::{dconf_to_deck_config, deck_config_proto_to_json, int, obj};
@@ -40,7 +38,7 @@ fn collection_file(layout: PackageLayout) -> &'static str {
 
 // ───────────────────────── small coercions ─────────────────────────
 
-/// read.ts:49 `s`: string, or a number printed like JavaScript, or bytes as UTF-8; else the default.
+/// `s`: string, or a number printed like JavaScript, or bytes as UTF-8; else the default.
 pub(super) fn js(v: Option<&Value>, d: &str) -> String {
     match v {
         Some(Value::String(s)) => s.clone(),
@@ -50,7 +48,7 @@ pub(super) fn js(v: Option<&Value>, d: &str) -> String {
         _ => d.to_string(),
     }
 }
-/// read.ts:55 `b`: boolean; number ≠ 0; string other than '', '0', 'false'.
+/// `b`: boolean; number ≠ 0; string other than '', '0', 'false'.
 pub(super) fn jb(v: Option<&Value>) -> bool {
     match v {
         Some(Value::Bool(b)) => *b,
@@ -94,7 +92,7 @@ pub(super) fn col_bytes(r: &Row<'_>, i: usize) -> Vec<u8> {
     }
 }
 
-/// Any database failure while reading means the collection file is damaged (read.ts:121).
+/// Any database failure while reading means the collection file is damaged.
 pub(super) fn dbe(e: LociError) -> LociError {
     match e.code {
         ErrorCode::Corrupt | ErrorCode::UnsupportedPackage => e,
@@ -321,7 +319,7 @@ fn read_collection(db: &Db, layout: PackageLayout, warnings: &mut Vec<String>) -
                 ntid: col_i64(r, 2),
                 mtime: col_i64(r, 3),
                 usn: col_i64(r, 4),
-                // read.ts:226 splits on ASCII and ideographic (U+3000) spaces
+                // splits on ASCII and ideographic (U+3000) spaces
                 tags: col_str(r, 5).split([' ', '\u{3000}']).filter(|t| !t.is_empty()).map(str::to_string).collect(),
                 fields: split_fields(&col_str(r, 6)),
             })
@@ -427,7 +425,7 @@ fn card_from_row(r: &Row<'_>) -> Card {
 }
 
 /// Anki `CardData` (rslib/src/storage/card/data.rs): invalid JSON → empty; invalid values dropped.
-/// Unknown keys are dropped too (read.ts:431), unlike `collection::rows::parse_card_data`.
+/// Unknown keys are dropped too, unlike `collection::rows::parse_card_data`.
 pub fn parse_card_data(text: &str) -> CardData {
     if text.is_empty() || text == "{}" {
         return CardData::default();

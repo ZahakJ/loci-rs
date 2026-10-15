@@ -308,7 +308,7 @@ fn data_dir(state: State<'_, Shared>) -> String {
 mod menu {
     //! The macOS menu bar. Built on every desktop target so it is type-checked everywhere; only
     //! macOS installs it. Items that are app actions emit a `menu` event with their id, which the
-    //! webview turns into the same command the palette runs (`src/ui/shell/commands.ts`).
+    //! webview turns into the same command the palette runs.
     use tauri::menu::{AboutMetadataBuilder, Menu, MenuItem, PredefinedMenuItem, Submenu};
     use tauri::{AppHandle, Emitter, Runtime};
 
@@ -449,7 +449,7 @@ pub fn run() {
     #[cfg(desktop)]
     let builder = builder.plugin(tauri_plugin_window_state::Builder::default().build());
     // macOS gets a native menu bar; Linux and Windows keep the app's own chrome (sidebar and
-    // command palette), see DESIGN.md "Window and menus".
+    // command palette), see docs/internals.md "Window and menus".
     #[cfg(target_os = "macos")]
     let builder = builder.menu(menu::build).on_menu_event(menu::forward);
     builder

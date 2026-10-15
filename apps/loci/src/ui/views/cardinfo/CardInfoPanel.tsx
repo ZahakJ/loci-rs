@@ -1,5 +1,5 @@
 /**
- * Card info: "why this interval?" (DESIGN §8). The plain sentence first, then the numbers,
+ * Card info: "why this interval?" (internals §6). The plain sentence first, then the numbers,
  * then the review history. Used as a side panel / sheet from Study and reusable from Browse.
  */
 import { getLocale, t } from '@core/i18n/i18n';

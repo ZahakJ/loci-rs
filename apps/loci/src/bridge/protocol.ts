@@ -1,6 +1,6 @@
 /**
- * The RPC protocol between the UI and the Rust engine (the TypeScript worker protocol, now served
- * by `loci-core::rpc`): the method table, what each call may have changed, and which calls write.
+ * The RPC protocol between the UI and the Rust engine (served by `loci-core::rpc`): the method
+ * table, what each call may have changed, and which calls write.
  * A Tauri transport (`tauri.ts`) and a local-HTTP transport for development and tests (`http.ts`)
  * both speak it.
  */

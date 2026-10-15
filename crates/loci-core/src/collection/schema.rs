@@ -1,4 +1,4 @@
-//! Schema version, extra indexes and migrations (recall `src/core/collection/schema.ts`).
+//! Schema version, extra indexes and migrations.
 
 use crate::db::Db;
 use crate::error::Result;
@@ -6,11 +6,11 @@ use crate::error::Result;
 /// Current schema version stored in `col_meta.schema_version`.
 pub const SCHEMA_VERSION: i64 = 1;
 
-/// The contract schema (`schema.sql`).
+/// The collection schema (`schema.sql`).
 pub const SCHEMA_SQL: &str = crate::SCHEMA_SQL;
 
-/// Statements run after `SCHEMA_SQL` on every open: indexes that are not part of the contract
-/// schema but that the collection service relies on for speed.
+/// Statements run after `SCHEMA_SQL` on every open: indexes that are not in `schema.sql`
+/// but that the collection service relies on for speed.
 pub const EXTRA_SQL: &str = "CREATE INDEX IF NOT EXISTS ix_media_sha1 ON media (sha1);";
 
 /// Migration hook: `migrate(db, n)` upgrades a collection from version n − 1 to n. Each runs in

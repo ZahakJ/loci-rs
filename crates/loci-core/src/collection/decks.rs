@@ -1,4 +1,4 @@
-//! Deck operations (recall `src/core/collection/decks.ts`): '::'-separated hierarchy, tree with
+//! Deck operations: '::'-separated hierarchy, tree with
 //! counts, rename cascading to descendants, delete with cards (undoable), today's-limit extension.
 
 use crate::collection::counter::CounterFn;
@@ -517,7 +517,7 @@ mod tests {
 
     #[test]
     fn subtree_card_totals_and_injected_counts() {
-        // A harness with an injected counter (recall passes `queueCounter` to the constructor).
+        // A harness with an injected counter.
         let h = {
             let dir = tempfile::tempdir().unwrap();
             let clock = TestClock(std::sync::Arc::new(std::sync::atomic::AtomicI64::new(T0)));
@@ -605,7 +605,7 @@ mod tests {
         assert_eq!((tree.new_count, tree.total_cards), (1, 1));
     }
 
-    // ── extend-limits.test.ts (the deckTree/counter half; startStudy is the integration agent's) ──
+    // ── extend-limits (the deckTree/counter half) ──
     fn node(h: &Harness, id: DeckId) -> DeckTreeNode {
         fn find(n: &DeckTreeNode, id: DeckId) -> Option<DeckTreeNode> {
             if n.deck.id == id {

@@ -1,4 +1,4 @@
-//! Card renderer: Anki template + note → `RenderedCard` (recall `src/core/template/render.ts`).
+//! Card renderer: Anki template + note → `RenderedCard`.
 //!
 //! Output HTML is NOT sanitised; the UI passes each side through DOMPurify with its own config
 //! (`sanitize-config.ts`, kept on the UI side) before inserting it into the card's shadow root.
@@ -78,7 +78,7 @@ fn type_filter(filters: &[String]) -> Option<HashSet<&str>> {
     Some(mods.iter().map(String::as_str).collect())
 }
 
-/// Short stable hash (FNV-1a, 32 bit, over UTF-16 units like the TypeScript) for hint element ids.
+/// Short stable hash (FNV-1a, 32 bit, over UTF-16 units) for hint element ids.
 fn hash_id(s: &str) -> String {
     let mut h: u32 = 0x811c9dc5;
     for unit in s.encode_utf16() {
@@ -503,7 +503,7 @@ mod tests {
         render_with(nt, fields, defaults())
     }
 
-    /// The cloze-style calls of render.test.ts: no ids, no tags, deck "D".
+    /// Cloze-style calls: no ids, no tags, deck "D".
     fn render_plain(nt: &Notetype, fields: &[&str], ord: i64) -> RenderedCard {
         render_with(nt, fields, R { note_id: None, card_id: None, ord, flags: 0, tags: vec![], deck: "D", one_by_one: None })
     }

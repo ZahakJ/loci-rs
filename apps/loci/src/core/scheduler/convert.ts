@@ -1,5 +1,5 @@
 /**
- * UI-side interval formatting (recall `scheduler/convert.ts` `formatInterval`). The scheduler
+ * UI-side interval formatting. The scheduler
  * itself is the Rust engine; the UI only turns seconds into labels like '<1m', '3d', '1.2mo'.
  */
 const MINUTE = 60;

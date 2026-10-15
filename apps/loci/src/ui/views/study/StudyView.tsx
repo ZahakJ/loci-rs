@@ -1,5 +1,5 @@
 /**
- * Study screen (DESIGN §8): the most refined thing in the app.
+ * Study screen (internals §6).
  * Full-bleed: 44px top bar (+ progress hairline), the card centred at 42rem, a bottom bar of
  * constant height. Keyboard-first on desktop, thumb-first on phone.
  */

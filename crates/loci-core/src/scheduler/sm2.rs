@@ -1,5 +1,5 @@
-//! Anki's v3 SM-2 review arithmetic (rslib/src/scheduler/states/review.rs, fsrs-spec §8;
-//! recall `src/core/scheduler/sm2.ts`). Intervals in days; ease as a factor (2.5 = 2500‰).
+//! Anki's v3 SM-2 review arithmetic (rslib/src/scheduler/states/review.rs, fsrs-spec §8).
+//! Intervals in days; ease as a factor (2.5 = 2500‰).
 
 use super::fuzz::with_review_fuzz;
 use crate::types::DeckConfig;

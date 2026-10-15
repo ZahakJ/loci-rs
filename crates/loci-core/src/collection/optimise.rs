@@ -1,4 +1,4 @@
-//! FSRS optimiser wiring (DESIGN §7; recall `src/core/collection/optimise.ts`): per-preset
+//! FSRS optimiser wiring (internals §5): per-preset
 //! training items from the revlog, optimisation with Anki's keep-if-better rule, `optimise_log`
 //! rows, memory-state refresh, evaluation, workload forecasts, and the idle-time maintenance pass
 //! (temporary-retention expiry, automatic optimisation every N reviews, the 30-minute backup rule).

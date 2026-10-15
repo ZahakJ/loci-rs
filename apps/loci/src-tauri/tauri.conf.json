@@ -37,7 +37,7 @@
     ],
     "category": "Education",
     "shortDescription": "A memory palace for everything you learn.",
-    "longDescription": "Loci is a local-first spaced-repetition app that imports your Anki collection with its history intact and asks less of your day.",
+    "longDescription": "Spaced-repetition app. Imports Anki collections with their review history and schedules with FSRS-6.",
     "linux": {
       "deb": { "depends": [] },
       "rpm": { "depends": [] }

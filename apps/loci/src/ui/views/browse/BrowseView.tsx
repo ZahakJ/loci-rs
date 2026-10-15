@@ -1,5 +1,5 @@
 /**
- * Browse (DESIGN §11): sidebar · virtual table · editor on desktop; list → detail on phones.
+ * Browse (internals §9): sidebar · virtual table · editor on desktop; list → detail on phones.
  * The query lives in the URL hash (`#/browse?q=`) without remounting the view.
  */
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';

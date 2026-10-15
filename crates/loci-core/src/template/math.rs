@@ -1,4 +1,4 @@
-//! Maths and media markup normalisation for rendered card HTML (recall `src/core/template/math.ts`).
+//! Maths and media markup normalisation for rendered card HTML.
 //!
 //! Anki maths delimiters become one element the UI renders with KaTeX:
 //!   `<span class="loci-math" data-display="0|1">TeX source, HTML-escaped</span>`
@@ -91,7 +91,7 @@ fn latex_block(src: &str) -> String {
     if let Some(m) = LATEX_PAREN.captures(s) {
         return math_span(m[1].trim(), false, "");
     }
-    // math.ts:71 uses a backreference `\\end\{\1\}`; the begin/end names must agree.
+    // the begin/end names must agree.
     if let Some(m) = LATEX_ENV.captures(s) {
         if m[1] == m[3] {
             return math_span(m[2].trim(), true, "");
@@ -220,7 +220,7 @@ pub fn replace_sound_tags(html: &str, media_url: &dyn Fn(&str) -> String, label:
     SoundReplacement { html: out, media }
 }
 
-/// `encodeURIComponent`, for the test media-url helper (recall tests/unit/template/helpers.ts).
+/// `encodeURIComponent`, for the test media-url helper.
 #[cfg(test)]
 pub(crate) fn percent_encode(s: &str) -> String {
     let mut out = String::new();

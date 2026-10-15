@@ -1,7 +1,7 @@
-//! Large-collection timings (recall `tests/unit/integration/perf.test.ts`). Ignored by default:
+//! Large-collection timings. Ignored by default:
 //! `cargo test --release -p loci-core --test integration -- --ignored --nocapture perf`.
 //! Imports the 100k-card package named by `LOCI_PERF_APKG` (default `fixtures/large-100k.apkg`,
-//! not committed; generate one with recall's `buildLargeCollection`) and skips when absent.
+//! not committed) and skips when absent.
 
 use super::helpers::*;
 use loci_core::types::*;

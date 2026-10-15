@@ -1,5 +1,5 @@
 /**
- * Bulk actions for the selection (DESIGN §11). Each one goes through `api.bulk` (undoable) and
+ * Bulk actions for the selection (internals §9). Each one goes through `api.bulk` (undoable) and
  * reports with a toast carrying Undo. Destructive or parameterised actions ask first.
  */
 import { useState } from 'react';

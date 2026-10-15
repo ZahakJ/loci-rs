@@ -215,7 +215,7 @@ export function scopeCardCss(css: string, mediaUrl?: MediaUrl, opts: CardCssOpti
 }
 
 /**
- * Loci's base card stylesheet (DESIGN §8, §17), placed before the note type's CSS in the shadow
+ * Loci's base card stylesheet (internals §6, §15), placed before the note type's CSS in the shadow
  * root. Driven by variables the host sets: --loci-card-font, --loci-card-size, --loci-ink,
  * --loci-accent, --loci-cloze, --loci-muted, --loci-line, --loci-surface (plus optional
  * --loci-card-align, --loci-mono, --loci-good/--loci-again/--loci-hard and --loci-io-fill/-stroke).

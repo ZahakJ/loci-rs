@@ -1,7 +1,6 @@
 //! `write_legacy_package`: `AnkiImage` → LEGACY_2 .apkg bytes that Anki 2.1.x–26.x and AnkiDroid
 //! import (research/anki-format.md §9): schema-11 `collection.anki21` (deflate), the dummy
 //! `collection.anki2`, `meta` = 08 02, a JSON `media` map and numbered media files.
-//! Port of recall `src/core/anki/write.ts`.
 
 use super::deck_config::{dconf_to_deck_config, deck_config_to_dconf, json_num, obj};
 use super::image::*;

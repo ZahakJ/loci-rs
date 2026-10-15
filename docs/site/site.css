@@ -1,4 +1,4 @@
-/* Loci project page. Tokens follow DESIGN.md §17: warm stone and paper by day,
+/* Loci project page. Tokens follow docs/internals.md §15: warm stone and paper by day,
    deep slate at night, one brass accent. No web fonts, no shadows in light. */
 :root {
   color-scheme: light;
@@ -152,7 +152,6 @@ section { padding: 64px 0; border-top: 1px solid var(--line); }
   background: var(--surface);
 }
 .hero .shot { margin-top: 48px; }
-.provenance { margin-top: 12px; max-width: 75ch; }
 
 /* Three features, alternating */
 .feature {

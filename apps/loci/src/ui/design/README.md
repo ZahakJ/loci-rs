@@ -1,7 +1,7 @@
 # Loci design system
 
-`tokens.css` is the visual contract (written by the architect; change only with a reason
-recorded in DESIGN.md §17). Everything else in this folder implements it.
+`tokens.css` holds the visual tokens (`docs/internals.md` §15). Everything else in this folder
+builds on it.
 
 ## Rules
 - Colours only via tokens. Never hex in components. Filled controls (primary buttons, switches, checked marks) use `--accent-fill` / `--on-accent-fill`; `--accent-strong` is for accent text, icons and rules only. `pnpm contrast` checks every pair in both themes.

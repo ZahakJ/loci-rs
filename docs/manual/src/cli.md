@@ -1,8 +1,8 @@
 # The CLI
 
-`loci` is the engine on the command line. It works on a collection directory with the same layout the app uses (`collection.sqlite`, `media/`, `backups/`), which makes it useful for scripting, for inspecting a collection, and for development. It lives in `crates/loci-cli`.
+`loci` (`crates/loci-cli`) is the engine on the command line. It works on a collection directory with the app's layout (`collection.sqlite`, `media/`, `backups/`).
 
-Build and run it from a checkout:
+From a checkout:
 
 ```sh
 cargo run -p loci-cli -- import deck.apkg --dir .loci-dev
@@ -76,7 +76,7 @@ loci due --dir ~/loci-test
 loci study --auto <N> [--deck <name>]
 ```
 
-Answers up to N due cards with Good, each with an answer time of 8 seconds, and prints each card's id with the interval it was given. It is meant for testing and for quick experiments with the scheduler, not for learning. `--auto` is required and must be at least 1. `--deck` limits the session to one deck; without it, the session covers every deck. If fewer than N cards are due, it stops and says so.
+Answers up to N due cards with Good, each with an answer time of 8 seconds, and prints each card's id with the interval it was given. `--auto` is required and must be at least 1. `--deck` limits the session to one deck; without it, the session covers every deck. If fewer than N cards are due, it stops and says so.
 
 ```sh
 loci study --auto 5 --deck Default
@@ -124,7 +124,7 @@ loci integrity --dir ~/loci-test
 loci serve [--port 5741] [--multi-session]
 ```
 
-Serves the engine's RPC over HTTP on `127.0.0.1` (port 5741 by default). It exists for development and for the end-to-end tests: it lets the web interface run in an ordinary browser against the real Rust engine. It is not shipped in the app.
+Serves the engine's RPC over HTTP on `127.0.0.1` (port 5741 by default). For development and the end-to-end tests; not shipped in the app.
 
 | Endpoint | Body | Returns |
 |---|---|---|
@@ -133,7 +133,7 @@ Serves the engine's RPC over HTTP on `127.0.0.1` (port 5741 by default). It exis
 | `POST /rpc-with-bytes?method=…&args=…` | raw bytes | the JSON result, for methods that take bytes (`previewImport`, `importPackage`, `addMedia`) |
 | `GET /health` | | `{"ok": true}` |
 
-With `--multi-session`, every distinct `x-loci-session` header gets its own empty collection in a temporary directory, which is what the Playwright suite needs (each browser context starts fresh). Without it, one engine serves `--dir`. Requests are handled one at a time.
+With `--multi-session`, every distinct `x-loci-session` header gets its own empty collection in a temporary directory, for the Playwright suite. Without it, one engine serves `--dir`. Requests are handled one at a time.
 
 ```sh
 loci serve --dir .loci-dev

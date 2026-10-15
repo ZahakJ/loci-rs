@@ -1,8 +1,7 @@
-//! Anki template engine (recall `src/core/template/`): parser, renderer, cloze, image occlusion,
+//! Anki template engine: parser, renderer, cloze, image occlusion,
 //! typed answers, maths, CSS scoping, card generation and template checking.
 //!
-//! `sanitize-config.ts` (the DOMPurify configuration) is deliberately not ported: the UI
-//! sanitises rendered HTML itself.
+//! `sanitize-config.ts` (the DOMPurify configuration) lives in the UI, which sanitises rendered HTML itself.
 
 pub mod check;
 pub mod cloze;

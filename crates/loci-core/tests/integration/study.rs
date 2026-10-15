@@ -1,4 +1,4 @@
-//! Port of recall `tests/unit/integration/study.test.ts`.
+//! Study integration tests.
 
 use super::helpers::*;
 use loci_core::error::ErrorCode;
@@ -306,8 +306,8 @@ fn serves_more_new_cards_today_in_the_deck_and_its_subdecks_undoable_resets_with
     assert_eq!(new_count(&h, parent.id), 0);
 
     let counts = h.col.extend_today_limits(parent.id, 3, 0).unwrap();
-    // collection.ts:339 refills the running session inside extendTodayLimits; the RPC layer does
-    // the same (`rpc.rs`), the bare Collection API exposes the hook as `refill_session`.
+    // the RPC layer refills the running session after extendTodayLimits; the bare Collection API
+    // exposes the hook as `refill_session`.
     h.col.refill_session().unwrap();
     assert_eq!(counts, StudyCounts { new: 3, learn: 0, review: 0 });
     assert_eq!(h.col.get_deck(parent.id).unwrap().today.new, 20 - 3);

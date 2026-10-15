@@ -1,5 +1,5 @@
 /**
- * Catch-up (DESIGN §9): a backlog is a planning problem. The debt in plain words and minutes,
+ * Catch-up (internals §7): a backlog is a planning problem. The debt in plain words and minutes,
  * four plans that each say what they do, applied with one tap, undoable.
  */
 import { useState, type ReactNode } from 'react';

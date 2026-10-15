@@ -1,4 +1,4 @@
-//! Backup naming and rotation policy (recall `src/core/backup/rotation.ts`). Pure functions; no I/O.
+//! Backup naming and rotation policy. Pure functions; no I/O.
 //!
 //! Names: `loci-YYYYMMDD-HHMMSS-<kind>.sqlite`, timestamp in UTC (unambiguous across DST),
 //! kind ∈ auto | manual | pre-restore. Automatic backups are thinned like Anki's
@@ -60,13 +60,12 @@ pub struct ParsedBackupName {
 }
 
 /// Returns the UTC offset in minutes WEST of UTC at instant `ms` (`Date#getTimezoneOffset`
-/// semantics; `collection/time.ts` `TzOffsetFn`). Injectable so tests and the app can pin a zone.
+/// semantics). Injectable so tests and the app can pin a zone.
 pub type TzOffsetFn<'a> = &'a dyn Fn(Millis) -> i64;
 
 const DAY_MS: i64 = 86_400_000;
 
-/// Days since 1970-01-01 of the local calendar date of `ms` at the given offset
-/// (`collection/time.ts` `localDayIndex`; phase 2 has its own copy with the rest of `time.ts`).
+/// Days since 1970-01-01 of the local calendar date of `ms` at the given offset.
 pub(crate) fn local_day_index(ms: Millis, offset_minutes_west: i64) -> i64 {
     (ms - offset_minutes_west * 60_000).div_euclid(DAY_MS)
 }
@@ -91,8 +90,7 @@ pub fn backup_file_name(at: Seconds, kind: BackupFileKind) -> String {
 }
 
 /// Parses a backup file name; None for anything else. Legacy daily/weekly/monthly tokens count as `Auto`.
-/// (rotation.ts:48 used `Date.UTC`, which silently normalises out-of-range fields such as month
-/// 13; here such a name is rejected — Loci never writes one.)
+/// Out-of-range fields (month 13) are rejected.
 pub fn parse_backup_name(name: &str) -> Option<ParsedBackupName> {
     let m = NAME_RE.captures(name)?;
     let n = |i: usize| m[i].parse::<u32>().ok();
@@ -129,7 +127,7 @@ pub fn plan_rotation(
             out.insert(b.name.clone(), Some(kind));
         }
     }
-    // Newest first; equal timestamps sort by name descending (rotation.ts:70).
+    // Newest first; equal timestamps sort by name descending.
     let mut auto: Vec<&ParsedBackupName> = backups.iter().filter(|b| b.file_kind == BackupFileKind::Auto).collect();
     auto.sort_by(|a, b| b.at.cmp(&a.at).then_with(|| b.name.cmp(&a.name)));
     for b in auto {

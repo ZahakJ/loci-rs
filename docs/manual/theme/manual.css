@@ -1,6 +1,6 @@
 /* Loci manual theme: warm stone and paper by day (.light), deep slate at night (.navy),
    one brass accent. Only the light and navy themes are restyled; the others stay stock.
-   Tokens follow DESIGN.md §17. No web fonts, no gradients, no external requests. */
+   Tokens follow docs/internals.md §15. No web fonts, no gradients, no external requests. */
 
 html.light {
     --bg: oklch(97.5% .006 85);

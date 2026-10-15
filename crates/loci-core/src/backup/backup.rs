@@ -1,5 +1,4 @@
-//! Automatic and manual backups in the BlobStore under `backups/` (DESIGN.md §14; recall
-//! `src/core/backup/backup.ts`): listing with card counts, the 30-minute rule, and the full-backup zip.
+//! Automatic and manual backups in the BlobStore under `backups/` (internals §12): listing with card counts, the 30-minute rule, and the full-backup zip.
 
 use crate::anki::{create_zip, ZipInput};
 use crate::backup::rotation::{
@@ -22,8 +21,7 @@ fn backup_path(name: &str) -> String {
     format!("{BACKUP_PREFIX}{name}")
 }
 
-/// Card counts per backup file (keyed by absolute path; backups are immutable). The TypeScript kept
-/// a WeakMap per core; a process-wide map keyed by path is the same thing without a core field.
+/// Card counts per backup file (keyed by absolute path; backups are immutable).
 static CARD_COUNT_CACHE: LazyLock<Mutex<HashMap<PathBuf, Option<i64>>>> = LazyLock::new(|| Mutex::new(HashMap::new()));
 
 fn cache_key(core: &CollectionCore, name: &str) -> Option<PathBuf> {

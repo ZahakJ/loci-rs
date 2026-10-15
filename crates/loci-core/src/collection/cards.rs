@@ -1,5 +1,5 @@
-//! Card state operations (recall `src/core/collection/cards.ts`): suspend, bury, flag, unbury, the
-//! day-rollover unbury; plus `forget_cards` and `resolve_leech` (recall `study.ts:431-482`), which
+//! Card state operations: suspend, bury, flag, unbury, the
+//! day-rollover unbury; plus `forget_cards` and `resolve_leech`, which
 //! the browser's bulk "Forget" and the study screen share.
 
 use crate::collection::decks::deck_and_descendant_ids;
@@ -207,7 +207,7 @@ pub fn unbury_if_day_rolled_over(core: &CollectionCore) -> Result<i64> {
     })
 }
 
-/// Writes every column of an existing card row (`restoreRows` in the TypeScript).
+/// Writes every column of an existing card row.
 pub fn update_card(core: &CollectionCore, card: &Card) -> Result<()> {
     let values = card_params(card);
     let rest: Vec<String> = rows::CARD_COLUMNS[1..].iter().map(|c| format!("\"{c}\" = ?")).collect();
@@ -284,7 +284,7 @@ pub fn forget_cards(core: &CollectionCore, cards: &[Card], reset_counts: bool, r
 }
 
 /// Resolves a leech: `suspend` suspends the card; `reset` and `keep` drop the `leech` tag, and
-/// `reset` also forgets the card (study.ts:431). Undoable.
+/// `reset` also forgets the card. Undoable.
 pub fn resolve_leech(core: &CollectionCore, card_id: CardId, action: LeechResolution) -> Result<()> {
     core.db().transaction(|| {
         let card = get_card(core, card_id)?;
@@ -344,7 +344,7 @@ mod tests {
         ids.iter().map(|i| h.col.get_card(*i).unwrap().queue).collect()
     }
 
-    // ── undo-cards.test.ts ──
+    // ── undo-cards ──
     #[test]
     fn undoes_delete_notes_notes_cards_fts_and_graves_come_back() {
         let mut h = make_collection();

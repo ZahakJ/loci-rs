@@ -1,4 +1,4 @@
-//! `describe_query`: a short human sentence for a parsed search (recall `src/core/search/describe.ts`),
+//! `describe_query`: a short human sentence for a parsed search,
 //! e.g. `deck:French tag:verbs is:due` → "Cards in deck French, tagged verbs, and due".
 //! All wording comes from i18n keys under `browse.describe.*`; lists follow English
 //! `Intl.ListFormat` (long style): "a and b", "a, b, and c".

@@ -1,4 +1,4 @@
-//! Cloze deletions (recall `src/core/template/cloze.ts`; a port of Anki's rslib/src/cloze.rs).
+//! Cloze deletions (a port of Anki's rslib/src/cloze.rs).
 //!
 //! Syntax: `{{c1::text}}`, `{{c1::text::hint}}`, `{{c1,3::shared}}`, nested up to 10 levels,
 //! overlapping via nesting. A `}}` inside a MathJax `\( … \)` / `\[ … \]` that started inside
@@ -34,7 +34,7 @@ enum Tok {
 static OPEN_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^\{\{c(\d+(?:,\d+)*)::").expect("valid regex"));
 const MAX_NESTING: usize = 10;
 
-/// cloze.ts:36 looks at `text.slice(i, i + 64)` for the opening marker; keep that window.
+/// Looks at a 64-character window for the opening marker.
 fn open_at(text: &str, i: usize) -> Option<(Vec<i64>, String)> {
     let mut end = (i + 64).min(text.len());
     while !text.is_char_boundary(end) {
@@ -296,7 +296,7 @@ pub struct RevealOptions<'a> {
 static UNESCAPE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\\(.)").expect("valid regex"));
 static NOT_ATTR_CHAR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?i)[^a-z0-9-]").expect("valid regex"));
 
-/// Splits on `:` not preceded by a backslash (cloze.ts:151 `split(/(?<!\\):/)`).
+/// Splits on `:` not preceded by a backslash.
 fn split_unescaped_colon(s: &str) -> Vec<&str> {
     let mut out = Vec::new();
     let mut start = 0;

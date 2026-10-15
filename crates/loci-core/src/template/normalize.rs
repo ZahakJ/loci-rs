@@ -1,7 +1,6 @@
-//! Unicode canonical normalisation (NFD / NFC) and combining-mark stripping, as the TypeScript's
-//! `String.prototype.normalize` (typed.ts `normalizeTypedText`/`foldKey`, search/sql.ts
-//! `stripCombining`). Backed by the `unicode-normalization` crate; `is_combining` keeps the
-//! explicit mark ranges the TypeScript checked with `\p{M}` for the scripts cards meet in practice.
+//! Unicode canonical normalisation (NFD / NFC) and combining-mark stripping for typed
+//! answers and search. Backed by the `unicode-normalization` crate; `is_combining` keeps the
+//! explicit mark ranges (`\p{M}`) for the scripts cards meet in practice.
 
 /// True for a combining mark (general category M) — the ranges that matter for typed answers.
 pub fn is_combining(c: char) -> bool {

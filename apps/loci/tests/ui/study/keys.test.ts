@@ -25,7 +25,7 @@ describe('matchStudyKey', () => {
     expect(matchStudyKey(k(' ', { repeat: true }), 'front')).toBeNull();
     expect(matchStudyKey(k('e', { altKey: true }), 'front')).toBeNull();
   });
-  it('maps the DESIGN §8 letters', () => {
+  it('maps the internals §6 letters', () => {
     expect(matchStudyKey(k('z'), 'front')).toEqual({ type: 'undo' });
     expect(matchStudyKey(k('e'), 'back')).toEqual({ type: 'edit' });
     expect(matchStudyKey(k('s'), 'front')).toEqual({ type: 'suspend' });

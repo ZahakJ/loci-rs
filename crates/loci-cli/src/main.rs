@@ -1,4 +1,4 @@
-//! `loci`: the Loci engine from the command line (port of recall `scripts/loci.ts`), plus `serve`,
+//! `loci`: the Loci engine from the command line, plus `serve`,
 //! which exposes the engine's RPC over local HTTP for the web frontend in development and for the
 //! Playwright suite.
 //!

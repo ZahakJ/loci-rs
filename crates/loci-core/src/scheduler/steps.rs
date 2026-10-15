@@ -1,5 +1,5 @@
-//! Anki learning/relearning steps (rslib/src/scheduler/states/steps.rs, fsrs-spec §8.2;
-//! recall `src/core/scheduler/steps.ts`). Steps are configured in minutes (fractional allowed)
+//! Anki learning/relearning steps (rslib/src/scheduler/states/steps.rs, fsrs-spec §8.2).
+//! Steps are configured in minutes (fractional allowed)
 //! and used as whole seconds. `remaining` is the card's `left % 1000` (steps left until
 //! graduation).
 

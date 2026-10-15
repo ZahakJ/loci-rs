@@ -1,5 +1,5 @@
 //! Anki schema-11 DDL (the layout of `collection.anki2` / `collection.anki21`),
-//! research/anki-format.md §2.1. Port of recall `src/core/anki/schema11.ts`.
+//! research/anki-format.md §2.1.
 //! Table and column definitions are a description of the file format Anki reads.
 
 pub const SCHEMA11_DDL: &str = "

@@ -1,4 +1,4 @@
-//! Insights (DESIGN §12; recall `src/core/stats/insights.ts`): rules that turn the collection's
+//! Insights (internals §10): rules that turn the collection's
 //! numbers into one sentence and, when useful, one action. Each rule is independent and cheap
 //! enough to run when Home opens.
 //!

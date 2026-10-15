@@ -1,5 +1,5 @@
 /**
- * Cloze one-by-one reveal (DESIGN §8): on the question, each Space reveals the next active cloze;
+ * Cloze one-by-one reveal (internals §6): on the question, each Space reveals the next active cloze;
  * once every cloze is shown, the next Space shows the answer. Pure reducer (tested).
  */
 export interface OneByOneState { total: number; revealed: number }

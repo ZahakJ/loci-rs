@@ -1,5 +1,5 @@
 /**
- * CardFrame: renders one side of a RenderedCard inside a Shadow DOM host (DESIGN §4, §8).
+ * CardFrame: renders one side of a RenderedCard inside a Shadow DOM host (internals §2, §6).
  *
  * Pipeline per render: `loci-media:` URLs → object URLs, DOMPurify with Loci's card config,
  * insert into `.card` in the shadow root, then enhance: answer wrapper (for the reveal motion),

@@ -1,8 +1,8 @@
-# FSRS and Anki SM-2: implementation spec
+# FSRS and Anki SM-2
 
-Research date: 2026-10-06. This spec is for writing a TypeScript scheduler and its test suite.
+Sources read on 2026-10-06.
 
-## 0. Version pinning (read this first)
+## 0. Version pinning
 
 | Component | Version / commit used here | Why it matters |
 |---|---|---|
@@ -125,7 +125,7 @@ S_new = S * (G >= 2 ? max(SInc, 1) : SInc)
 - The `max(SInc, 1)` for G ≥ 2 ("Non-decreasing SInc(Hard) in same-day reviews") arrived in fsrs-rs v6.0.0 ([PR #376](https://github.com/open-spaced-repetition/fsrs-rs/pull/376)). The wiki says "ensure SInc ≥ 1 when G ≥ 2".
 - FSRS-5's version had no `S^(-w19)` term: `S' = S·exp(w17·(G−3+w18))` ([wiki](https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm)). fsrs-rs reproduces FSRS-5 by padding w19 = 0.
 
-### 1.9 Complete step function (fsrs-rs `step`, port this literally)
+### 1.9 Complete step function (fsrs-rs `step`)
 
 ```ts
 function step(w: number[], deltaT: number, rating: number, state: {s:number,d:number}, nth: number) {
@@ -535,22 +535,6 @@ Sources: [`training.rs`](https://github.com/open-spaced-repetition/fsrs-rs/blob/
   - The 21-param set in the test gives `[0.20580745, 0.026005825]`.
   - These need the sample file, so they are not portable.
 
-### 6.3 What to build in TypeScript (a simple but correct optimizer)
-
-- Port §6.1 literally. The model is 21 scalars and a scan over each item's history.
-- Gradients:
-  - **Forward-mode dual numbers** with a 21-wide tangent are easy: every op in §1 is elementary (`exp`, `pow`, `min`, `clamp`). Treat the gradient of `clamp` and `min` as the gradient of the active branch.
-  - Or write a small reverse-mode tape.
-  - fsrs-rs itself now uses a hand-written analytic gradient (`batch_loss_and_grad`), not autodiff (release notes v6.3.0: "without production Burn dependency").
-- Compute cost: one epoch is roughly Σ(item lengths) step evaluations. With 50k reviews and 8 epochs this is well under a second in V8 with dual numbers. Use a Web Worker.
-- **Cheap fallbacks for small histories** (these are exactly what Anki does):
-  - fewer than 8 training items → defaults;
-  - 8–63 items, or no second long-term reviews → pretrain w0–w3 only;
-  - otherwise full Adam.
-- An even cheaper fallback is "pretrain only, always". It needs only the first-interval items and a 1-D ternary search per grade.
-- Always run the acceptance test (log loss new < current) before replacing params.
-- py-fsrs's optimizer is a smaller PyTorch reference ([optimizer.py](https://github.com/open-spaced-repetition/py-fsrs/blob/9446cb06605c597a063aeee49f7d188d42e34dc2/fsrs/optimizer.py)): 5 epochs, mini-batch 512, lr 4e-2, `max_seq_len = 64`, Adam with `CosineAnnealingLR(T_max = ceil(n/512)*epochs)`, clamping after each step, and returning defaults if `num_reviews < 512`. It does not have fsrs-rs's pretraining, outlier filter, recency weights or L2 prior, and that is a source conflict to be aware of. **Follow fsrs-rs for Anki parity.**
-
 ---
 
 ## 7. Reference test vectors (verbatim from source tests)
@@ -901,7 +885,7 @@ How CMRR worked, still in fsrs-rs `optimal_retention` and Anki `compute_optimal_
 
 ## 11. Differences between reference implementations
 
-These matter when choosing which test vectors your implementation must pass.
+They decide which test vectors apply.
 
 | Topic | fsrs-rs / Anki | ts-fsrs | py-fsrs |
 |---|---|---|---|
@@ -936,25 +920,3 @@ fsrs-rs main (unreleased after v6.6.2) adds FSRS-7. A summary from [model_v7.rs@
 The benchmark recommends shipping FSRS-7 "with both recency weighting and scheduling penalties enabled" ([srs-benchmark README](https://github.com/open-spaced-repetition/srs-benchmark/blob/bd9110f791e5b37282c55a9aa8db35f68f0c4aa2/README.md)).
 
 **Design implication:** keep `MemoryState` extensible (add an optional `sFast`), and keep R(t, state) and I(DR, state) as pluggable functions. FSRS-7's interval has no closed form and is solved numerically on main.
-
----
-
-## 13. Implementation checklist and test-suite plan
-
-1. **`fsrs6.ts`**: constants (§1.1), `forgettingCurve`, `nextInterval`, `initS/initD`, `nextDifficulty`, `sRecall`, `sForget`, `sShortTerm`, `step`, `nextStates`, `memoryStateFromSm2`, `checkAndFillParameters`, `clipParameters`.
-   - Tests: §7.1–7.7 at 1e-4. For the DR = 0.1 interval, accept 3116766 or 3116769 (f32 vs f64).
-2. **`fuzz.ts`**: Anki fuzz exactly as in §4. Tests: the full table in §4 plus the `minimum_review_fuzz_interval` vectors.
-3. **`steps.ts`**: Anki step semantics (§8.2). Tests: 1m/10m → Again 60 s, Hard 330 s, Good 600 s. A single step of 3 days → Hard `min(4.5d, 4d)` = 4 days after day-rounding.
-4. **`sm2.ts`**: §8.3. Tests: §7.9.
-5. **`schedulerFsrs.ts`**: the Anki wiring of §3. Tests:
-   - §7.8 sequence with Anki-style Hard (the sequence only uses Good/Again, so it should reproduce `[0,2,11,46,163,498,0,0,2,4,7,12,21]` with fuzz off and a 1m/10m + 10m step config).
-   - Reproducing it in an Anki-style day model requires each review at exactly `due`.
-6. **`revlog.ts`**: §5.3 conversion. Tests: the three `delta_t_is_correct` cases and the cram/manual filtering cases.
-7. **`optimizer.ts`**: §6. Tests:
-   - Pretraining on synthetic data recovers known S0.
-   - Gradient check of the analytic or dual gradient against finite differences (1e-6).
-   - Loss decreases.
-   - Clipping holds.
-   - < 8 items → defaults.
-   - 8–63 items → only w0–w3 change.
-8. **`metrics.ts`**: log loss and RMSE(bins) with the binning in §6.2. Test: `get_bin` vector from fsrs-rs (`get_bin(p, 20)` for p = 0..1 step 0.01 gives the listed array). Note that `get_bin` is used only in `universal_metrics`; RMSE(bins) uses `r_matrix_index`.

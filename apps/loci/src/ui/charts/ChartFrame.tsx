@@ -1,6 +1,6 @@
 /**
  * Shared chart chrome: measures its width (ResizeObserver), hosts the hover/focus tooltip, and
- * renders the visually-hidden data table every chart carries (DESIGN §16; dataviz: tooltips
+ * renders the visually-hidden data table every chart carries (internals §14; dataviz: tooltips
  * enhance, never gate). The SVG itself is `role="img"` with <title>/<desc>.
  */
 import { useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';

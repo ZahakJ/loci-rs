@@ -1,4 +1,4 @@
-//! Note-type merging for the Anki importer (`import.ts` `importNotetypes` and its helpers):
+//! Note-type merging for the Anki importer:
 //! matching by id, by identical shape, adoption of empty built-ins, suffixing of conflicting
 //! names and the `originalId` copy for a different note type under a known id.
 

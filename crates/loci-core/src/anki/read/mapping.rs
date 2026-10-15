@@ -1,4 +1,4 @@
-//! Schema-11 JSON objects → Loci types (read.ts:312 `notetypeFromJson`, :401 `deckFromJson`).
+//! Schema-11 JSON objects → Loci types.
 
 use super::{jb, js};
 use crate::anki::deck_config::{int, num, obj};
@@ -94,7 +94,7 @@ pub(super) fn notetype_from_json(j: &Json, warnings: &mut Vec<String>) -> Result
     if stock > 0 {
         config.original_stock_kind = Some(stock);
     }
-    // read.ts:310 STOCK_KIND_BUILTIN = { 6: 'image-occlusion' }
+    // stock kind 6 is the built-in image-occlusion type
     if stock == 6 && kind == NotetypeKind::Cloze && fields.len() >= 4 {
         config.builtin = Some(BuiltinKind::ImageOcclusion);
         config.occlusion_mode = Some(OcclusionMode::HideAll);

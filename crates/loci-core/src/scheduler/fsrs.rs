@@ -1,5 +1,5 @@
-//! FSRS-6 (21 parameters), ported literally from fsrs-rs v6.6.2 through recall
-//! `src/core/scheduler/fsrs.ts` (research/fsrs-spec.md §1–§2).
+//! FSRS-6 (21 parameters), ported literally from fsrs-rs v6.6.2
+//! (research/fsrs-spec.md §1–§2).
 //!
 //! Units: stability in days, difficulty on [1, 10], retrievability as a probability, elapsed
 //! time in (integer, scheduler) days. All arithmetic is f64; fsrs-rs uses f32, so results agree
@@ -44,7 +44,7 @@ impl MemoryState {
 /// FSRS grade: 1 Again, 2 Hard, 3 Good, 4 Easy (0 = no rating, state unchanged).
 pub type Grade = u8;
 
-/// `clamp` without the NaN panic of `f64::clamp` (NaN passes through, as in the TypeScript).
+/// `clamp` without the NaN panic of `f64::clamp` (NaN passes through).
 #[inline]
 pub fn clamp(x: f64, lo: f64, hi: f64) -> f64 {
     if x < lo {

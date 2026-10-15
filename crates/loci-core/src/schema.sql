@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS tags (
   usn        INTEGER NOT NULL DEFAULT -1
 );
 
-CREATE TABLE IF NOT EXISTS graves (                -- deletions, kept for future sync
+CREATE TABLE IF NOT EXISTS graves (                -- deletions, as Anki keeps them
   oid   INTEGER NOT NULL,
   type  INTEGER NOT NULL,                  -- 0 card, 1 note, 2 deck
   usn   INTEGER NOT NULL DEFAULT -1

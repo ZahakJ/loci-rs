@@ -1,5 +1,4 @@
-//! Anki "Set due date" (rslib `scheduler/reviews.rs` `set_due_date`; recall
-//! `src/core/collection/reschedule.ts`), shared by the browser's bulk action and the catch-up
+//! Anki "Set due date" (rslib `scheduler/reviews.rs` `set_due_date`), shared by the browser's bulk action and the catch-up
 //! planner.
 //!
 //! Semantics per card, for `days` from today:
@@ -30,7 +29,7 @@ pub struct DueDateSpec {
 static SPEC: LazyLock<regex::Regex> =
     LazyLock::new(|| regex::Regex::new(r"^\s*(\d+)\s*(?:-\s*(\d+))?\s*(!)?\s*$").expect("valid due-date regex"));
 
-/// `reschedule.ts:27 parseDueDateSpec`.
+/// Parses a due-date spec (`0`, `3-7`, `5!`).
 pub fn parse_due_date_spec(text: &str) -> Result<DueDateSpec> {
     let invalid = || LociError::invalid(format!("Invalid due date \"{text}\": use a number of days like 0, 1, 3-7 or 5!"));
     let m = SPEC.captures(text).ok_or_else(invalid)?;
@@ -42,7 +41,7 @@ pub fn parse_due_date_spec(text: &str) -> Result<DueDateSpec> {
     Ok(DueDateSpec { min: a.min(b), max: a.max(b), force: m.get(3).is_some() })
 }
 
-/// Inserts one revlog row (`INSERT_REVLOG_SQL` in rows.ts).
+/// Inserts one revlog row.
 pub(crate) fn insert_revlog(db: &Db, e: &RevlogEntry) -> Result<()> {
     db.run(&insert_sql("revlog", &REVLOG_COLUMNS), rusqlite::params_from_iter(revlog_params(e)))?;
     Ok(())

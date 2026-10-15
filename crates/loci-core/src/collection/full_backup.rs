@@ -1,7 +1,6 @@
 //! Reading Loci's own full-backup zip (`backup::export_full_backup`: `collection.sqlite`,
 //! `media/<name>` files and `manifest.json` with format 'loci-backup'), so a downloaded backup can
-//! be restored from a file (DESIGN §14 "pick a backup or a file"; recall
-//! `src/core/collection/full-backup.ts`).
+//! be restored from a file (internals §12).
 //!
 //! The database image is validated (SQLite header, `PRAGMA quick_check`, a Loci schema) before
 //! anything is replaced; `Collection::restore_full_backup` performs the swap (with a pre-restore
@@ -111,7 +110,7 @@ pub fn validate_loci_database(bytes: &[u8]) -> Result<DatabaseCounts> {
     })
 }
 
-/// `import.ts:80 guidOverlap`: how many of `guids` already exist here, and how many would be new.
+/// How many of `guids` already exist here, and how many would be new.
 pub fn guid_overlap(core: &CollectionCore, guids: &[String]) -> Result<(i64, i64)> {
     let mut unique: Vec<&String> = Vec::new();
     let mut seen = std::collections::HashSet::new();

@@ -1,5 +1,5 @@
 /**
- * Paste cleaning for the field editor (DESIGN §10: "paste strips styles by default").
+ * Paste cleaning for the field editor (internals §8: "paste strips styles by default").
  *
  * Pure string → string (no DOM), so it runs in tests and never executes pasted markup.
  * Keeps: b i u sub sup br img ul ol li a code pre (strong/em/s-like tags are mapped onto b/i).

@@ -1,12 +1,8 @@
 # The data model and Anki compatibility
 
-Loci's collection is one SQLite file, `collection.sqlite`, whose tables use Anki's column names and Anki's units. That choice makes import a mapping rather than a translation: a review that Anki stored as "interval 14, ease 2500, due on day 812" is stored by Loci as exactly those numbers. This chapter describes the schema, which Anki packages Loci reads and writes, and what survives a round trip.
-
-The authoritative schema is [`crates/loci-core/src/schema.sql`](https://github.com/ZahakJ/loci-rs/blob/main/crates/loci-core/src/schema.sql). What follows is a summary.
+The collection is one SQLite file, `collection.sqlite`, with Anki's column names and units: a review Anki stored as "interval 14, ease 2500, due on day 812" is stored as those numbers. The schema is [`crates/loci-core/src/schema.sql`](https://github.com/ZahakJ/loci-rs/blob/main/crates/loci-core/src/schema.sql).
 
 ## Units
-
-Anki's units are unusual, so they are worth stating once:
 
 | Column | Unit |
 |---|---|
@@ -37,17 +33,17 @@ Note types, fields, templates, decks and deck presets are normalised tables (`no
 
 Other tables: `tags`, `saved_searches`, `undo_log` (one row per undoable step, holding the inverse operation), `optimise_log` (every optimiser run, with parameters and metrics before and after), and `graves` (deleted ids, as Anki keeps them).
 
-**Search** uses an FTS5 table, `notes_fts`, over `notes.plain` and the tags, with the trigram tokenizer. Trigrams give Anki-like substring matching for Latin, Arabic and CJK text alike; queries shorter than three characters fall back to `LIKE` on `notes.plain`.
+**Search** uses an FTS5 table, `notes_fts`, over `notes.plain` and the tags, with the trigram tokenizer. Trigrams give substring matching for Latin, Arabic and CJK text; queries shorter than three characters fall back to `LIKE` on `notes.plain`.
 
-**Sync.** Stamps and deletions for [sync](sync.md) live in side tables (`sync_rows` and its neighbours); the Anki-compatible tables and columns are untouched.
+**Sync.** [Sync](sync.md) stamps and deletions live in side tables (`sync_rows` and its neighbours); the Anki-compatible tables are untouched.
 
 ## FSRS state lives where Anki puts it
 
-FSRS memory state is stored in `cards.data` as JSON, with the keys Anki itself writes: `s` (stability in days), `d` (difficulty, 1 to 10), `dr` (desired retention in effect), `decay`, and `pos` (the original new-card position). Because the keys are Anki's, a card that goes Loci → Anki → Loci keeps both its FSRS state and its SM-2 columns.
+FSRS memory state is stored in `cards.data` as JSON, with Anki's keys: `s` (stability in days), `d` (difficulty, 1 to 10), `dr` (desired retention in effect), `decay`, and `pos` (the original new-card position). A card that goes Loci → Anki → Loci keeps both its FSRS state and its SM-2 columns.
 
 ## Package layouts
 
-Anki has written three package layouts over the years. A zip entry called `meta` (a small protobuf) says which one a file uses; when it is absent, the name of the collection file inside decides.
+Anki has three package layouts. A zip entry called `meta` (a small protobuf) says which one a file uses; when it is absent, the name of the collection file inside decides.
 
 | Layout | Collection file | Schema | Compression | Media map |
 |---|---|---|---|---|
@@ -55,24 +51,20 @@ Anki has written three package layouts over the years. A zip entry called `meta`
 | `LEGACY_2` (`meta` = `08 02`, or absent with `collection.anki21`) | `collection.anki21` | 11 | zip deflate | JSON |
 | `LATEST` (`meta` = `08 03`) | `collection.anki21b` | 18 | zstd | zstd-compressed protobuf |
 
-**Loci reads all three**, as `.apkg` (a deck) or `.colpkg` (a whole collection). The zstd layout is decoded with a pure-Rust decoder, and the protobuf fields Loci needs are decoded by field number.
+**Loci reads all three**, as `.apkg` (a deck) or `.colpkg` (a whole collection). zstd is decoded in pure Rust; protobuf fields are decoded by field number.
 
-**Loci writes one: `LEGACY_2`.** An export is a schema-11 `collection.anki21`, `meta` = `08 02`, a JSON media map with numbered media files, `"schedVer": 2` in the collection config, and the small dummy `collection.anki2` that every Anki package carries for very old clients. Every Anki version from 2.1 to 26.x imports this layout, and so does AnkiDroid. Loci never writes `.anki21b`; reading it is enough, and writing the older layout is what keeps every Anki version able to open the result.
+**Loci writes one: `LEGACY_2`.** An export is a schema-11 `collection.anki21`, `meta` = `08 02`, a JSON media map with numbered media files, `"schedVer": 2` in the collection config, and the small dummy `collection.anki2` that every Anki package carries for very old clients. Anki 2.1 through 26.x and AnkiDroid import this layout. Loci never writes `.anki21b`.
 
 ## What round-trips
 
-Exporting from Loci and importing the result into a second Loci collection is lossless: notes, every scheduling column of every card, FSRS data, the review log and media bytes come back identical. The test suite checks exactly this (import a fixture, export, import again, compare counts, due days and revlog).
+Exporting from Loci and importing the result into a second Loci collection is lossless: notes, every scheduling column of every card, FSRS data, the review log and media bytes come back identical. The test suite checks this.
 
-Going out to Anki and back works the same way, with two points to know:
+Out to Anki and back:
 
 - **The day numbering.** If the collection began with an import from Anki, exports carry that Anki collection's creation time (`crt`) and renumber due days to it, so a package returning to Anki has the day numbering it left with. Otherwise the package carries Loci's own `crt`. Either way the day numbers and `crt` agree, so any importer lands each card on the same date.
 - **Deck presets** are written as Anki deck options. A preset that came from Anki keeps its original Anki JSON, so options Loci does not model are not lost.
 
 What does not round-trip:
 
-- **Filtered decks.** Loci has no persistent filtered decks. Importing one returns its cards to their home decks. The `odid` and `odue` columns stay in the schema, and persistent filtered decks would reuse them. Use *Custom session* for study-ahead, forgotten cards, previews or an arbitrary search.
-- **The `.anki21b` layout.** A collection imported from a `LATEST` package goes back out as `LEGACY_2`. The content is the same; the container is the older one.
-
-## The migration path from the TypeScript Loci
-
-The first Loci was a TypeScript web app that kept its collection in the browser. Its *full backup* is a zip containing `collection.sqlite`, the `media/` files and a `manifest.json`; the schema is the same version 1 schema this edition uses. To move over, download a full backup in the web app and import it in the Rust app with *Replace my collection*. A full backup can only replace a collection, never merge into one. The exact zip format is in [Import, export and backups](import-export-backups.md#the-loci-full-backup-format).
+- **Filtered decks.** Loci has no persistent filtered decks. Importing one returns its cards to their home decks. Use *Custom session* for study-ahead, forgotten cards, previews or an arbitrary search.
+- **The `.anki21b` layout.** A collection imported from a `LATEST` package exports as `LEGACY_2`, with the same content.

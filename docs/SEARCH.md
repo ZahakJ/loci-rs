@@ -1,9 +1,8 @@
 # Searching in Loci
 
 The Browse search box, saved searches, custom study sessions (`search` kind) and insight
-links all use Anki's search syntax. If you know Anki's, everything below works the same way.
-The implementation is `src/core/search/` (parser, SQL compiler); this page lists exactly what
-it supports.
+links use Anki's search syntax. The parser and SQL compiler are in
+`crates/loci-core/src/search/`.
 
 ## Combining terms
 

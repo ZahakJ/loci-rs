@@ -17,7 +17,7 @@ export type BarMode =
 
 export interface AnswerBarProps {
   mode: BarMode;
-  /** keycaps only on fine pointers (DESIGN §8) */
+  /** keycaps only on fine pointers (internals §6) */
   showKeys: boolean;
   /** keycaps rendered but faded out (after the first cards of a session; see keyHints) */
   keysFaded?: boolean;

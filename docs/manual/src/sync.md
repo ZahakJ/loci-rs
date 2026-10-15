@@ -1,7 +1,7 @@
 # Sync
 
-Keep the same cards, reviews and settings on your computer and your phone. There is no account
-and no server: your devices exchange **sync files**.
+Keeps the same cards, reviews and settings on every device. There is no account and no server:
+devices exchange **sync files**.
 
 ## With a shared folder (desktop, and browsers that can open folders)
 
@@ -39,7 +39,5 @@ device takes your decks, presets and settings.
 Before a sync changes anything, Loci writes an automatic backup (**Settings › Backups**).
 
 ## How it works
-
-The rest of this page is the repository's `docs/SYNC.md`.
 
 {{#include ../../SYNC.md:2:}}

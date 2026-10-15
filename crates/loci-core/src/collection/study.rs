@@ -1,4 +1,4 @@
-//! Study sessions (DESIGN §8; recall `src/core/collection/study.ts`): queue building, answering,
+//! Study sessions (internals §6): queue building, answering,
 //! sibling burying, leeches, deck "today" counters, undo and the session summary.
 //!
 //! A session keeps Anki v3's three queues in memory:
@@ -287,7 +287,7 @@ fn pick_next(core: &CollectionCore, s: &mut StudySession, clock: &SchedClock) ->
                 id = *other;
             }
         }
-        // study.ts:205 `try { getCard } catch { null }`: a vanished card is dropped from the queue.
+        // A vanished card is dropped from the queue.
         if let Ok(card) = get_card(core, id) {
             if is_still_queued(s, &card) {
                 return Ok(Some(card));
@@ -577,8 +577,7 @@ pub fn after_undo(core: &CollectionCore, s: &mut StudySession) -> Result<()> {
 }
 
 /// Runs `after_undo` when an answer of this session was undone since the last call (its revlog
-/// row is gone). The TypeScript `Collection.undo` calls `afterUndo` directly; checking here as
-/// well keeps the session right whichever path performed the undo.
+/// row is gone), whichever path performed the undo.
 pub fn resync_if_undone(core: &CollectionCore, s: &mut StudySession) -> Result<()> {
     let ids: Vec<i64> = s.answers.iter().filter_map(|a| a.revlog_id).collect();
     if ids.is_empty() {
@@ -599,7 +598,7 @@ pub fn resync_if_undone(core: &CollectionCore, s: &mut StudySession) -> Result<(
 
 // ───────────────────────── summary ─────────────────────────
 
-/// Summary of a finished session (DESIGN §8): cards, time, accuracy, buttons, tomorrow's load.
+/// Summary of a finished session (internals §6): cards, time, accuracy, buttons, tomorrow's load.
 pub fn summarise(core: &CollectionCore, s: Option<&StudySession>) -> Result<SessionSummary> {
     let answers: &[AnswerRecord] = s.map(|s| s.answers.as_slice()).unwrap_or(&[]);
     let by = |r: Rating| answers.iter().filter(|a| a.rating == r).count() as i64;
@@ -689,7 +688,7 @@ impl Collection {
         Ok(summary)
     }
 
-    /// Refills a running non-custom session (after `extend_today_limits`, collection.ts:339).
+    /// Refills a running non-custom session (after `extend_today_limits`).
     pub fn refill_session(&mut self) -> Result<()> {
         let core = &self.core;
         if let Some(s) = self.session.as_mut() {
@@ -700,7 +699,7 @@ impl Collection {
         Ok(())
     }
 
-    /// Re-synchronises a running session after an undo (collection.ts:356).
+    /// Re-synchronises a running session after an undo.
     pub fn session_after_undo(&mut self) -> Result<()> {
         let core = &self.core;
         if let Some(s) = self.session.as_mut() {

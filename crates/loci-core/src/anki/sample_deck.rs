@@ -2,7 +2,6 @@
 //! learning (the method of loci, Ebbinghaus, spacing, testing, interleaving, sleep, chunking) plus a
 //! few maths, chemistry and Arabic showcase cards; no scheduler jargon. Plain data; the collection's
 //! `install_sample_deck` creates the notes with Loci's built-in note types.
-//! Port of recall `src/core/anki/sample-deck.ts`.
 //!
 //! Field order per kind: basic / basic-reversed / basic-typed = [Front, Back]; cloze = [Text, Back Extra].
 

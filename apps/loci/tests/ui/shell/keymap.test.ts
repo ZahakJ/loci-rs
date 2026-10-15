@@ -53,7 +53,7 @@ describe('shortcut help', () => {
       for (const it of g.items) expect(dict[it.label], it.label).toBeTruthy();
     }
   });
-  it('lists every study key from DESIGN §8', () => {
+  it('lists every study key from internals §6', () => {
     const study = SHORTCUT_GROUPS.find((g) => g.id === 'study')!.items.flatMap((i) => i.keys);
     for (const k of ['space', 'enter', '1', '2', '3', '4', 'z', 'e', 's', 'b', 'f', 'm', 'i', 'r', 't', 'esc']) expect(study).toContain(k);
     // every alias is listed too

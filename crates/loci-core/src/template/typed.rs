@@ -1,4 +1,4 @@
-//! Typed-answer comparison (`{{type:Field}}`; recall `src/core/template/typed.ts`, modelled on
+//! Typed-answer comparison (`{{type:Field}}`, modelled on
 //! Anki's rslib/src/typeanswer.rs).
 //!
 //! Both strings are normalised (NFC, whitespace collapsed; the expected text is HTML-stripped

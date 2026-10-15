@@ -1,4 +1,4 @@
-//! English sentences the core produces (recall `src/core/i18n/i18n.ts`, English subset).
+//! English sentences the core produces.
 //!
 //! The UI keeps its own full dictionary; the core only embeds the keys it needs
 //! (`en-core.json`: template errors, search descriptions, insights, undo labels, …). Messages
@@ -95,7 +95,7 @@ impl Dictionary {
         self.entries.is_empty()
     }
 
-    /// `t()` against this dictionary (i18n.ts `t`).
+    /// `t()` against this dictionary.
     pub fn t(&self, key: &str, vars: &Vars) -> String {
         let mut s: Option<&str> = None;
         if let Some(Var::Num(count)) = var(vars, "count") {
@@ -133,7 +133,7 @@ fn flatten(v: &serde_json::Value, prefix: &str, out: &mut HashMap<String, String
 }
 
 static EN: LazyLock<Dictionary> = LazyLock::new(|| {
-    // The embedded file is generated from recall's en.json; a parse failure is a build defect,
+    // The embedded file is generated from the frontend's en.json; a parse failure is a build defect,
     // and an empty dictionary (keys echoed back) is the safest behaviour at runtime.
     Dictionary::from_json(EN_CORE_JSON).unwrap_or_default()
 });
@@ -153,7 +153,7 @@ pub fn has_key(key: &str) -> bool {
     EN.has_key(key)
 }
 
-/// `stats/messages.ts` `msg`: the dictionary entry when `key` exists, else `fallback` formatted
+/// The dictionary entry when `key` exists, else `fallback` formatted
 /// with `vars`, so a new sentence works before it is added to the dictionary.
 pub fn msg(key: &str, fallback: &str, vars: &Vars) -> String {
     if has_key(key) {
@@ -163,7 +163,7 @@ pub fn msg(key: &str, fallback: &str, vars: &Vars) -> String {
     }
 }
 
-/// `stats/messages.ts` `pct`: 0.873 → "87%".
+/// 0.873 → "87%".
 pub fn pct(fraction: f64) -> String {
     format!("{}%", (fraction * 100.0).round() as i64)
 }
@@ -286,7 +286,7 @@ fn var_number(v: Option<&Var>) -> Option<f64> {
     }
 }
 
-/// Formats an ICU-lite message with `vars` (i18n.ts `formatMessage`).
+/// Formats an ICU-lite message with `vars`.
 pub fn format_message(msg: &str, vars: &Vars) -> String {
     format_message_hash(msg, vars, None)
 }

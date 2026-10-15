@@ -1,5 +1,5 @@
 /**
- * WCAG 2.x contrast of the design tokens, both themes (DESIGN.md §16: "contrast AA in both themes").
+ * WCAG 2.x contrast of the design tokens, both themes (internals §14: "contrast AA in both themes").
  *
  *   cd apps/loci && pnpm contrast        (node --experimental-strip-types scripts/contrast.ts)
  *

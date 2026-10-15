@@ -20,7 +20,6 @@ dist
 /apps/loci/src-tauri/gen/android/app/src/main/java/**/generated
 /apps/loci/src-tauri/gen/android/app/src/main/assets
 *.log
-.session-id
 test-results
 playwright-report
 /.captures

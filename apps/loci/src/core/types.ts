@@ -61,7 +61,7 @@ export interface NotetypeConfig {
   occlusionMode?: 'hide-all' | 'hide-one';
   /** Anki id this note type was imported from, if different (collisions). */
   originalId?: number;
-  /** Anki `originalStockKind` (1 basic, 2 basic+reversed, 3 optional reversed, 4 typing, 5 cloze, 6 image occlusion); kept for export. (added by anki agent) */
+  /** Anki `originalStockKind` (1 basic, 2 basic+reversed, 3 optional reversed, 4 typing, 5 cloze, 6 image occlusion); kept for export. */
   originalStockKind?: number;
   /**
    * (appended) Keep this note type's own colours and fonts: when true its CSS is used as written;
@@ -162,7 +162,7 @@ export interface CardData {
   /** FSRS-6 decay */ decay?: number;
   /** original new-card position */ pos?: number;
   /** custom data (Anki `cd`) */ cd?: string;
-  /** last review time, unix seconds (Anki `lrt`) (added by anki agent) */ lrt?: number;
+  /** last review time, unix seconds (Anki `lrt`) */ lrt?: number;
 }
 export interface Card {
   id: CardId; nid: NoteId; did: DeckId; ord: number; mtime: Seconds; usn: number;

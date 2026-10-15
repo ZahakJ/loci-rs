@@ -1,9 +1,9 @@
 //! Byte-level fixes applied to an Anki collection file before it is handed to SQLite
-//! (research/anki-format.md §2.4). Port of recall `src/core/anki/sqlite-bytes.ts`.
+//! (research/anki-format.md §2.4).
 //!
 //! `read_package` only needs `fix_wal_header` (via `Db::open_from_bytes`): our connections register
 //! Anki's `unicase` collation, so `strip_unicase_collation` is kept for engines that cannot
-//! (the Tauri webview's sqlite-wasm, external tools) and for parity with the TypeScript build.
+//! (the Tauri webview's sqlite-wasm, external tools).
 
 use crate::db::{is_sqlite_image, without_wal_header};
 use crate::error::{LociError, Result};

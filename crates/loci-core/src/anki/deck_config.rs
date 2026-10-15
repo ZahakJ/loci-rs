@@ -1,4 +1,4 @@
-//! Anki deck options (`dconf`) ⇄ Loci `DeckConfig`. Port of recall `src/core/anki/deck-config.ts`.
+//! Anki deck options (`dconf`) ⇄ Loci `DeckConfig`.
 //!
 //! Mapping table (schema-11 JSON key → DeckConfig field; schema-18 protobuf is first converted to
 //! the same JSON by `deck_config_proto_to_json`):
@@ -149,7 +149,7 @@ pub(crate) fn obj(v: Option<&Value>) -> Json {
     }
 }
 
-/// deck-config.ts:503 `num`: finite number, boolean (1/0) or numeric string; else the default.
+/// `num`: finite number, boolean (1/0) or numeric string; else the default.
 pub(crate) fn num(v: Option<&Value>, d: f64) -> f64 {
     match v {
         Some(Value::Number(n)) => n.as_f64().filter(|x| x.is_finite()).unwrap_or(d),
@@ -174,7 +174,7 @@ pub(crate) fn int(v: Option<&Value>, d: i64) -> i64 {
     }
 }
 
-/// deck-config.ts:509 `bool`: boolean, or number ≠ 0; else the default.
+/// `bool`: boolean, or number ≠ 0; else the default.
 pub(crate) fn bool_or(v: Option<&Value>, d: bool) -> bool {
     match v {
         Some(Value::Bool(b)) => *b,
@@ -183,7 +183,7 @@ pub(crate) fn bool_or(v: Option<&Value>, d: bool) -> bool {
     }
 }
 
-/// deck-config.ts:510 `nums`: an array of finite numbers, else None.
+/// `nums`: an array of finite numbers, else None.
 pub(crate) fn nums(v: Option<&Value>) -> Option<Vec<f64>> {
     match v {
         Some(Value::Array(a)) => a.iter().map(|x| x.as_f64().filter(|f| f.is_finite())).collect(),

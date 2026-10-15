@@ -1,5 +1,5 @@
 //! Day/time helpers (Anki v2/v3 day numbering, fsrs-spec §9.1), Anki-style interval labels and
-//! SM-2 → FSRS memory-state conversion (fsrs-spec §5.4); recall `src/core/scheduler/convert.ts`.
+//! SM-2 → FSRS memory-state conversion (fsrs-spec §5.4).
 //!
 //! Day numbering: collection day N starts at `rollover_hour` local time on the calendar date
 //! that is N days after the local date of `crt`. Uses the process's local time zone

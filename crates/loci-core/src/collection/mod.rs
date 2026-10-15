@@ -1,6 +1,6 @@
-//! The `Collection` service and its sibling modules (recall `src/core/collection/`).
+//! The `Collection` service and its sibling modules.
 //!
-//! `internals::CollectionCore` is the shared synchronous core; the phase-2 modules
+//! `internals::CollectionCore` is the shared synchronous core; the other modules
 //! (decks, notetypes, notes, cards, media, study, render, backlog, browse, import, export,
 //! optimise, full_backup, sched_context, builtin_notetypes) and the `Collection` service build on it.
 pub mod backlog;

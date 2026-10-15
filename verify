@@ -2,7 +2,7 @@
 # The release gate. Everything must pass before a tag is pushed:
 #   1. cargo fmt --check            formatting
 #   2. cargo clippy (deny warnings) lints on every crate and target
-#   3. cargo test --workspace       the engine's tests (ported from recall) and the CLI
+#   3. cargo test --workspace       the engine's tests and the CLI
 #   4. frontend: typecheck + vitest the UI helpers + token contrast (pnpm contrast)
 #   5. frontend build + Tauri desktop build (debug binary; bundles are the release workflow's job)
 #   6. e2e (Playwright on the system Chrome against `loci serve`) unless LOCI_VERIFY_SKIP_E2E=1

@@ -1,5 +1,4 @@
-//! Port of recall `tests/unit/search/search.test.ts` (parser cases, and the SQL cases over an
-//! in-memory `Db` seeded with the same fixture as the TypeScript test).
+//! Search tests: parser cases, and SQL cases over an in-memory `Db` seeded with a fixture.
 
 mod parse_tests {
     use crate::error::LociError;
@@ -97,7 +96,7 @@ mod parse_tests {
         assert_eq!(p("dupe:100,dog"), SearchNode::Dupe { ntid: 100, text: "dog".into() });
         assert_eq!(p("has-cd:v"), SearchNode::HasCd { key: "v".into() });
         assert_eq!(p("preset:Intense"), SearchNode::Preset { name: "Intense".into() });
-        // parse.ts:139 stops a bare term at `(`/`)`, so `re:(?-i)X` is three terms; quote the pattern.
+        // the parser stops a bare term at `(`/`)`, so `re:(?-i)X` is three terms; quote the pattern.
         assert_eq!(p("re:\"(?-i)X\""), SearchNode::Regex { pattern: "(?-i)X".into() });
         assert_eq!(
             p("re:(?-i)X"),
@@ -128,7 +127,7 @@ mod parse_tests {
 }
 
 mod sql_tests {
-    //! Port of recall `tests/unit/search/search.test.ts` over an in-memory `Db` with the same fixture.
+    //! SQL cases over an in-memory `Db` with a fixture.
     use crate::db::Db;
     use crate::search::sql::*;
     use crate::text::field_checksum;

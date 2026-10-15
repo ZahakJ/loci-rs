@@ -1,6 +1,5 @@
 //! Unicode canonical composition (NFC) for media file names, as Anki normalises them.
-//! The phase-1 agent wrote a table-driven composer here; it is replaced by the
-//! `unicode-normalization` crate, which also performs canonical reordering of combining marks.
+//! Uses the `unicode-normalization` crate, which also performs canonical reordering of combining marks.
 
 use unicode_normalization::UnicodeNormalization;
 

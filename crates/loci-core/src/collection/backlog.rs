@@ -1,4 +1,4 @@
-//! Catch-up mode (DESIGN §9; recall `src/core/collection/backlog.ts`): the backlog report and
+//! Catch-up mode (internals §7): the backlog report and
 //! the four catch-up plans.
 //!
 //! A backlog is "triggered" when more reviews are due than twice the recent daily average, or
@@ -27,7 +27,7 @@ const AVERAGE_WINDOW_DAYS: i64 = 30;
 /// Raw preset-config key holding a temporary desired retention: {original, untilDay, retention}.
 pub const TEMP_RETENTION_KEY: &str = "lociTemporaryRetention";
 
-/// The marker stored under `TEMP_RETENTION_KEY` (backlog.ts `TemporaryRetention`).
+/// The marker stored under `TEMP_RETENTION_KEY`.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct TempRetention {
     pub original: f64,
@@ -35,7 +35,7 @@ pub struct TempRetention {
     pub until_day: CollectionDay,
 }
 
-/// `backlog.ts:182 readTemporaryRetention`: None unless `original` and `untilDay` are numbers;
+/// None unless `original` and `untilDay` are numbers;
 /// `retention` falls back to `original`.
 pub fn read_temporary_retention(raw: &Map<String, Value>) -> Option<TempRetention> {
     let o = raw.get(TEMP_RETENTION_KEY)?.as_object()?;
@@ -317,7 +317,7 @@ impl Collection {
         backlog_report(&self.core, deck_id)
     }
 
-    /// Applies a catch-up plan; a running session is refilled when cards moved (collection.ts:365).
+    /// Applies a catch-up plan; a running session is refilled when cards moved.
     pub fn apply_catch_up(&mut self, deck_id: Option<DeckId>, plan: &CatchUpPlan) -> Result<CatchUpResult> {
         let r = apply_catch_up(&self.core, deck_id, plan)?;
         if r.postponed > 0 {

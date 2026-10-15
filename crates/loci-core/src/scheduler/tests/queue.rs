@@ -1,4 +1,4 @@
-//! Port of `queue.test.ts`, plus the SQLite loaders of `sched-context.ts`.
+//! Queue tests, plus the SQLite loaders.
 
 use super::{local_ms, make_card, make_config};
 use crate::collection::rows::{card_params, insert_sql, CARD_COLUMNS};

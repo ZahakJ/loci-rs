@@ -1,8 +1,8 @@
 # Sync
 
 No account, no server. Each device writes a **sync file** with its view of the collection;
-other devices merge it. Engine: `crates/loci-core/src/sync/`. Pure logic, no file or network
-I/O (it compiles for wasm32); shells move the bytes.
+other devices merge it. The engine (`crates/loci-core/src/sync/`) does no I/O; the shells move
+the bytes.
 
 ## Transports
 
@@ -14,10 +14,8 @@ I/O (it compiles for wasm32); shells move the bytes.
   media it lacks. Runs on open, on close, after a study session and on *Sync now*. The
   orchestration is `apps/loci/src/ui/sync/folderSync.ts`; folder I/O is Tauri commands
   (`sync_folder_*`, desktop) or a `FileSystemDirectoryHandle` (browser).
-- **File hand-off** (everywhere, including Android and phones): *Save sync file* (share or
-  download) and *Open sync file* (merge). Carries every row and the media files the other side
-  may lack.
-- LAN pairing is not built: the two transports above cover phone ↔ desktop.
+- **File hand-off** (every platform): *Save sync file* (share or download) and *Open sync
+  file* (merge). Carries every row and the media files the other side may lack.
 
 ## Stamps
 

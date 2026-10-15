@@ -1,5 +1,5 @@
 //! Post-processing after the rows are read: v1-scheduler upgrade, dangling-reference repair and
-//! emptying filtered decks (read.ts:454–577).
+//! emptying filtered decks.
 
 use super::schema18::set;
 use crate::anki::deck_config::dconf_to_deck_config;

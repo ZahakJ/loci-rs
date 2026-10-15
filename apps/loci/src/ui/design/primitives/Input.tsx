@@ -4,7 +4,7 @@ import { useFieldControl } from './Field';
 import { cx } from './layer';
 import s from './Field.module.css';
 
-/** No `title`: explain a field with Field help or a Tooltip (DESIGN §17). */
+/** No `title`: explain a field with Field help or a Tooltip (internals §15). */
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'title'> {
   icon?: IconName;
   /** unit text shown inside the end of the field, e.g. "min" */

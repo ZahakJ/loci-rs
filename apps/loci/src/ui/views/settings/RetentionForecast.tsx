@@ -10,7 +10,7 @@ import s from './Settings.module.css';
 
 /**
  * The retention → workload sentence and the 90-day sparkline under a desired-retention slider
- * (DESIGN §9). Simulated on the actual cards; falls back to the forgetting-curve ratio.
+ * (internals §7). Simulated on the actual cards; falls back to the forgetting-curve ratio.
  * Used by Settings › Studying and the preset editor.
  */
 export function RetentionForecast({ config, presetKey }: { config: DeckConfig; presetKey?: string | number }) {

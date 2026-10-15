@@ -1,5 +1,4 @@
-//! Bulk actions of the browser (recall `browse.ts` `bulk`, `runBulk`, `reposition`,
-//! `bulkSetDue`, `findReplace`, `editTags`). Each action records one undo entry; `affected`
+//! Bulk actions of the browser. Each action records one undo entry; `affected`
 //! counts notes for tag edits, find-and-replace and delete, cards otherwise.
 
 use crate::collection::cards::{bury_cards, forget_cards, set_flag, suspend_cards};
@@ -18,7 +17,7 @@ use serde_json::Value;
 use std::collections::HashMap;
 
 /// SQL expression giving the queue a card returns to when unsuspended/unburied
-/// (Anki `restore_queue_after_bury_or_suspend`; `cards.ts RESTORED_QUEUE_SQL`).
+/// (Anki `restore_queue_after_bury_or_suspend`).
 const RESTORED_QUEUE_SQL: &str = "CASE type WHEN 0 THEN 0 WHEN 2 THEN 2 ELSE (CASE WHEN due > 1000000000 THEN 1 ELSE 3 END) END";
 
 /// `bulk()` result.
@@ -454,7 +453,7 @@ fn find_replace(
     let source = if is_regex { find.to_string() } else { fancy_regex::escape(find).into_owned() };
     let pattern = if match_case { source } else { format!("(?i){source}") };
     let re = fancy_regex::Regex::new(&pattern).map_err(|e| LociError::invalid(format!("Invalid regular expression: {e}")))?;
-    // Plain-text mode: `$` in the replacement is literal (browse.ts:461 doubles it).
+    // Plain-text mode: `$` in the replacement is literal.
     let replacement = if is_regex { js_replacement(replace) } else { replace.replace('$', "$$") };
     core.db().transaction(|| {
         let before = undo::snapshot_rows(core.db(), Table::Notes, note_ids)?;
@@ -518,7 +517,7 @@ mod tests {
 
     #[test]
     fn mulberry32_matches_the_javascript_sequence() {
-        // mulberry32(1): first outputs as produced by the TypeScript `rng`.
+        // mulberry32(1): first outputs of the reference JavaScript implementation.
         let mut r = rng(1);
         let a = r();
         let b = r();

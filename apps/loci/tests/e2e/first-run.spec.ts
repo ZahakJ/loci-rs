@@ -13,7 +13,7 @@ test.describe('first run', () => {
     await expect(hero.getByText('20 new cards')).toBeVisible();
     const deck = page.getByRole('list', { name: 'Decks' }).getByRole('link', { name: /^Loci: the art of memory: 20 new/ });
     await expect(deck).toBeVisible();
-    // Start is focused on arrival (DESIGN §18)
+    // Start is focused on arrival (internals §16)
     await expect(page.getByRole('button', { name: /^Start/ })).toBeFocused();
     expect(errors.filter((e) => e.startsWith('pageerror'))).toEqual([]);
   });

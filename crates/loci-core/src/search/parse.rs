@@ -1,4 +1,4 @@
-//! Anki search syntax → AST (recall `src/core/search/parse.ts`; https://docs.ankiweb.net/searching.html,
+//! Anki search syntax → AST (https://docs.ankiweb.net/searching.html,
 //! rslib/src/search/parser.rs).
 //!
 //! Terms are separated by whitespace (implicit AND); `and`/`or` (any case) are operators with
@@ -75,7 +75,7 @@ pub fn glob_to_like(s: &str) -> String {
 }
 
 fn escape_regex_char(c: char, out: &mut String) {
-    // parse.ts:95 escapes `.*+?^${}()|[]\/-`; `/` and `-` need no escape in Rust regex syntax
+    // escapes `.*+?^${}()|[]`; `/` and `-` need no escape in Rust regex syntax
     // (and `\/` is rejected by it).
     if ".*+?^${}()|[]\\".contains(c) {
         out.push('\\');

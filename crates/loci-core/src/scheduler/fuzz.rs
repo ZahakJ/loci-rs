@@ -1,11 +1,10 @@
 //! Anki interval fuzz (research/fsrs-spec.md §4, rslib/src/scheduler/states/fuzz.rs).
 //! Intervals in days.
 //!
-//! Unlike the TypeScript port (which used mulberry32), the random factor comes from Anki's own
-//! PRNG: `StdRng::seed_from_u64(card.id + reps)` then `random_range(0.0..1.0)`. `StdRng` in
+//! The random factor comes from Anki's own PRNG: `StdRng::seed_from_u64(card.id + reps)` then `random_range(0.0..1.0)`. `StdRng` in
 //! rand 0.10 is `chacha20::ChaCha12Rng`, the same generator Anki's rand uses, so a card gets
 //! the same fuzz here as it would in Anki. `mulberry32`/`seed32` stay as the deterministic hash
-//! the queue builder's random orders and tiebreaks use (TS `queue.ts` `tieHash`).
+//! the queue builder's random orders and tiebreaks use.
 
 use rand::rngs::StdRng;
 use rand::{RngExt, SeedableRng};
@@ -117,7 +116,7 @@ pub fn learning_ivl_with_fuzz(factor: Option<f64>, secs: i64) -> i64 {
     }
 }
 
-// ───────────────────────── deterministic hash stream (TS `mulberry32`) ─────────────────────────
+// ───────────────────────── deterministic hash stream ─────────────────────────
 /// mulberry32: a 32-bit seeded stream returning floats in [0, 1). Used for queue tiebreaks and
 /// synthetic test data, not for Anki fuzz.
 #[derive(Debug, Clone)]
@@ -139,8 +138,7 @@ impl Mulberry32 {
     }
 }
 
-/// Folds a 64-bit integer (e.g. a ms-epoch card id) into a 32-bit seed (TS `seed32`; the TS
-/// took a JS number, so the fold is on the low/high 32-bit halves of the two's-complement value).
+/// Folds a 64-bit integer (e.g. a ms-epoch card id) into a 32-bit seed (the fold is on the low/high 32-bit halves of the two's-complement value).
 pub fn seed32(n: i64) -> u32 {
     let lo = n.rem_euclid(4294967296) as u32;
     let hi = n.div_euclid(4294967296) as i32 as u32;
@@ -250,7 +248,7 @@ mod tests {
 
     #[test]
     fn mulberry32_and_seed32_match_the_typescript_stream() {
-        // Values computed with the TS mulberry32(seed32(n)) implementation (recall fuzz.ts).
+        // Values from the reference JavaScript mulberry32(seed32(n)).
         let mut m = Mulberry32::new(42);
         let first = m.next_f64();
         assert!((0.0..1.0).contains(&first));

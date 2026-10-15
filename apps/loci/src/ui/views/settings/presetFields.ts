@@ -1,7 +1,7 @@
 /**
  * Every DeckConfig field, grouped as in Anki's deck options, each with a one-line
- * explanation (research/anki-complaints.md C5). Labels/help are i18n keys resolved at render.
- * The "recommended" mark compares against STANDARD (DESIGN §7).
+ * explanation. Labels/help are i18n keys resolved at render.
+ * The "recommended" mark compares against STANDARD (internals §5).
  */
 import type { DeckConfig } from '@core/types';
 
@@ -10,7 +10,7 @@ export const FSRS6_DEFAULT = [
   1.4835, 0.0614, 0.2629, 1.6483, 0.6014, 1.8729, 0.5425, 0.0912, 0.0658, 0.1542,
 ];
 
-/** The "Standard" preset (DESIGN §7). Kept in the UI so the recommended marks need no API call. */
+/** The "Standard" preset (internals §5). Kept in the UI so the recommended marks need no API call. */
 export const STANDARD: DeckConfig = {
   scheduler: 'fsrs',
   newPerDay: 20, reviewsPerDay: 9999, minutesPerDay: 20,
@@ -28,7 +28,7 @@ export const STANDARD: DeckConfig = {
   maxAnswerSeconds: 60, showTimer: false, showIntervalsOnButtons: true,
 };
 
-/** Simple-layer learning presets (DESIGN §7: they differ only in retention and new cards). */
+/** Simple-layer learning presets (internals §5: they differ only in retention and new cards). */
 export const LEARNING_PRESETS = {
   relaxed: { desiredRetention: 0.85, newPerDay: 10 },
   standard: { desiredRetention: 0.9, newPerDay: 20 },

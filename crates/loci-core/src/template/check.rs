@@ -1,4 +1,4 @@
-//! Template validation for the note-type editor (recall `src/core/template/check.ts`): errors
+//! Template validation for the note-type editor: errors
 //! shown inline with positions. Mirrors the checks Anki runs when saving a note type: syntax,
 //! unknown fields, a front that can never render anything, and cloze note types without a cloze
 //! filter.

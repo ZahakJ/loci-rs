@@ -1,4 +1,4 @@
-//! Card generation with Anki's exact semantics (recall `src/core/template/generate.ts`; rslib
+//! Card generation with Anki's exact semantics (rslib
 //! cardgen.rs, template.rs `template_is_empty`, `requirements`).
 //!
 //! Normal note types: a template produces a card iff its question renders something with the
@@ -7,8 +7,7 @@
 //! Cloze note types: one card per distinct cloze number N > 0 in any field, ord = min(N-1, 499).
 //! A brand-new note that would get no card gets ord 0 (`ensure_not_empty`).
 //!
-//! Also home to two helpers the TypeScript kept in `collection/notetypes.ts` (`ord_is_valid`,
-//! `pad_fields`) so the phase-2 collection code can reuse them.
+//! Also home to `ord_is_valid` and `pad_fields`, so the collection code can reuse them.
 
 use crate::text::field_is_empty;
 use crate::types::{Notetype, NotetypeKind, ReqKind, Requirement};
@@ -200,7 +199,6 @@ pub fn pad_fields(nt: &Notetype, fields: &[String]) -> Vec<String> {
 
 #[cfg(test)]
 pub(crate) mod test_helpers {
-    //! Port of recall `tests/unit/template/helpers.ts`.
     use crate::types::*;
 
     pub struct TemplateSpec<'a> {

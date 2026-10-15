@@ -1,4 +1,4 @@
-//! Backups (recall `src/core/backup/`): the pure rotation policy (`rotation`), the
+//! Backups: the pure rotation policy (`rotation`), the
 //! Collection-level backup/restore operations (`backup`) and the integrity check and repair
 //! (`integrity`).
 #[allow(clippy::module_inception)]

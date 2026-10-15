@@ -1,5 +1,5 @@
 /**
- * Note types (DESIGN §10): list with note counts; editor for fields and card templates with a
+ * Note types (internals §8): list with note counts; editor for fields and card templates with a
  * live preview; add (from an existing type), duplicate, rename and delete with confirmation.
  * Saving warns when the change regenerates or removes cards.
  */

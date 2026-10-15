@@ -1,4 +1,4 @@
-/* The shadow host. Variables set here inherit into the card (DESIGN §8, §17). */
+/* The shadow host. Variables set here inherit into the card (internals §6, §15). */
 .host {
   display: block;
   min-inline-size: 0;

@@ -1,4 +1,4 @@
-/* Loci design tokens — the visual contract (DESIGN.md §17). Both themes are designed, not inverted. */
+/* Loci design tokens (docs/internals.md §15). */
 :root {
   color-scheme: light;
   /* surfaces */

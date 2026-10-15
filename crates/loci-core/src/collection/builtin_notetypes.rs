@@ -1,6 +1,6 @@
 //! Built-in note types, with Anki's stock field names and templates (rslib/src/notetype/stock.rs
 //! and rslib/src/image_occlusion/notetype.rs; research/anki-format.md §4.1, §5.4), so notes
-//! round-trip through Anki unchanged (recall `src/core/collection/builtin-notetypes.ts`). CSS is
+//! round-trip through Anki unchanged. CSS is
 //! deliberately minimal: the card renderer applies the app's designed stylesheet; this only
 //! carries Anki-meaningful basics.
 

@@ -1,5 +1,5 @@
 //! FSRS-6 parameter optimizer and evaluation metrics (fsrs-rs v6.6.2 `compute_parameters` as
-//! Anki calls it; research/fsrs-spec.md §6; recall `src/core/scheduler/optimizer.ts`).
+//! Anki calls it; research/fsrs-spec.md §6).
 //!
 //! Gradients are analytic forward-mode (a 21-wide tangent carried through every step of §1),
 //! verified against finite differences in the tests. Everything here is plain synchronous code;

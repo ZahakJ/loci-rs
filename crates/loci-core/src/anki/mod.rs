@@ -1,4 +1,4 @@
-//! Anki package reading and writing (recall `src/core/anki/`).
+//! Anki package reading and writing.
 //!
 //! `read_package` turns `.apkg` / `.colpkg` bytes into an [`AnkiImage`] (Loci-typed notes, cards,
 //! revlog, note types, decks, presets, media index); `write_legacy_package` turns an image back

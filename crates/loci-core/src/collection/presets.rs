@@ -1,4 +1,4 @@
-//! Deck-option presets (recall `src/core/collection/presets.ts`). Values follow DESIGN.md §7 and
+//! Deck-option presets. Values follow internals §5 and
 //! Anki's `DeckConfig::default`; FSRS-6 default weights from fsrs-rs v6.6.2.
 
 use crate::types::*;
@@ -9,7 +9,7 @@ pub const FSRS6_DEFAULT_PARAMS: [f64; 21] = [
     1.8729, 0.5425, 0.0912, 0.0658, 0.1542,
 ];
 
-/// The "Standard" preset (DESIGN.md §7). Every `DeckConfig` field has its default here.
+/// The "Standard" preset (internals §5). Every `DeckConfig` field has its default here.
 pub fn standard_deck_config() -> DeckConfig {
     DeckConfig {
         scheduler: SchedulerKind::Fsrs,
@@ -40,7 +40,7 @@ pub fn standard_deck_config() -> DeckConfig {
         optimise_every_reviews: 400,
         leech_threshold: 8,
         leech_action: LeechAction::Tag,
-        // One card of a note per day (DESIGN §7): a reversed card right after its forward card is a give-away.
+        // One card of a note per day (internals §5): a reversed card right after its forward card is a give-away.
         bury_siblings_new: true,
         bury_siblings_review: true,
         bury_siblings_interday: false,
@@ -68,7 +68,7 @@ pub struct PresetTemplate {
     pub config: DeckConfig,
 }
 
-/// The three learning presets of DESIGN.md §7/§13. Relaxed and Intense differ from Standard only
+/// The three learning presets of internals §5/§11. Relaxed and Intense differ from Standard only
 /// in desired retention and new cards per day.
 pub fn default_presets() -> Vec<PresetTemplate> {
     let mut relaxed = standard_deck_config();

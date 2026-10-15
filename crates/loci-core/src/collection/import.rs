@@ -1,4 +1,4 @@
-//! Anki package import (DESIGN §15; recall `src/core/collection/import.ts`): preview, and merge
+//! Anki package import (internals §13): preview, and merge
 //! into the collection following Anki's Rust importer:
 //!   - note types matched by id: same schema → updated per the conflict rule; a different note
 //!     type with the same id → the incoming one is added under a new id with
@@ -178,8 +178,7 @@ pub fn replace_media_refs(html: &str, from: &str, to: &str) -> String {
                 out = re.replace_all(&out, |caps: &regex::Captures| format!("{}{quote}{to}{quote}", &caps[1])).into_owned();
             }
         }
-        // unquoted value followed by whitespace or `>` (the TypeScript uses a lookahead; the
-        // following character is re-emitted here)
+        // unquoted value followed by whitespace or `>` (the following character is re-emitted)
         if let Ok(re) = regex::Regex::new(&format!(r"(?i)(\b(?:src|href|data|poster)\s*=\s*){v}([\s>])")) {
             out = re.replace_all(&out, |caps: &regex::Captures| format!("{}\"{to}\"{}", &caps[1], &caps[2])).into_owned();
         }

@@ -4,7 +4,7 @@ import { EmptyState } from '../design/primitives/EmptyState';
 import type { IconName } from '../design/icons';
 import { Page } from './Page';
 
-/** Temporary stand-in used by views another agent is still building. */
+/** Stand-in page for a view that is not available. */
 export function Placeholder({ title, icon = 'palace', detail }: { title: string; icon?: IconName; detail?: string }) {
   return (
     <Page title={title} hideTitle>

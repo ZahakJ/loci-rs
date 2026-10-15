@@ -1,4 +1,4 @@
-//! Port of `optimizer.test.ts` (optimizer, evaluation and workload parts; the revlog → item and
+//! Optimizer, evaluation and workload tests (the revlog → item and
 //! memory-state parts live next to `items.rs` / `convert.rs`).
 
 use super::{make_card, make_config};
@@ -19,7 +19,7 @@ fn item(pairs: &[(u8, i64)]) -> FsrsItem {
 }
 
 /// Synthetic reviews from known parameters: intervals from DR 0.9 with ±50% noise, outcomes
-/// ~ Bernoulli(R). Same mulberry32 call order as the TS `synth`, so the data sets are identical.
+/// ~ Bernoulli(R). Deterministic (mulberry32).
 fn synth(w: &[f64], cards: usize, seed: u32, max_reviews: usize) -> Vec<FsrsItem> {
     let mut rng = Mulberry32::new(seed);
     let mut items = Vec::new();

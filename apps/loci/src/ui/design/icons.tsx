@@ -1,6 +1,6 @@
 /**
  * Loci icon set: inline SVG, drawn on a 24-unit grid, rendered with a constant
- * 1.5px stroke (non-scaling) in currentColor. Shared by every UI agent:
+ * 1.5px stroke (non-scaling) in currentColor. Shared by every view:
  * append new entries to `paths` rather than creating another icon file.
  */
 import type { ReactNode, SVGProps } from 'react';
@@ -62,7 +62,7 @@ export const paths = {
   target: <><circle cx="12" cy="12" r="8.75" /><circle cx="12" cy="12" r="4.75" />{dot(12, 12)}</>,
   layers: <><path d="m12 4 8.5 4.5L12 13 3.5 8.5 12 4Z" /><path d="m3.5 12.5 8.5 4.5 8.5-4.5" /><path d="m3.5 16.25 8.5 4.25 8.5-4.25" /></>,
   palace: <><path d="M3.5 9.25C6.5 5.9 9.15 4.5 12 4.5s5.5 1.4 8.5 4.75" /><path d="M4.5 10.25h15" /><path d="M7 10.25v8.5M12 10.25v8.5M17 10.25v8.5" /><path d="M3.5 19.25h17" /></>,
-  // ── editor, browse, stats, note types (editor agent) ──
+  // ── editor, browse, stats, note types ──
   bold: <path d="M7 4.75h5.75a3.5 3.5 0 0 1 0 7H7V4.75ZM7 11.75h6.5a3.75 3.75 0 0 1 0 7.5H7v-7.5Z" />,
   italic: <path d="M10.5 4.75h7M6.5 19.25h7M14 4.75l-4 14.5" />,
   underline: <path d="M7 4.5v6.75a5 5 0 0 0 10 0V4.5M5.5 20h13" />,

@@ -1,5 +1,5 @@
 //! `CollectionCore`: the synchronous core shared by the `Collection` service and by the sibling
-//! modules (study, search, stats, import/export) — recall `src/core/collection/internals.ts`.
+//! modules (study, search, stats, import/export).
 //! Everything here runs inside the caller's transaction when there is one. Caches use interior
 //! mutability so every module can hold `&CollectionCore`.
 

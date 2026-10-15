@@ -1,5 +1,5 @@
-//! Rendering and card explanation for the API (recall `src/core/collection/render.ts`):
-//! renderCard, previewNote, checkTemplate and explainCard ("why this interval?", DESIGN §8).
+//! Rendering and card explanation for the API:
+//! renderCard, previewNote, checkTemplate and explainCard ("why this interval?", internals §6).
 //!
 //! Media in rendered HTML are referenced as `loci-media:<encoded name>`; the UI resolves them
 //! through its media URL cache.
@@ -37,7 +37,7 @@ pub fn encode_uri_component(s: &str) -> String {
     out
 }
 
-/// `render.ts:24 mediaUrl`.
+/// Media URL for a file name.
 pub fn media_url(name: &str) -> String {
     format!("{MEDIA_URL_PREFIX}{}", encode_uri_component(name))
 }

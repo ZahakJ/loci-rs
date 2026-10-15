@@ -1,5 +1,4 @@
-//! `SchedClock`: the collection clock in the units the scheduler uses (recall
-//! `src/core/collection/sched-context.ts` `SchedClock`). Phase 2's `Collection` builds one from
+//! `SchedClock`: the collection clock in the units the scheduler uses. `Collection` builds one from
 //! its settings (`crt`, rollover hour, learn-ahead minutes) and the current time; everything in
 //! this module takes it by reference. Units: ms for `now_ms`, seconds for `crt`/`next_day_at`,
 //! collection days for `today`.

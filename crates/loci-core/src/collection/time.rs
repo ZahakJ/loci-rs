@@ -1,5 +1,5 @@
 //! Collection day numbering with a rollover hour, exactly as Anki's v2/v3 scheduler with
-//! `creationOffset` set (recall `src/core/collection/time.ts`; rslib/src/scheduler/timing.rs):
+//! `creationOffset` set (rslib/src/scheduler/timing.rs):
 //!   days_elapsed = (local date of now − local date of crt) − (1 if today's rollover has not passed), min 0.
 //! Offsets are minutes WEST of UTC (what JavaScript's `Date#getTimezoneOffset()` returns).
 

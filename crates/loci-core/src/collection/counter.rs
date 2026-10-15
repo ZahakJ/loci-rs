@@ -1,4 +1,4 @@
-//! Deck-tree counts (recall `src/core/collection/queue-counter.ts` + `scheduler-counter.ts`):
+//! Deck-tree counts:
 //! Anki's v3 gathering (`scheduler::due_counts`) per deck, plus an estimate of minutes to finish
 //! from the recent seconds-per-answer. The counter is injectable (tests pass a fake one).
 
@@ -25,12 +25,12 @@ pub type QueueCounter = Box<dyn Fn(&CollectionCore, &[Deck]) -> Result<BTreeMap<
 /// The unboxed counter signature (`deck_tree` and `extend_today_limits` borrow one).
 pub type CounterFn = dyn Fn(&CollectionCore, &[Deck]) -> Result<BTreeMap<DeckId, DeckCounts>>;
 
-/// The default counter of the TypeScript skeleton: everything is zero.
+/// The default counter: everything is zero.
 pub fn zero_deck_counts(_core: &CollectionCore, _decks: &[Deck]) -> Result<BTreeMap<DeckId, DeckCounts>> {
     Ok(BTreeMap::new())
 }
 
-/// The real deck-tree counter (`scheduler-counter.ts`).
+/// The real deck-tree counter.
 pub fn scheduler_deck_counts(core: &CollectionCore, decks: &[Deck]) -> Result<BTreeMap<DeckId, DeckCounts>> {
     let mut out = BTreeMap::new();
     if decks.is_empty() {

@@ -1,4 +1,4 @@
-//! Anki search syntax (recall `src/core/search/`; docs/SEARCH.md): parser → AST, AST → SQL over
+//! Anki search syntax (docs/SEARCH.md): parser → AST, AST → SQL over
 //! the collection schema with an exact post-filter for the operators SQLite cannot express, a
 //! runner, and a one-sentence English description of a query.
 pub mod ast;

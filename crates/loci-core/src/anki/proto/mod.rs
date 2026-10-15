@@ -1,5 +1,4 @@
 //! Minimal protobuf wire-format decoder plus typed decoders for the Anki messages Loci reads.
-//! Port of recall `src/core/anki/proto.ts`.
 //!
 //! Anki's `.proto` files are AGPL-3.0, so they are NOT vendored here. Messages are decoded by
 //! field number; the numbers below are facts about the file format taken from
@@ -273,7 +272,7 @@ impl<'a> ProtoMessage<'a> {
 }
 
 /// f32 values come back with binary noise (0.9 → 0.8999999761581421); round to 7 significant
-/// digits like `Number(Math.fround(x).toPrecision(7))` (proto.ts:179).
+/// digits like `Number(Math.fround(x).toPrecision(7))`.
 pub fn round_f32(x: f64) -> f64 {
     if !x.is_finite() || x == 0.0 {
         return x;

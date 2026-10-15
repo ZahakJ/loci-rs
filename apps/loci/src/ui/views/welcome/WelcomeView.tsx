@@ -29,7 +29,7 @@ function Motif({ className }: { className?: string }) {
   );
 }
 
-/** First run (DESIGN §18): wordmark, one sentence, three calm options. */
+/** First run (internals §16): wordmark, one sentence, three options. */
 export default function WelcomeView() {
   const setImportFile = useImportFile((st) => st.set);
   const [sampleBusy, setSampleBusy] = useState(false);

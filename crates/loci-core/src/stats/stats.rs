@@ -1,4 +1,4 @@
-//! Statistics (DESIGN §12; recall `src/core/stats/stats.ts`), computed with SQL over `revlog` and `cards`.
+//! Statistics (internals §10), computed with SQL over `revlog` and `cards`.
 //!
 //! Scope: a deck and its descendants (revlog rows of cards currently in those decks), or the
 //! whole collection (every revlog row, deleted cards included). Days are collection days
@@ -466,7 +466,7 @@ pub fn stats(core: &CollectionCore, req: &StatsRequest) -> Result<Stats> {
     })
 }
 
-/// Momentum (DESIGN §9): days studied in the last 30, the current run of consecutive study days
+/// Momentum (internals §7): days studied in the last 30, the current run of consecutive study days
 /// (ending today, or yesterday when today has not been studied yet: a day is never lost before
 /// it ends) and the longest run ever.
 pub fn momentum(days: &[CollectionDay], today: CollectionDay) -> Momentum {

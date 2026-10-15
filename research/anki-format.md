@@ -1,6 +1,6 @@
-# Anki collection & package formats — implementation spec for a browser-side TS importer/exporter
+# Anki collection and package formats
 
-Status: research deliverable, 2026-10-06. Source of truth is the Anki Rust core (`rslib`) at commit
+Sources read on 2026-10-06. Source of truth is the Anki Rust core (`rslib`) at commit
 `a13d8a6e9e91d87eb046bf7b26ee64880a4eb544` (main, Oct 2026, ≈ Anki 26.09.x). All `rslib`/`proto` links below are
 permalinks to that commit, so line content quoted here can be re-checked. Where Anki's own code and community docs
 disagree, the code wins and the disagreement is noted.
@@ -10,7 +10,7 @@ Notation: `[R:path]` = `https://github.com/ankitects/anki/blob/a13d8a6e9e91d87eb
 
 ---
 
-## 0. TL;DR for the implementer
+## 0. Summary
 
 1. **Three package layouts**, chosen by the `meta` zip entry (protobuf `PackageMetadata.version`), or by which collection
    file exists when `meta` is absent:

@@ -1,4 +1,4 @@
-//! The search AST and its error type (recall `src/core/search/parse.ts` types): what
+//! The search AST and its error type: what
 //! `parse::parse_search` produces and `sql`/`describe` consume.
 
 use crate::error::LociError;

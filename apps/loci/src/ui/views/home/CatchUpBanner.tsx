@@ -5,7 +5,7 @@ import { LinkButton } from '../../design/primitives/Button';
 import { formatCount, formatMinutes } from '../../hooks/format';
 import s from './Home.module.css';
 
-/** Calm, never red: a backlog is a planning problem (DESIGN §9). */
+/** Calm, never red: a backlog is a planning problem (internals §7). */
 export function CatchUpBanner({ report }: { report: BacklogReport }) {
   return (
     <aside className={s.banner} aria-label={t('home.catchup.label')}>

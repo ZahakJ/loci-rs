@@ -1,5 +1,5 @@
 /**
- * Browse sidebar (DESIGN §11): saved searches, Today, flags, decks, note types, tags, from
+ * Browse sidebar (internals §9): saved searches, Today, flags, decks, note types, tags, from
  * `api.sidebar()`. A tree (role=tree) with arrow-key navigation; Enter / click runs the item's
  * search, ctrl/cmd-click adds it to the current search, alt-click excludes it (as in Anki).
  */

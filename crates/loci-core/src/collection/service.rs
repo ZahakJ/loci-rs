@@ -1,9 +1,8 @@
-//! `Collection`: the service that implements the `CollectionApi` over a `Db` and a `BlobStore`
-//! (recall `src/core/collection/collection.ts`).
+//! `Collection`: the service that implements the `CollectionApi` over a `Db` and a `BlobStore`.
 //!
-//! This file owns lifecycle, settings, decks, presets, note types, notes, tags, media, card state,
-//! undo, saved searches and the sample deck; `service_backups.rs` has backups, restore, integrity and reset. The integration agent adds `impl Collection`
-//! blocks in its own files for: `start_study`, `next_card`, `answer_card`, `start_custom_study`,
+//! This file has lifecycle, settings, decks, presets, note types, notes, tags, media, card state,
+//! undo, saved searches and the sample deck; `service_backups.rs` has backups, restore, integrity and reset. Other `impl Collection`
+//! blocks live in their own files: `start_study`, `next_card`, `answer_card`, `start_custom_study`,
 //! `end_study` (study.rs); `preview_note`, `check_template`, `render_card`, `explain_card`
 //! (render.rs); `backlog_report`, `apply_catch_up` (backlog.rs); `browse`, `search_ids`, `sidebar`,
 //! `bulk` (browse.rs); `preview_import`, `import_package` (import.rs); `export_package` (export.rs);
@@ -40,11 +39,11 @@ pub struct UndoResult {
     pub label: String,
 }
 
-/// The key under which `backlog.ts` stores a temporary catch-up retention inside a preset's
-/// config JSON (`backlog.ts:22`). `save_preset` keeps the marker when the retention is unchanged.
+/// The key under which catch-up stores a temporary retention inside a preset's
+/// config JSON. `save_preset` keeps the marker when the retention is unchanged.
 pub const TEMP_RETENTION_KEY: &str = "lociTemporaryRetention";
 
-/// `backlog.ts:182 readTemporaryRetention`: `{original, retention, untilDay}` or None.
+/// `{original, retention, untilDay}` or None.
 pub(crate) fn read_temporary_retention(raw: &serde_json::Map<String, serde_json::Value>) -> Option<(f64, f64, i64)> {
     let o = raw.get(TEMP_RETENTION_KEY)?.as_object()?;
     let original = o.get("original")?.as_f64()?;
@@ -73,7 +72,7 @@ impl std::fmt::Debug for Collection {
     }
 }
 
-/// File name of the database inside a collection directory (recall `scripts/loci.ts`).
+/// File name of the database inside a collection directory.
 pub const COLLECTION_FILE: &str = "collection.sqlite";
 
 impl Collection {
@@ -105,7 +104,7 @@ impl Collection {
         self
     }
 
-    /// Replaces the deck-tree counter (tests inject a fake one, as recall's `CollectionOptions.queueCounter`).
+    /// Replaces the deck-tree counter (tests inject a fake one).
     pub fn with_queue_counter(mut self, counter: QueueCounter) -> Collection {
         self.queue_counter = Some(counter);
         self
@@ -122,7 +121,7 @@ impl Collection {
     // ───────────────────────── lifecycle ─────────────────────────
 
     /// Creates or upgrades the schema, seeds a new collection, rebuilds stale search text,
-    /// unburies after a day rollover and runs SQLite's integrity check (`collection.ts openUnchecked`).
+    /// unburies after a day rollover and runs SQLite's integrity check.
     pub fn open(&mut self) -> Result<IntegrityReport> {
         self.open_unchecked().map_err(|e| match e.code {
             ErrorCode::Internal => LociError::corrupt(format!("The collection database cannot be opened: {}", e.message)),
@@ -337,7 +336,7 @@ impl Collection {
                     id
                 }
                 (given, _) => {
-                    // An absent, zero or negative id allocates one; a positive unknown id is kept (collection.ts:195).
+                    // An absent, zero or negative id allocates one; a positive unknown id is kept.
                     let id = match given {
                         Some(id) if id > 0 => id,
                         _ => core.new_id(IdTable::DeckConfigs)?,
@@ -443,7 +442,7 @@ impl Collection {
     pub fn unbury_deck(&self, deck_id: Option<DeckId>) -> Result<i64> {
         cards::unbury_deck(&self.core, deck_id)
     }
-    /// Raises today's limits, then refills a running non-custom session (collection.ts:339).
+    /// Raises today's limits, then refills a running non-custom session.
     pub fn extend_today_limits(&mut self, deck_id: DeckId, extra_new: i64, extra_review: i64) -> Result<StudyCounts> {
         self.rollover()?;
         let counts = decks::extend_today_limits(&self.core, self.counter(), deck_id, extra_new, extra_review)?;
@@ -456,7 +455,7 @@ impl Collection {
 
     // ───────────────────────── undo ─────────────────────────
 
-    /// Reverts the last operation; a running session is re-synced (collection.ts:356).
+    /// Reverts the last operation; a running session is re-synced.
     pub fn undo(&mut self) -> Result<Option<UndoResult>> {
         let label = undo::undo(self.core.db())?;
         if let Some(label) = label {
@@ -498,7 +497,7 @@ impl Collection {
 
 #[cfg(test)]
 pub(crate) mod test_support {
-    //! Port of recall `tests/unit/collection/helpers.ts`: a fixed clock, UTC, a temp dir.
+    //! Test helpers: a fixed clock, UTC, a temp dir.
     use super::*;
     use std::sync::atomic::{AtomicI64, Ordering};
     use std::sync::Arc;
@@ -599,7 +598,7 @@ mod tests {
         crate::collection::time::utc(y, mo, d, h, mi, 0)
     }
 
-    // ── schema.test.ts ──
+    // ── schema ──
     #[test]
     fn creates_every_table_seeds_and_passes_integrity() {
         let h = make_collection();
@@ -701,7 +700,7 @@ mod tests {
         assert!(basic.css.contains(".card"));
     }
 
-    // ── settings-time.test.ts (Collection-level) ──
+    // ── settings-time (Collection-level) ──
     #[test]
     fn settings_defaults_for_a_new_collection() {
         let h = make_collection();
@@ -759,7 +758,7 @@ mod tests {
         assert_eq!(h.col.core.next_day_at().unwrap(), utc(2026, 3, 12, 5, 0) / 1000);
     }
 
-    // ── undo-cards.test.ts: saved searches ──
+    // ── undo-cards: saved searches ──
     #[test]
     fn saved_searches() {
         let h = make_collection();
@@ -773,7 +772,7 @@ mod tests {
         assert_eq!(h.col.save_search("  ", "x").unwrap_err().code, ErrorCode::Invalid);
     }
 
-    // ── decks.test.ts: presets ──
+    // ── decks: presets ──
     #[test]
     fn presets_crud_and_decks_fall_back_to_preset_1() {
         let h = make_collection();

@@ -1,5 +1,5 @@
-//! Sentences produced by core (insights, explanations, summaries) — recall
-//! `src/core/stats/messages.ts`. Each goes through the i18n dictionary when its key exists there,
+//! Sentences produced by core (insights, explanations, summaries).
+//! Each goes through the i18n dictionary when its key exists there,
 //! and otherwise uses the English ICU-lite fallback given at the call site, so new sentences work
 //! before a translator adds them to the dictionary. The implementation lives in `i18n`.
 

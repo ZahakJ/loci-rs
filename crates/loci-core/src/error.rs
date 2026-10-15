@@ -1,8 +1,8 @@
-//! `LociError`: the one error type the engine returns (recall `src/core/api.ts`).
+//! `LociError`: the one error type the engine returns.
 //!
 //! Every public operation fails with a code the UI can switch on, a human message and an
-//! optional detail. Serialised as `{ code, message, detail? }`, which is what the TypeScript
-//! `LociError` carries across the worker boundary.
+//! optional detail. Serialised as `{ code, message, detail? }`, the frontend's
+//! `LociError`.
 
 use serde::{Deserialize, Serialize};
 

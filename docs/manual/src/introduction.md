@@ -1,33 +1,23 @@
 # Introduction
 
-Loci is a local-first spaced-repetition app. It imports your Anki collection with its history intact, schedules reviews with FSRS-6, and runs as one app on Linux, Windows, macOS and Android. The name comes from the *method of loci*, the memory palace of Simonides and Cicero.
-
-This manual is for two readers: someone moving their cards over from Anki, and someone who wants to read or change the code. The [project page](../) has the downloads and screenshots; the source is at [github.com/ZahakJ/loci-rs](https://github.com/ZahakJ/loci-rs).
+Loci is a spaced-repetition app for Linux, Windows, macOS, Android and the [browser](browser.md). It imports Anki collections with their review history, schedules with FSRS-6 or SM-2, and exports back to `.apkg`. Downloads are on the [project page](../); the source is at [github.com/ZahakJ/loci-rs](https://github.com/ZahakJ/loci-rs).
 
 <img class="capture" src="../captures/home-desktop-light.png" alt="The Home screen in the light theme: today's time estimate, an insights strip, the deck tree with new, learning and due counts, and the momentum panel">
 
-## What Loci is
+## Features
 
-**A real Anki replacement.** Loci reads `.apkg` and `.colpkg` files from every Anki version, legacy and current package layouts alike, with notes, note types, templates, media, tags, decks, review history and scheduling state. A card due tomorrow in Anki is due tomorrow in Loci. It exports back to an `.apkg` that Anki 2.1 through 26.x and AnkiDroid import, so nobody is locked in.
+- **Anki import and export.** `.apkg` and `.colpkg` in every package layout: notes, note types, templates, media, tags, decks, review history and scheduling state. Due dates carry over. Exports `.apkg` for Anki 2.1 through 26.x and AnkiDroid.
+- **FSRS-6.** 21 parameters, fitted per preset to your reviews by the optimiser. SM-2 per preset. See [FSRS-6](fsrs.md).
+- **Workload.** A daily time budget instead of card caps, catch-up for backlogs, a 90-day forecast before changing new cards per day or desired retention, and days studied in the last 30 instead of streaks.
+- **Storage.** One SQLite file in the app-data directory, rotating automatic backups, an integrity check on open, and a full-backup zip. No account.
+- **Sync.** Through a shared folder or a sync file; no server. See [Sync](sync.md).
+- **Cards.** Light and dark themes; Arabic, maths (KaTeX) and code render in cards.
 
-**FSRS-6 by default.** The scheduler is FSRS-6, ported from the reference implementation (fsrs-rs v6.6.2) and tested against its published vectors. Its 21 parameters can be fitted to your own review history, per preset, by an optimiser ported from the same source. Anki's SM-2 is still there, one switch away in each preset. The [FSRS chapter](fsrs.md) explains the model from the ground up.
+## Chapters
 
-**One app for desktop and phone.** One Rust engine and one interface build native apps for Linux, Windows, macOS and Android. The study screen is designed around the keyboard on a desk and the thumb on a phone. The light and dark themes are each designed rather than one being an inversion of the other, and the card typography handles Arabic, mathematics and code.
+- Using Loci: [Getting started](getting-started.md), [Loci in the browser](browser.md), [Sync](sync.md), [Import, export and backups](import-export-backups.md), [Search syntax](search.md).
+- Scheduling: [FSRS-6](fsrs.md).
+- Scripting: [The CLI](cli.md).
+- Code: [Architecture](architecture.md), [The data model](data-model.md).
 
-**Humane about workload.** A daily time budget in minutes replaces card caps. A catch-up mode turns a backlog into a plan instead of a wall of red. Changing new cards per day or desired retention shows a workload forecast first. Momentum (days studied in the last 30) replaces streaks, so a missed day is shown and nothing resets.
-
-**Data you own.** The collection is a real SQLite file in your app-data folder. Loci keeps rotating automatic backups, checks the database's integrity when it opens, and writes a full-backup zip (collection plus media) that it can restore. There is no account and no server; nothing leaves the device.
-
-## Where Loci came from
-
-Loci started as a TypeScript web app (ZahakJ/loci). This repository is the Rust rewrite: everything that is logic lives in the `loci-core` crate, and the interface is the same React interface the web app had, running in a Tauri webview. The web app's full-backup zip imports here unchanged, so moving over loses nothing. The [data model chapter](data-model.md) describes that migration path.
-
-## How to read this manual
-
-- To start using Loci, read [Getting started](getting-started.md), then [Import, export and backups](import-export-backups.md).
-- To understand why a card was scheduled when it was, read [FSRS-6, from first principles](fsrs.md).
-- To find cards, see [Search syntax](search.md).
-- To script against a collection, see [The CLI](cli.md).
-- To work on the code, read [Architecture for contributors](architecture.md).
-
-Loci is free software under the MIT licence.
+MIT licence.

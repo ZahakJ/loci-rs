@@ -1,4 +1,4 @@
-//! Browser row cells (recall `browse.ts` `cellText`, `dueCell`, `cardCells`, `buildRow`).
+//! Browser row cells.
 
 use crate::anki::percent_decode;
 use crate::collection::internals::CollectionCore;
@@ -34,7 +34,7 @@ fn image_label() -> String {
     msg("browse.cellImage", "[image]", &[])
 }
 
-/// Collapses whitespace and cuts to 120 characters (the TypeScript counts UTF-16 units; chars here).
+/// Collapses whitespace and cuts to 120 characters.
 fn clip(s: &str) -> String {
     let t = WHITESPACE.replace_all(s, " ");
     let t = t.trim();
@@ -243,7 +243,7 @@ pub fn build_row(ctx: &RowCtx<'_>, mode: BrowseMode, id: i64) -> Result<Option<B
 mod tests {
     use super::*;
 
-    // backlog-browse.test.ts "browse cells read as text"
+    // browse cells read as text
     #[test]
     fn cell_text_reads_as_plain_text() {
         assert_eq!(cell_text("{{c1::Paris::city}} is in <b>{{c2::France}}</b>"), "Paris is in France");

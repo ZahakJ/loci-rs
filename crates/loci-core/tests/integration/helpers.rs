@@ -1,4 +1,4 @@
-//! Port of recall `tests/unit/integration/helpers.ts`.
+//! Shared harness for the integration tests.
 
 use loci_core::collection::Collection;
 use loci_core::db::Db;

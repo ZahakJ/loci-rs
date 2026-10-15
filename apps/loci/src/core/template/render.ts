@@ -1,7 +1,6 @@
 /**
  * UI-side sanitiser wrapper for rendered card HTML (DOMPurify needs a DOM, so this stays in the
- * frontend). The card renderer itself lives in the Rust engine (`loci-core::template`); this file
- * is the part of recall's `template/render.ts` that the UI needs.
+ * frontend). The card renderer itself lives in the Rust engine (`loci-core::template`).
  */
 import type { Config as PurifyConfig } from 'dompurify';
 import { CARD_SANITIZE_CONFIG, isAllowedHref, isSafeStyleAttr } from './sanitize-config';

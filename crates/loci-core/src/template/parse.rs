@@ -1,4 +1,4 @@
-//! Anki card-template lexer and parser (recall `src/core/template/parse.ts`; a port of
+//! Anki card-template lexer and parser (a port of
 //! rslib/src/template.rs).
 //!
 //! Grammar: text, `<!-- comments -->` (kept verbatim, handlebars inside are inert),
@@ -6,8 +6,7 @@
 //! The legacy `{{=<% %>=}}` delimiter switch at the start of a template is honoured.
 //!
 //! The parser is lenient: it always returns a tree (so previews keep working) plus a list of
-//! structural errors with offsets into the source. Offsets are *character* indices (the
-//! TypeScript used UTF-16 indices; they agree outside the astral planes).
+//! structural errors with offsets into the source. Offsets are *character* indices.
 
 use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};

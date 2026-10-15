@@ -1,5 +1,5 @@
-//! `Collection`: backups, restore, full backups, integrity and reset (the second half of recall
-//! `src/core/collection/collection.ts`; the lifecycle and data methods are in `service.rs`).
+//! `Collection`: backups, restore, full backups, integrity and reset (the lifecycle
+//! and data methods are in `service.rs`).
 
 use crate::backup::backup as backups;
 use crate::backup::integrity::check_integrity;
@@ -21,7 +21,7 @@ impl Collection {
     pub fn backup_now(&self) -> Result<BackupInfo> {
         backups::backup_now(&self.core, BackupFileKind::Manual)
     }
-    /// The 30-minute rule on its own (DESIGN §14): an automatic backup when something changed and
+    /// The 30-minute rule on its own (internals §12): an automatic backup when something changed and
     /// the last backup is at least 30 minutes old. Cheap when a recent backup exists.
     pub fn auto_backup(&self) -> Result<Option<BackupInfo>> {
         let last = self.core.get_meta(meta::LAST_BACKUP)?.and_then(|v| v.parse::<f64>().ok()).filter(|v| v.is_finite());
@@ -45,7 +45,7 @@ impl Collection {
         }
         backups::backup_now(&self.core, BackupFileKind::Auto).map(Some)
     }
-    /// The backup half of `maintenance()` (optimise.ts:166): `autoBackup` after the optimiser ran.
+    /// The backup half of `maintenance()`: `autoBackup` after the optimiser ran.
     pub fn maintenance_backup(&self) -> Result<Option<BackupInfo>> {
         backups::auto_backup(&self.core)
     }
@@ -69,8 +69,8 @@ impl Collection {
     }
 
     /// Restores a Loci full backup (collection.sqlite + media/): validates the database, writes a
-    /// pre-restore backup, copies media files that differ, then replaces the collection
-    /// (collection.ts `restoreFullBackupFile`). The importer calls this for `mode: replace`.
+    /// pre-restore backup, copies media files that differ, then replaces the collection.
+    /// The importer calls this for `mode: replace`.
     pub fn restore_full_backup(
         &mut self,
         b: &LociBackupContents,

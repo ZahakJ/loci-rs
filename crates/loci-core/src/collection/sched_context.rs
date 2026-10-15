@@ -1,9 +1,8 @@
 //! Shared helpers that turn the collection's clock, settings and decks into the inputs the pure
-//! scheduler, search and stats code expect (recall `src/core/collection/sched-context.ts`). Units:
+//! scheduler, search and stats code expect. Units:
 //! ms for `now_ms`, seconds for `crt`/`next_day_at`, collection days for `today`.
 //!
-//! The SQLite loaders of the TypeScript file (`loadQueueCards`, `secondsPerCard`, `cardRevlog`,
-//! `deckFilterSql`) live in `scheduler::queue`; this module adds what they need from the core.
+//! The SQLite loaders live in `scheduler::queue`; this module adds what they need from the core.
 
 use crate::collection::internals::CollectionCore;
 use crate::error::Result;

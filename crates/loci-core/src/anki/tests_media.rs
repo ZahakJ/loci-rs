@@ -1,4 +1,4 @@
-//! Media-index tests (recall `tests/unit/anki/media.test.ts`).
+//! Media-index tests.
 
 use super::proto::{decode_media_entries, MediaEntry};
 use super::read::{read_package, zstd};
@@ -9,7 +9,7 @@ use crate::types::PackageLayout;
 use regex::Regex;
 use serde_json::Value;
 
-/// Names of the fixture generator's media files (recall `scripts/fixture-lib/collection.ts` `palaceMedia`).
+/// Names of the fixture generator's media files.
 const GENERATED: [&str; 19] = [
     "io-heart.png",
     "io-skeleton.png",

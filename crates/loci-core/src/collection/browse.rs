@@ -1,4 +1,4 @@
-//! Browser (DESIGN §11; recall `src/core/collection/browse.ts`): search with Anki syntax
+//! Browser (internals §9): search with Anki syntax
 //! (`search::sql`), sorting, a page of rows, the sidebar, saved searches and bulk actions with
 //! Anki semantics. Every bulk action records one undo entry.
 //!
@@ -201,7 +201,7 @@ fn deck_item(n: &DeckTreeNode) -> SidebarItem {
     }
 }
 
-/// Drops empty `children` lists (the TypeScript `delete`s the key).
+/// Drops empty `children` lists.
 fn prune(items: &mut [SidebarItem]) {
     for it in items.iter_mut() {
         match it.children.as_mut() {

@@ -1,5 +1,5 @@
 /**
- * Tiny i18n (research/stack.md §12): `t(key, vars)` over JSON dictionaries organised by view.
+ * Tiny i18n: `t(key, vars)` over JSON dictionaries organised by view.
  *
  * - Dictionaries may be nested (`{"study": {"showAnswer": "…"}}`) or flat with dotted keys;
  *   both are flattened to dotted keys at registration.

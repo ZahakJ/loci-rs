@@ -1,4 +1,4 @@
-//! Port of recall `tests/unit/integration/stats-export.test.ts`.
+//! Statistics, optimiser, export and backup integration tests.
 
 use super::helpers::*;
 use loci_core::anki::read_package;

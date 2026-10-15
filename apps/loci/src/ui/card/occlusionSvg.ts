@@ -1,5 +1,5 @@
 /**
- * Image-occlusion overlay (DESIGN §8): SVG markup drawn over the image from an OcclusionPayload.
+ * Image-occlusion overlay (internals §6): SVG markup drawn over the image from an OcclusionPayload.
  * Pure (tested). Coordinates are normalised 0..1 unless the note is a legacy pixel note, in which
  * case the caller passes the image's natural size and the viewBox uses pixels.
  *

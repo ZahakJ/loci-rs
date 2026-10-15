@@ -1,12 +1,12 @@
-//! `Db`: the SQLite connection the engine works on (recall `src/core/db/`).
+//! `Db`: the SQLite connection the engine works on.
 //!
-//! A thin layer over `rusqlite::Connection` that gives sibling modules what the TypeScript `Db`
-//! adapter gave them: nested-transaction joining (an inner `transaction` call joins the outer
+//! A thin layer over `rusqlite::Connection` that gives sibling modules
+//! nested-transaction joining (an inner `transaction` call joins the outer
 //! one; an error propagates to the outermost, which rolls back), serialisation to bytes
 //! (backups, exports) and opening from bytes (package reading, restore validation).
 //!
 //! Anki's `unicase` collation is registered on every connection, so schema-18 package databases
-//! open unchanged (the TypeScript build had to rewrite `COLLATE unicase` to `NOCASE`).
+//! open unchanged.
 
 use crate::error::{LociError, Result};
 use rusqlite::{Connection, OpenFlags, MAIN_DB};

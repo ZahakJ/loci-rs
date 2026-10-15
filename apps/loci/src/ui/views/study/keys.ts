@@ -1,5 +1,5 @@
 /**
- * Study-screen keyboard map (DESIGN §8; Anki veteran keys from research/anki-complaints.md §4).
+ * Study-screen keyboard map (internals §6; Anki keys where they exist).
  * Pure and tested: `matchStudyKey` turns a key event plus context into one action.
  */
 import type { Flag, Rating } from '@core/types';
@@ -42,7 +42,7 @@ export interface StudyKeyInput {
 /** One row of the `?` overlay / docs: keys and the i18n key of the label. */
 export interface StudyKeyDef { keys: string[]; label: string; action: StudyAction['type'] }
 
-/** Every study key, in the order the help overlay lists them (DESIGN §8). */
+/** Every study key, in the order the help overlay lists them (internals §6). */
 export const STUDY_KEYS: StudyKeyDef[] = [
   { keys: ['space', 'enter'], label: 'keys.study.show', action: 'reveal' },
   { keys: ['1', '2', '3', '4'], label: 'keys.study.grade', action: 'grade' },

@@ -1,8 +1,6 @@
-# FSRS-6, from first principles
+# FSRS-6
 
-Every spaced-repetition app answers one question for every card: **when will I forget this?** Show the card too early and the review is wasted, because you would have remembered it anyway. Show it too late and you have forgotten it, and must learn it again. The right moment is just before forgetting.
-
-FSRS (the Free Spaced Repetition Scheduler) answers it with a small model of your memory, fitted to your own reviews. Loci uses FSRS-6, the version Anki ships, ported by hand from fsrs-rs v6.6.2 and checked against its published test vectors. This chapter builds the model, works one card through it, and explains the settings that matter.
+FSRS (the Free Spaced Repetition Scheduler) schedules each card just before you would forget it, using a small memory model fitted to your reviews. Loci uses FSRS-6, the version Anki ships, ported from fsrs-rs v6.6.2 and checked against its test vectors.
 
 ## Three numbers per card
 
@@ -14,7 +12,7 @@ FSRS describes the memory of each card with three numbers.
 
 **Difficulty, D.** A number from 1 to 10 for how hard this card is for you. It does not set the interval directly; it sets how much each successful review raises stability.
 
-Loci shows all three on every card: press `i` while studying.
+Press `i` while studying to see all three.
 
 ## The forgetting curve
 
@@ -25,7 +23,7 @@ FACTOR = 0.9^(-1/w20) - 1
 R(t, S) = (1 + FACTOR · t / S)^(-w20)
 ```
 
-Here `t` is the number of days since the last review. FACTOR is chosen so that R(S, S) = 0.9 for any decay, which is what makes the definition of stability above hold. With the default decay `w20 = 0.1542`, FACTOR = 0.98035.
+Here `t` is the number of days since the last review. FACTOR makes R(S, S) = 0.9 for any decay. With the default decay `w20 = 0.1542`, FACTOR = 0.98035.
 
 FSRS-4.5 and FSRS-5 fixed the decay at 0.5; FSRS-6 fits it to your reviews like every other parameter.
 
@@ -60,11 +58,9 @@ S' = S · ( exp(w8) · (11 - D) · S^(-w9) · (exp(w10 · (1 - R)) - 1) · hard 
        easy = w16 if G = 4, else 1
 ```
 
-Read the factors one at a time:
-
 - `11 - D`: easier cards (low D) grow more.
 - `S^(-w9)`: the more stable a memory already is, the smaller its relative growth.
-- `exp(w10 · (1 - R)) - 1`: the lower R was at the review, the larger the gain. A review you could not have failed adds little, which is why reviewing early is wasteful.
+- `exp(w10 · (1 - R)) - 1`: the lower R was at the review, the larger the gain.
 - `hard` and `easy`: Hard is a pass with a penalty and Easy a pass with a bonus (by default `w15` = 0.6014 and `w16` = 1.8729).
 
 R is the retrievability at the review and D the difficulty before it.
@@ -102,7 +98,7 @@ D'' = w7 · D0(4) + (1 - w7) · D'                mean reversion
 D_new = clamp(D'', 1, 10)
 ```
 
-Again and Hard raise D, Easy lowers it, Good leaves the first step unchanged. The factor `(10 - D) / 9` damps the change near 10. Mean reversion pulls D slightly toward `D0(4)`, the initial difficulty of an Easy card, so one bad start does not condemn a card forever.
+Again and Hard raise D, Easy lowers it, Good leaves the first step unchanged. The factor `(10 - D) / 9` damps the change near 10. Mean reversion pulls D slightly toward `D0(4)`, the initial difficulty of an Easy card, so one bad start does not stick.
 
 ## The default parameters
 
@@ -161,7 +157,7 @@ product = 6.5026 · 8.8819 · 0.8700 · 0.0994 = 4.9948
 S' = 2.3065 · (4.9948 + 1) = 13.8269 days
 ```
 
-One successful review multiplied stability by about six. Difficulty barely moves, because Good leaves the damping step unchanged and the mean-reversion weight `w7` is only 0.001:
+Stability grew about sixfold. Difficulty barely moves: Good leaves the damping step unchanged and the mean-reversion weight `w7` is only 0.001:
 
 ```text
 D'  = 2.1181                                         (G = 3: no change)
@@ -205,21 +201,21 @@ Before you change desired retention or new cards per day, Loci shows a workload 
 
 ## What the optimiser does
 
-The defaults are a generic starting point. The optimiser, a port of fsrs-rs v6.6.2 as Anki calls it, fits the 21 parameters to your own history, per preset:
+The optimiser (fsrs-rs v6.6.2, as Anki calls it) fits the 21 parameters to your history, per preset:
 
 1. **Items.** Each card's review log becomes training items: answers and the days between them, with the last answer as the outcome to predict.
-2. **Outlier filter.** Cards are grouped by their first answer and first interval. The smallest groups are dropped until at least 20 items or 5%, whichever is more, are gone, and so is any group under 6 cards or with a first interval over 100 days (365 after Easy). A handful of odd cards cannot bend the curve.
+2. **Outlier filter.** Cards are grouped by their first answer and first interval. The smallest groups are dropped until at least 20 items or 5%, whichever is more, are gone, and so is any group under 6 cards or with a first interval over 100 days (365 after Easy).
 3. **Thresholds.** With fewer than 8 training items, the defaults stay. With fewer than 64, or when no card has a second long-term review, only the initial stabilities w0 to w3 are fitted (pretraining). Otherwise the full fit runs.
 4. **The fit.** Adam on the log-loss: the model predicts R at each item's last review, and the loss measures how far those predictions are from what happened. Eight epochs, batches of 512, learning rate 0.04 with cosine annealing, recent reviews weighted more, an L2 prior toward the starting values, and parameters clipped to their ranges after every step.
 5. **Acceptance.** The new parameters are kept only if their log-loss on your reviews is lower than the current ones'. Each run records log-loss and RMSE(bins) before and after in the collection's `optimise_log`.
 
 *Optimise* and *Evaluate* sit in each preset's settings, next to the parameters and the last run's metrics. An *Optimise* that adopted new parameters can be undone: the preset's previous parameters and every refreshed memory state come back.
 
-Each preset also has an auto-optimise switch, on by default, with a threshold of 400 reviews. The engine's idle-time `maintenance` pass optimises the one FSRS preset with the most new reviews since its last run, if that is at least 400. Automatic runs are not put on the undo stack, so `z` while studying keeps undoing answers. In v0.1.0 the interface does not yet call the maintenance pass on its own, so run *Optimise* from the preset's settings when you want parameters fitted to your history.
+Each preset has an auto-optimise switch (on, threshold 400 reviews). The engine's `maintenance` pass optimises the FSRS preset with the most new reviews since its last run, if that is at least 400; automatic runs are not undoable. The app does not run `maintenance` by itself: use *Optimise* in the preset's settings.
 
 ## The fuzz
 
-Cards learned on the same day with the same answers would otherwise come due together forever. Anki spreads them with a small random offset, and Loci uses Anki's exact rule:
+Fuzz spreads cards learned together with a small random offset, by Anki's rule:
 
 | Part of the interval | Spread added |
 |---|---|
@@ -228,12 +224,8 @@ Cards learned on the same day with the same answers would otherwise come due tog
 | 7 to 20 days | 10% |
 | beyond 20 days | 5% |
 
-The window's half-width is 1 day plus those percentages of each part of the interval. The day inside it comes from Anki's own generator, `StdRng::seed_from_u64(card.id + reps)` (ChaCha12), so a card gets the same day it would get in Anki.
+The window's half-width is 1 day plus those percentages of each part of the interval. The day inside it comes from Anki's own generator, `StdRng::seed_from_u64(card.id + reps)` (ChaCha12), so a card gets the same day as in Anki.
 
-## SM-2 is still there
+## SM-2
 
-Each preset has a scheduler switch. SM-2 in Loci behaves exactly as in Anki's v3 scheduler, for anyone who prefers it or wants to compare.
-
-## What this means for you
-
-Answer honestly, with Again whenever you did not remember, because the model learns only from what you tell it. Leave desired retention at 0.90 unless you have a reason; each step above it costs many more reviews for little gain. Let the optimiser run, and read *Why this interval?* whenever a schedule surprises you.
+Each preset has a scheduler switch. SM-2 behaves as in Anki's v3 scheduler.

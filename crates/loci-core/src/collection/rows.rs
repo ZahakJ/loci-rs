@@ -1,6 +1,5 @@
-//! Row shapes of the collection tables and their mappers to/from domain types
-//! (recall `src/core/collection/rows.ts`). Shared with the scheduler, search, stats and
-//! import/export modules. Column names and units: `schema.sql`.
+//! Row shapes of the collection tables and their mappers to/from domain types. Shared with the
+//! scheduler, search, stats and import/export modules. Column names and units: `schema.sql`.
 
 use crate::collection::presets::normalise_deck_config;
 use crate::text::{field_checksum, join_fields, join_tags, plain_text, split_fields, split_tags, strip_html_preserving_media};
@@ -44,7 +43,7 @@ pub fn parse_json_object(text: &str) -> serde_json::Map<String, serde_json::Valu
 
 pub fn parse_card_data(text: &str) -> CardData {
     let o = parse_json_object(text);
-    // Typed keys with wrong JSON types are dropped (as the TypeScript did); unknown keys kept.
+    // Typed keys with wrong JSON types are dropped; unknown keys kept.
     let mut d = CardData::default();
     for (k, v) in o {
         match k.as_str() {

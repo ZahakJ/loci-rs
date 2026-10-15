@@ -1,5 +1,5 @@
 //! Collection-wide settings stored in `col_meta`, one key per setting (snake_case), as plain
-//! strings for enums and JSON for numbers/booleans (recall `src/core/collection/settings.ts`).
+//! strings for enums and JSON for numbers/booleans.
 
 use crate::error::{LociError, Result};
 use crate::types::*;
@@ -170,7 +170,7 @@ pub fn parse_patch(v: &serde_json::Value) -> Result<CollectionSettingsPatch> {
             return Err(LociError::invalid(format!("Unknown setting: {k}")));
         }
     }
-    // Integers must be whole numbers (2.5 is rejected like the TypeScript did).
+    // Integers must be whole numbers (2.5 is rejected).
     for (k, val) in obj {
         if matches!(k.as_str(), "rolloverHour" | "learnAheadMinutes" | "cardFontSize") {
             if let Some(f) = val.as_f64() {
@@ -183,7 +183,7 @@ pub fn parse_patch(v: &serde_json::Value) -> Result<CollectionSettingsPatch> {
         }
     }
     let mut v = v.clone();
-    // Fractional learnAheadMinutes / cardFontSize are allowed by the TS (floats); round them for i64.
+    // Fractional learnAheadMinutes / cardFontSize are allowed; round them for i64.
     if let Some(o) = v.as_object_mut() {
         for k in ["learnAheadMinutes", "cardFontSize"] {
             if let Some(f) = o.get(k).and_then(|x| x.as_f64()) {

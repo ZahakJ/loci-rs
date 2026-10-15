@@ -1,5 +1,5 @@
 /**
- * README captures (DESIGN §19): a REAL collection (the palace-legacy2 fixture imported through the
+ * README captures (internals §17): a REAL collection (the palace-legacy2 fixture imported through the
  * UI into the Rust engine), never the mock. Each screen at desktop 1440×900 (deviceScaleFactor 1)
  * and phone 390×844 (deviceScaleFactor 2), light and dark, into docs/captures/<screen>-<desktop|phone>-<light|dark>.png.
  *

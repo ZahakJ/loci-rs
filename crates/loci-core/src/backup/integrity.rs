@@ -1,4 +1,4 @@
-//! Integrity check and repair (recall `src/core/backup/integrity.ts`): SQLite `integrity_check`,
+//! Integrity check and repair: SQLite `integrity_check`,
 //! the FTS index, and collection consistency (Anki "Check Database" subset). Repairs never delete notes.
 
 use crate::collection::decks::{ancestor_names, ensure_default_deck, DECK_SEPARATOR};

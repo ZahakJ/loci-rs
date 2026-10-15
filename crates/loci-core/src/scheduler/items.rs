@@ -1,5 +1,4 @@
-//! Revlog → FSRS training/scoring items (Anki `reviews_for_fsrs`, research/fsrs-spec.md §5.3;
-//! recall `src/core/scheduler/items.ts`).
+//! Revlog → FSRS training/scoring items (Anki `reviews_for_fsrs`, research/fsrs-spec.md §5.3).
 
 use super::fsrs::Grade;
 use crate::types::{RevlogEntry, RevlogType};

@@ -15,7 +15,7 @@ export interface LeechPanelProps {
   onKeep: () => void;
 }
 
-/** "This card keeps slipping": a calm inline sheet after a card becomes a leech (DESIGN §7, §8). */
+/** "This card keeps slipping": an inline sheet after a card becomes a leech (internals §5, §6). */
 export function LeechPanel({ lapses, busy, onRewrite, onHint, onReset, onSuspend, onKeep }: LeechPanelProps) {
   const [hinting, setHinting] = useState(false);
   const [hint, setHint] = useState('');

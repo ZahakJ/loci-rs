@@ -1,4 +1,4 @@
-//! Port of recall `tests/unit/integration/backlog-browse.test.ts`.
+//! Catch-up and Browse integration tests.
 
 use super::helpers::*;
 use loci_core::error::ErrorCode;

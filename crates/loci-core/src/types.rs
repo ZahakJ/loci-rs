@@ -1,7 +1,6 @@
 //! Loci domain types — the contract shared by the core, the Tauri app and the CLI.
 //!
-//! A line-for-line port of recall's `src/core/types.ts`. The JSON produced by these types is the
-//! JSON the TypeScript UI already consumes (`camelCase` keys, numeric Anki enums, kebab-case
+//! The JSON produced by these types is the JSON the frontend consumes (`camelCase` keys, numeric Anki enums, kebab-case
 //! string unions, optional fields omitted when absent), so the frontend's `types.ts` is unchanged.
 //! Units follow Anki (see `schema.sql`): ids are milliseconds since the epoch, `mtime` seconds,
 //! `due` depends on the queue, `ivl` days (negative = seconds).

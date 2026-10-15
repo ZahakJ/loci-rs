@@ -1,5 +1,5 @@
 //! Anki v3 card-state machine over Card rows (rslib/src/scheduler/states/*, answering/*;
-//! research/fsrs-spec.md §3 and §8; recall `src/core/scheduler/states.ts`), for both FSRS-6
+//! research/fsrs-spec.md §3 and §8), for both FSRS-6
 //! and SM-2.
 //!
 //! Units follow `types.rs`: intraday learning `due` = unix seconds; review/day-learn `due` =
@@ -218,7 +218,7 @@ fn build_ctx<'a>(input: &'a SchedulingInput<'a>) -> Result<(Ctx<'a>, CurrentStat
         .as_ref()
         .map(|m| m.next_states(memory, config.desired_retention, if card.ctype == CardType::New { 0 } else { elapsed }));
     let short_term_allowed = match &model {
-        // TS states.ts:126 — an empty configured vector is judged as empty, not as the defaults it becomes.
+        // An empty configured vector is judged as empty, not as the defaults it becomes.
         Some(m) => allow_short_term(if config.fsrs_params.is_empty() { &[] } else { &m.params }),
         None => false,
     };

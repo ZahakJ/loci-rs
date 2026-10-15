@@ -1,5 +1,5 @@
 /**
- * Hash router (DESIGN §4: no router library). `parseRoute` / `formatRoute` are pure and tested.
+ * Hash router (internals §2: no router library). `parseRoute` / `formatRoute` are pure and tested.
  */
 import { lazy, useSyncExternalStore } from 'react';
 
@@ -152,7 +152,7 @@ export function goBack(fallback = '#/'): void {
   else navigate(fallback, { replace: true });
 }
 
-// ── lazy views owned by other agents (exact paths; they replace the placeholders) ──
+// ── lazy views ──
 export const StudyView = lazy(() => import('./views/study/StudyView'));
 export const BacklogView = lazy(() => import('./views/backlog/BacklogView'));
 export const BrowseView = lazy(() => import('./views/browse/BrowseView'));
@@ -160,7 +160,7 @@ export const StatsView = lazy(() => import('./views/stats/StatsView'));
 export const EditNoteView = lazy(() => import('./views/edit/EditNoteView'));
 export const NotetypesView = lazy(() => import('./views/notetypes/NotetypesView'));
 export const AddSheet = lazy(() => import('./views/edit/AddSheet').then((m) => ({ default: m.AddSheet })));
-// ── views owned by the shell agent ──
+// ── shell views ──
 export const HomeView = lazy(() => import('./views/home/HomeView'));
 export const WelcomeView = lazy(() => import('./views/welcome/WelcomeView'));
 export const SettingsView = lazy(() => import('./views/settings/SettingsView'));

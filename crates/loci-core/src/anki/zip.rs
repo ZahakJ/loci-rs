@@ -1,5 +1,4 @@
 //! Thin wrapper over the `zip` crate for Anki packages: list entries, read one entry, write a zip.
-//! Port of recall `src/core/anki/zip.ts`.
 //!
 //! Errors are plain [`ZipFormatError`]s; `read.rs` maps them to `LociError` (the `truncated` flag
 //! decides between `corrupt` and `unsupported-package`).
@@ -74,7 +73,7 @@ impl ZipArchive {
             let Ok(name) = entry.name() else { continue };
             let name = name.into_owned();
             if index.contains_key(&name) {
-                continue; // zip.ts:60 keeps the first entry of a duplicated name
+                continue; // keeps the first entry of a duplicated name
             }
             let info =
                 ZipEntryInfo { name: name.clone(), uncompressed_size: entry.size(), compressed_size: entry.compressed_size() };
@@ -144,7 +143,7 @@ impl<'a> ZipInput<'a> {
 
 /// Writes entries in order into a new zip and returns its bytes. The `zip` crate switches to
 /// Zip64 by itself when there are more than 65 535 entries or an entry exceeds 4 GiB. Timestamps
-/// are fixed (2020-01-01, as zip.ts:98) so the bytes are reproducible.
+/// are fixed (2020-01-01) so the bytes are reproducible.
 pub fn create_zip<'a>(inputs: impl IntoIterator<Item = ZipInput<'a>>) -> Result<Vec<u8>> {
     let stamp =
         DateTime::from_date_and_time(2020, 1, 1, 0, 0, 0).map_err(|e| LociError::internal(format!("zip timestamp: {e:?}")))?;

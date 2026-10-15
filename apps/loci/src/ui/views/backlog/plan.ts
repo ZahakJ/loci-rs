@@ -1,5 +1,5 @@
 /**
- * Catch-up plan arithmetic and sentences (DESIGN §9). Pure (tested): every plan card says in one
+ * Catch-up plan arithmetic and sentences (internals §7). Pure (tested): every plan card says in one
  * sentence what will happen, in reviews and minutes, before anything changes.
  */
 import { t } from '@core/i18n/i18n';

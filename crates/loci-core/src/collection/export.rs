@@ -1,4 +1,4 @@
-//! Export (DESIGN §15; recall `src/core/collection/export.ts`): builds an `AnkiImage` from the
+//! Export (internals §13): builds an `AnkiImage` from the
 //! collection (a deck with its children, or everything) and writes a LEGACY_2 .apkg with
 //! `anki::write_legacy_package`, which every Anki from 2.1 to 26.x and AnkiDroid import. Media:
 //! every stored file for a whole-collection export, the files referenced by the exported notes and

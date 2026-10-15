@@ -1,4 +1,4 @@
-//! Workload forecast (DESIGN §9; recall `optimizer.ts` `simulateWorkload`): a deterministic
+//! Workload forecast (internals §7): a deterministic
 //! expected-value simulation of future answers per day, used by stats and the retention hint.
 
 use super::fsrs::{Fsrs6, Grade, MemoryState};
@@ -39,7 +39,7 @@ struct Branch {
     last: i64,
 }
 
-/// Merge key: (last, S to 2 dp, D to 2 dp, ivl, ease to 2 dp) — the TS used the same fields as a string.
+/// Merge key: (last, S to 2 dp, D to 2 dp, ivl, ease to 2 dp)
 type BranchKey = (i64, i64, i64, i64, i64);
 /// Pending branches per due day.
 type Pending = Vec<BTreeMap<BranchKey, Branch>>;

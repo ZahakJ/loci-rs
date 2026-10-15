@@ -32,7 +32,7 @@ const EXTRA_REVIEW = ['0', '50', '100', '200'] as const;
 const FORGOTTEN = ['1', '7', '30'] as const;
 const LIMITS = ['50', '100', '200'] as const;
 
-/** Custom session (DESIGN §3: covers the common uses of filtered decks). */
+/** Custom session (internals §1: covers the common uses of filtered decks). */
 export function CustomSessionSheet({ open, onClose, deckId, initial = 'ahead', onRestart }: CustomSessionSheetProps) {
   const [kind, setKind] = useState<SheetKind>(initial);
   const [extraNew, setExtraNew] = useState<(typeof EXTRA_NEW)[number]>('10');

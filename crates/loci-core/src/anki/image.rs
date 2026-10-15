@@ -1,5 +1,4 @@
 //! `AnkiImage`: an in-memory, Loci-typed picture of one Anki package (collection + media index).
-//! Port of recall `src/core/anki/image.ts`.
 //!
 //! `read_package` produces it from bytes; `write_legacy_package` turns it back into an `.apkg`.
 //! The importer (collection module) maps it into a Loci collection; the exporter builds one from
@@ -70,7 +69,7 @@ pub struct AnkiDeck {
 }
 
 impl AnkiDeck {
-    /// A fresh normal deck with Anki's defaults (recall `write.ts:223` `blank`).
+    /// A fresh normal deck with Anki's defaults.
     pub fn blank(id: DeckId, name: impl Into<String>) -> AnkiDeck {
         AnkiDeck {
             id,

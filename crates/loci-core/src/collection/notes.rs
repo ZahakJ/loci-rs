@@ -1,7 +1,7 @@
-//! Notes, cards-of-notes and tags (recall `src/core/collection/notes.ts`): add/update/delete with
+//! Notes, cards-of-notes and tags: add/update/delete with
 //! card generation, duplicate check, tag registry maintenance, tag rename. All writes are
-//! transactions; user-level operations push undo entries. Also home to `install_sample_deck`
-//! (recall `export.ts:170`), which creates the bundled deck's notes the same way.
+//! transactions; user-level operations push undo entries. Also home to `install_sample_deck`,
+//! which creates the bundled deck's notes the same way.
 
 use crate::anki::{sample_deck, SampleNoteKind};
 use crate::collection::builtin_notetypes::builtin_notetype;
@@ -372,7 +372,7 @@ pub fn rebuild_plain(core: &CollectionCore, chunk: i64) -> Result<i64> {
     Ok(changed)
 }
 
-// ───────────────────────── sample deck (export.ts:131-203) ─────────────────────────
+// ───────────────────────── sample deck ─────────────────────────
 
 fn builtin_kind_of(kind: SampleNoteKind) -> BuiltinKind {
     match kind {
@@ -384,7 +384,7 @@ fn builtin_kind_of(kind: SampleNoteKind) -> BuiltinKind {
 }
 
 /// A note type shaped like the built-in `kind`: the stock one by name and shape, else a fresh copy
-/// named `<name> 2`, `<name> 3`, … (export.ts `builtinLike`).
+/// named `<name> 2`, `<name> 3`, ….
 fn builtin_like(core: &CollectionCore, kind: BuiltinKind, by_kind: &mut HashMap<BuiltinKind, Notetype>) -> Result<Notetype> {
     let draft = builtin_notetype(kind);
     let all = core.all_notetypes()?;
@@ -661,7 +661,7 @@ mod tests {
         assert_eq!(h.col.rename_tag("x", "a b").unwrap_err().code, ErrorCode::Invalid);
     }
 
-    // ── plain.test.ts ──
+    // ── plain ──
     #[test]
     fn rebuild_plain_rewrites_stale_rows_once_on_open_when_plain_version_is_old() {
         let mut h = make_collection();
@@ -718,7 +718,7 @@ mod tests {
         assert_eq!(rebuild_plain(h.col.core(), 3).unwrap(), 0);
     }
 
-    // ── sample deck (export.ts installSampleDeck) ──
+    // ── sample deck ──
     #[test]
     fn install_sample_deck_is_idempotent_and_undoable() {
         let mut h = make_collection();

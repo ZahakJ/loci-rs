@@ -1,5 +1,5 @@
-//! Ports of recall `tests/unit/integration/cli.test.ts` (the CLI is a thin shell over
-//! `rpc::Engine::dispatch`) and `worker.test.ts` (method dispatch, progress, errors, bytes).
+//! `rpc::Engine::dispatch` tests: method dispatch, progress, errors, bytes (the CLI is a thin
+//! shell over it).
 
 use super::helpers::*;
 use loci_core::collection::Collection;
@@ -22,7 +22,7 @@ fn call(e: &mut Engine, method: &str, args: &[Value]) -> Value {
     e.dispatch(method, args, None, &mut |_| {}).unwrap_or_else(|err| panic!("{method}: {err}")).into_json().unwrap()
 }
 
-// ── cli.test.ts: import, due, study --auto 5, export, stats, backup, integrity ──
+// ── cli: import, due, study --auto 5, export, stats, backup, integrity ──
 
 #[test]
 fn cli_flow_import_due_study_export_stats_backup_integrity_over_the_engine() {
@@ -84,7 +84,7 @@ fn cli_errors_carry_a_code() {
     assert!(err.message.contains("bogus"));
 }
 
-// ── worker.test.ts ──
+// ── worker ──
 
 #[test]
 fn serves_calls_and_streams_progress() {

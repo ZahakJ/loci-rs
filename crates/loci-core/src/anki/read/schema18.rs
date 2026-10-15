@@ -1,5 +1,5 @@
 //! Schema 15–18 packages: rebuilds the schema-11 JSON objects (note types, decks) from the
-//! normalised tables and their protobuf blobs (read.ts:267 `notetypesFromTables`, :366 `decksFromTables`).
+//! normalised tables and their protobuf blobs.
 
 use super::{col_bytes, col_i64, col_str, dbe};
 use crate::anki::image::Json;

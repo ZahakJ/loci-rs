@@ -1,4 +1,4 @@
-//! `BlobStore`: media bodies and backups (recall `src/core/db/blob-node.ts`).
+//! `BlobStore`: media bodies and backups.
 //!
 //! Paths are relative, '/'-separated and never contain '.', '..' or empty segments.
 //!

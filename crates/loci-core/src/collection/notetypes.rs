@@ -1,4 +1,4 @@
-//! Note type persistence (recall `src/core/collection/notetypes.ts`). Saving an existing note
+//! Note type persistence. Saving an existing note
 //! type may rename, reorder, add or remove fields and templates: notes and cards are remapped,
 //! then missing cards are generated.
 //!

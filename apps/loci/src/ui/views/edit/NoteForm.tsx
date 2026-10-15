@@ -1,5 +1,5 @@
 /**
- * The Add / Edit note form (DESIGN §10), shared by the Add sheet and the full-page editor.
+ * The Add / Edit note form (internals §8), shared by the Add sheet and the full-page editor.
  * Render-prop: the host decides where `body` and `footer` go (Sheet body/footer, or a page).
  *
  * Add: note type and deck pickers (remembered), Ctrl+Enter adds and keeps focus in the first

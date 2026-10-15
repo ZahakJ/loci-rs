@@ -1,5 +1,4 @@
-//! JSON method dispatch mirroring the TypeScript worker protocol (recall `src/worker/protocol.ts`
-//! and `src/worker/db.worker.ts`).
+//! JSON method dispatch for the frontend's `CollectionApi`.
 //!
 //! `Engine` is the one seam the Tauri shell, the CLI's `serve` bridge and the tests use:
 //!
@@ -11,14 +10,14 @@
 //! e.dispatch("importPackage", &[json!(opts)], Some(&bytes), &mut |p| ...)?;
 //! ```
 //!
-//! Method names and argument order are exactly those of the TypeScript `CollectionApi`
+//! Method names and argument order are exactly those of the frontend's `CollectionApi`
 //! (`method(args...)` becomes `dispatch(method, &args)`), with byte-valued arguments removed from
 //! `args` and passed as `bytes` (`previewImport(bytes)`, `importPackage(bytes, options)`,
 //! `addMedia(name, bytes)`), and byte-valued results returned as `Payload::Bytes`
 //! (`getMedia`, `exportPackage`, `exportFullBackup`). Progress callbacks become the `progress` sink.
 //!
 //! Unknown methods and malformed arguments fail with `ErrorCode::Invalid` (the worker's
-//! "unknown method" and the deserialisation errors of the TypeScript API).
+//! "unknown method" and the deserialisation errors).
 
 use crate::collection::settings::parse_patch;
 use crate::collection::Collection;
@@ -30,7 +29,7 @@ use serde::Serialize;
 use serde_json::Value;
 use std::path::{Path, PathBuf};
 
-/// A method result: JSON, or raw bytes (None = the TypeScript `null`).
+/// A method result: JSON, or raw bytes (None = JSON `null`).
 #[derive(Debug, Clone, PartialEq)]
 pub enum Payload {
     Json(Value),
@@ -286,8 +285,7 @@ impl Engine {
                 self.opened = true;
                 return json(report);
             }
-            // The TypeScript worker closes the database; the shells here keep the engine usable
-            // (the next call reopens nothing because nothing was closed), so only the session ends.
+            // The engine stays open; only the study session ends.
             "close" => {
                 self.collection.end_study().ok();
                 return unit();
@@ -374,7 +372,7 @@ impl Engine {
             "extendTodayLimits" => json(
                 c.extend_today_limits(arg(args, 0, m, "deckId")?, arg(args, 1, m, "extraNew")?, arg(args, 2, m, "extraReview")?)
                     .and_then(|counts| {
-                        // collection.ts:339: a running session for this deck picks the extra cards up
+                        // a running session for this deck picks the extra cards up
                         c.refill_session()?;
                         Ok(counts)
                     })?,
@@ -471,7 +469,7 @@ impl Engine {
             "undo" => {
                 let r = c.undo()?;
                 if r.is_some() {
-                    // collection.ts:356: a running session re-synchronises after an undo
+                    // a running session re-synchronises after an undo
                     c.session_after_undo()?;
                 }
                 json(r)

@@ -1,5 +1,5 @@
 /**
- * DOMPurify configuration for card HTML (DESIGN §4: sanitised, then rendered in a shadow root).
+ * DOMPurify configuration for card HTML (internals §2: sanitised, then rendered in a shadow root).
  *
  * Allowed: common formatting, headings, lists, tables, ruby, code/pre/kbd, images and media
  * (img/audio/video/source/track with src), span/div with class/style/dir/lang, links

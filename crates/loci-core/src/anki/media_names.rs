@@ -2,13 +2,11 @@
 //! (rslib/src/media/files.rs `normalize_filename`, rslib/io `filename_is_safe`,
 //! rslib/src/text.rs `extract_media_refs`; research/anki-format.md §1.2, §5.5).
 //!
-//! Port of recall `src/core/anki/media-names.ts` plus the pure filename functions of
-//! `src/core/collection/media.ts` (`split_extension`, `is_normalized_media_filename`,
+//! Also the pure filename functions of the media store (`split_extension`, `is_normalized_media_filename`,
 //! `add_hash_suffix`, `is_remote_reference`, `extract_media_references`,
 //! `extract_template_media_references`, `percent_decode`), so the collection module's media
-//! store reuses one implementation. Where the two TypeScript copies of `normalizeMediaFilename`
-//! differed, this follows `collection/media.ts` (the stricter one: re-checks the trailing
-//! space/period after truncation and returns `""` when nothing usable is left).
+//! store reuses one implementation. `normalize_filename` re-checks the trailing space/period after
+//! truncation and returns `""` when nothing usable is left.
 
 use super::nfc::nfc;
 use crate::text::decode_entities;

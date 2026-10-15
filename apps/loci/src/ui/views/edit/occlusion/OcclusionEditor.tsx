@@ -1,5 +1,5 @@
 /**
- * Image Occlusion editor (DESIGN §10): pick or paste an image, draw rectangles, ellipses and
+ * Image Occlusion editor (internals §8): pick or paste an image, draw rectangles, ellipses and
  * polygons (one card each), add text labels, select / move / resize, group shapes into one card,
  * switch hide-all / hide-one, zoom. Writes the Occlusion field in Anki's format and the Image
  * field as `<img src="name">`. Every shape is also listed below the canvas, so the whole editor

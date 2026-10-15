@@ -1,4 +1,4 @@
-//! Image Occlusion in Anki's built-in format (recall `src/core/template/occlusion.ts`).
+//! Image Occlusion in Anki's built-in format.
 //!
 //! The `Occlusion` field holds one cloze per shape, each followed by `<br>`:
 //!   `{{c1::image-occlusion:rect:left=.2325:top=.3261:width=.202:height=.0975:oi=1}}<br>`
@@ -85,8 +85,7 @@ fn escape_value(v: &str) -> String {
     v.replace('\\', "\\\\").replace(':', "\\:")
 }
 
-/// occlusion.ts:41 `Number(v)`: blank → none, non-finite → none. (JavaScript also accepted
-/// hex such as `0x10`; a coordinate in that form never occurs in Anki's writer.)
+/// Blank → none, non-finite → none.
 fn num(v: Option<&str>) -> Option<f64> {
     let v = v?.trim();
     if v.is_empty() {

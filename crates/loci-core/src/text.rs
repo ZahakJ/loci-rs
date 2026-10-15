@@ -1,4 +1,4 @@
-//! Text helpers shared by every module (recall `src/core/text.ts`; Anki-compatible semantics).
+//! Text helpers shared by every module (Anki-compatible semantics).
 
 use crate::types::FIELD_SEPARATOR;
 use regex::Regex;

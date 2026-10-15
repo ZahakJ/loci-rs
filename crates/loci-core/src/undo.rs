@@ -1,4 +1,4 @@
-//! Undo stack persisted in `undo_log` (recall `src/core/undo/undo.ts`). Each entry stores the
+//! Undo stack persisted in `undo_log`. Each entry stores the
 //! inverse of one user-level operation as row snapshots: the rows as they were before the change
 //! (restored on undo) plus the ids the operation inserted (deleted on undo). Capped at 50 entries.
 //!

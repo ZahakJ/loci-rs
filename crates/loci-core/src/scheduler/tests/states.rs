@@ -1,4 +1,4 @@
-//! Port of `states.test.ts`.
+//! Card-state tests.
 
 use super::{local_ms, make_card, make_config};
 use crate::scheduler::convert::{collection_day, day_start_ms};
@@ -317,7 +317,7 @@ fn fuzz_is_deterministic_for_the_same_card_and_reps() {
     let a = preview_intervals(&input(&card, &cfg, now, true)).unwrap();
     let b = preview_intervals(&input(&card, &cfg, now, true)).unwrap();
     assert_eq!(a, b);
-    // Regenerated from the Anki PRNG (StdRng seeded with id + reps); the TS numbers came from mulberry32.
+    // Regenerated from the Anki PRNG (StdRng seeded with id + reps).
     let fuzzed = apply_answer(&input(&card, &cfg, now, true), Rating::Good, 0).unwrap().card.ivl;
     let plain = apply_answer(&input(&card, &cfg, now, false), Rating::Good, 0).unwrap().card.ivl;
     let (lo, hi) = crate::scheduler::fuzz::constrained_fuzz_bounds(plain as f64, 31, 36500);
