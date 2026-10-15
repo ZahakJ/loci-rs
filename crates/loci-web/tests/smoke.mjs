@@ -1,6 +1,6 @@
 // Smoke test of the WebAssembly engine in Node (in-memory VFS; OPFS exists only in browsers):
 // open a collection, import the fixture package, study and answer a card, read stats, back up,
-// restore, and check the error path.
+// restore, sync through a sync file, and check the error path.
 //
 //   node crates/loci-web/tests/smoke.mjs <wasm-bindgen --target web output dir>
 import assert from 'node:assert/strict';
@@ -57,6 +57,17 @@ assert.equal(call('stats', [null]).today.studied, 1, 'restore brings back the ba
 
 const full = call('exportFullBackup');
 assert.ok(full instanceof Uint8Array && full.byteLength > 1000, 'full backup bytes');
+
+// Sync: this collection's sync file brings everything back after a reset.
+const syncFile = call('exportSyncBundle');
+assert.ok(syncFile instanceof Uint8Array && syncFile.byteLength > 1000, 'sync file bytes');
+const notesBefore = call('searchIds', ['', 'notes']).length;
+call('resetCollection');
+assert.equal(call('isEmpty'), true);
+const merged = call('mergeSyncBundle', [], syncFile);
+assert.ok(merged.rowsIn > 0 && merged.complete && merged.mediaNeeded.length === 0, 'sync merge');
+assert.equal(call('searchIds', ['', 'notes']).length, notesBefore, 'notes back from the sync file');
+assert.equal(call('mergeSyncBundle', [], syncFile).rowsIn, 0, 'merging twice changes nothing');
 
 assert.throws(() => engine.call('getDeck', JSON.stringify(['x'])), (e) => JSON.parse(e).code === 'invalid');
 console.log(`wasm smoke: ok (${imported.notesAdded} notes, ${imported.cardsAdded} cards, backup ${backup.bytes} bytes)`);
