@@ -18,6 +18,7 @@ import { Page } from '../../shell/Page';
 import { useUi } from '../../store/ui';
 import type { ThemePref } from '../../store/theme';
 import { DataSection } from './DataSection';
+import { SyncSection } from './SyncSection';
 import { PresetList } from './PresetList';
 import { LEARNING_PRESETS, detectLearningPreset, type LearningPreset } from './presetFields';
 import { RetentionForecast } from './RetentionForecast';
@@ -66,6 +67,7 @@ export default function SettingsView({ section }: { section?: string }) {
     { id: 'appearance', label: t('settings.appearance') },
     { id: 'study', label: t('settings.study') },
     { id: 'advanced', label: t('settings.advanced') },
+    { id: 'sync', label: t('settings.sync') },
     { id: 'data', label: t('settings.data') },
     { id: 'about', label: t('settings.about') },
   ], []);
@@ -181,6 +183,7 @@ export default function SettingsView({ section }: { section?: string }) {
             )}
           </Section>
 
+          <SyncSection />
           <DataSection />
           <AboutSection />
         </div>

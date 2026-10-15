@@ -35,11 +35,11 @@ revlog  (id ms, cid, usn, ease, ivl, last_ivl, factor, time ms, type)
 
 Note types, fields, templates, decks and deck presets are normalised tables (`notetypes`, `fields`, `templates`, `decks`, `deck_configs`) with typed JSON configuration. Media bodies are plain files in the `media/` directory, indexed by a `media(name, sha1, size, mtime)` table.
 
-Other tables: `tags`, `saved_searches`, `undo_log` (one row per undoable step, holding the inverse operation), `optimise_log` (every optimiser run, with parameters and metrics before and after), and `graves` (deleted ids, kept for a future sync).
+Other tables: `tags`, `saved_searches`, `undo_log` (one row per undoable step, holding the inverse operation), `optimise_log` (every optimiser run, with parameters and metrics before and after), and `graves` (deleted ids, as Anki keeps them).
 
 **Search** uses an FTS5 table, `notes_fts`, over `notes.plain` and the tags, with the trigram tokenizer. Trigrams give Anki-like substring matching for Latin, Arabic and CJK text alike; queries shorter than three characters fall back to `LIKE` on `notes.plain`.
 
-**Sync hooks.** Every syncable row carries `usn` (update sequence number; −1 means changed locally) and `mtime`, and deletions are recorded in `graves`. Nothing syncs yet; the [sync plan](sync.md) shows how these columns will be used.
+**Sync.** Stamps and deletions for [sync](sync.md) live in side tables (`sync_rows` and its neighbours); the Anki-compatible tables and columns are untouched.
 
 ## FSRS state lives where Anki puts it
 

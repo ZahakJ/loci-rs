@@ -135,6 +135,18 @@ export interface CollectionApi {
    * with the day). Returns the deck's counts after the change. (undoable)
    */
   extendTodayLimits(deckId: T.DeckId, extraNew: number, extraReview: number): Promise<T.StudyCounts>;
+
+  // ── sync (docs/SYNC.md) ──
+  syncStatus(): Promise<T.SyncStatus>;
+  /** Remembers this device's sync folder (null forgets it); turns sync on. */
+  setSyncFolder(folder: string | null): Promise<T.SyncStatus>;
+  /** This device's sync file. */
+  exportSyncBundle(options?: T.SyncExportOptions): Promise<Uint8Array>;
+  /** Merges another device's sync file (an automatic backup is written first). */
+  mergeSyncBundle(bytes: Uint8Array): Promise<T.SyncReport>;
+  syncMediaState(): Promise<T.SyncMediaState>;
+  /** Stores a media file fetched from another device by its SHA-1; returns files written. */
+  addSyncMedia(sha1: string, bytes: Uint8Array): Promise<number>;
 }
 
 export class LociError extends Error {

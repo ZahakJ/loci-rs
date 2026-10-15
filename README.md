@@ -78,7 +78,8 @@ The captures show the synthetic fixture collection (`fixtures/`, 402 notes, 590 
 - **FSRS-6 by default**, ported from the reference implementation and tested against its published vectors. *Optimise*, a button in each preset's settings, fits the parameters to your own reviews. The engine also implements automatic optimisation (after 400 new reviews per preset), but the v0.2.0 interface does not call it yet. Anki's SM-2 is there for people who want it.
 - **One app for desktop, laptop and phone.** Native builds for Linux, Windows, macOS and Android from one Rust engine and one interface; a study screen designed around the keyboard on a desk and the thumb on a phone; light and dark themes that are designed rather than inverted; typography that renders Arabic, mathematics and code well.
 - **Humane about workload.** A catch-up mode for backlogs, a daily time budget instead of card caps, a workload forecast before you change settings, and momentum instead of streaks.
-- **Data you own.** A real SQLite file in your app-data folder, rotating automatic backups (written when the window closes or the app is hidden; the engine's 30-minute backup is not yet called by the interface), restore, an integrity check on open, and a full-backup zip (collection plus media) that Loci restores. No account, no server, nothing leaves the device.
+- **Sync without an account.** Point each device at a folder that Syncthing, Dropbox or Drive keeps in step, or carry a sync file across. Reviews from every device are kept.
+- **Data you own.** A real SQLite file in your app-data folder, rotating automatic backups (written when the window closes or the app is hidden; the engine's 30-minute backup is not yet called by the interface), restore, an integrity check on open, and a full-backup zip (collection plus media) that Loci restores. No account, no server; nothing leaves the device unless you sync it to a folder of your own.
 
 Loci started as a TypeScript web app (ZahakJ/loci). This repository is the Rust rewrite; the TypeScript app's full-backup zip imports here unchanged, so nothing is lost moving over.
 
@@ -96,7 +97,7 @@ apps/loci           the Tauri 2 app for Linux, Windows, macOS and Android: React
                     engine through Tauri `invoke`.
 ```
 
-Why the interface stays web technology, where the data lives, and the decisions worth knowing (FSRS ported by hand, the export layout, filtered decks, deferred sync and iOS) are in the manual's [architecture chapter](https://zahakj.github.io/loci-rs/manual/architecture.html), [getting started](https://zahakj.github.io/loci-rs/manual/getting-started.html), `DESIGN.md` (§4 and §20) and `docs/DEFERRED.md`.
+Why the interface stays web technology, where the data lives, and the decisions worth knowing (FSRS ported by hand, the export layout, filtered decks, sync, iOS) are in the manual's [architecture chapter](https://zahakj.github.io/loci-rs/manual/architecture.html), [getting started](https://zahakj.github.io/loci-rs/manual/getting-started.html), `DESIGN.md` (§4 and §20) and `docs/DEFERRED.md`.
 
 ## Documents
 

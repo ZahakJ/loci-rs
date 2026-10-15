@@ -8,11 +8,11 @@ import type { CollectionApi, CollectionEvent } from '@core/api';
 import type { Progress } from '@core/types';
 
 /** Methods whose first argument is a byte payload (sent as a staged raw body). */
-export const BYTES_IN = new Set<string>(['previewImport', 'importPackage']);
+export const BYTES_IN = new Set<string>(['previewImport', 'importPackage', 'mergeSyncBundle']);
 /** Methods whose second argument is a byte payload. */
-export const BYTES_IN_SECOND = new Set<string>(['addMedia']);
+export const BYTES_IN_SECOND = new Set<string>(['addMedia', 'addSyncMedia']);
 /** Methods that return bytes (or null). */
-export const BYTES_OUT = new Set<string>(['getMedia', 'exportPackage', 'exportFullBackup']);
+export const BYTES_OUT = new Set<string>(['getMedia', 'exportPackage', 'exportFullBackup', 'exportSyncBundle']);
 
 export interface SerializedError { code: string; message: string; detail?: unknown }
 export interface ProgressCallback { (p: Progress): void }
@@ -100,6 +100,12 @@ const METHODS: Record<RpcMethod, true> = {
   updateNote: true,
   backupOnLeave: true,
   autoBackup: true,
+  syncStatus: true,
+  setSyncFolder: true,
+  exportSyncBundle: true,
+  mergeSyncBundle: true,
+  syncMediaState: true,
+  addSyncMedia: true,
 };
 export const isRpcMethod = (m: unknown): m is RpcMethod => typeof m === 'string' && Object.prototype.hasOwnProperty.call(METHODS, m);
 
@@ -123,7 +129,8 @@ export const CHANGES: Partial<Record<RpcMethod, Change[]>> = {
   optimise: ['presets', 'cards'],
   importPackage: ALL, installSampleDeck: ['decks', 'notes', 'cards', 'tags'],
   backupNow: ['backups'], backupOnLeave: ['backups'], autoBackup: ['backups'], restoreBackup: ALL, resetCollection: ALL, checkIntegrity: ALL,
+  mergeSyncBundle: ALL, setSyncFolder: ['settings'],
 };
 
 /** Calls that write (the client asks for persistent storage before the first one). */
-export const isWrite = (m: RpcMethod): boolean => m in CHANGES || m === 'addMedia' || m === 'deleteMedia' || m === 'maintenance';
+export const isWrite = (m: RpcMethod): boolean => m in CHANGES || m === 'addMedia' || m === 'deleteMedia' || m === 'maintenance' || m === 'addSyncMedia';

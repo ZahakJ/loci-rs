@@ -7,7 +7,8 @@
 //!
 //! The collection lives in the platform app-data directory (`app_data_dir()`, which is the app's
 //! internal storage on Android): `collection.sqlite`, `media/`, `backups/`. Closing the window
-//! writes an automatic backup if anything changed.
+//! writes an automatic backup if anything changed. The `sync_folder_*` commands give the webview's
+//! folder sync (`src/ui/sync/`) access to `<sync folder>/loci-sync/` and nothing else.
 
 use loci_core::rpc::Engine;
 use loci_core::types::Progress;
@@ -172,6 +173,119 @@ fn percent_decode(s: &str) -> String {
         i += 1;
     }
     String::from_utf8(out).unwrap_or_else(|_| s.to_string())
+}
+
+/// Sync folder access (docs/SYNC.md). `root` is the folder the user picked; `path` is a list of
+/// names that must start with `loci-sync`, so nothing outside `<root>/loci-sync/` is touched.
+fn sync_path(root: &str, path: &[String]) -> Result<PathBuf, LociError> {
+    let mut p = PathBuf::from(root);
+    if !p.is_absolute() {
+        return Err(LociError::invalid("The sync folder must be an absolute path"));
+    }
+    if path.first().map(String::as_str) != Some("loci-sync") {
+        return Err(LociError::invalid("Sync files live in the loci-sync folder"));
+    }
+    for seg in path {
+        if seg.is_empty() || seg == "." || seg == ".." || seg.contains(['/', '\\', '\0']) {
+            return Err(LociError::invalid(format!("Unusable name in the sync folder: {seg:?}")));
+        }
+        p.push(seg);
+    }
+    Ok(p)
+}
+
+#[derive(serde::Serialize)]
+struct FolderEntry {
+    name: String,
+    dir: bool,
+}
+
+async fn blocking<T: Send + 'static>(f: impl FnOnce() -> Result<T, LociError> + Send + 'static) -> Result<T, LociError> {
+    tauri::async_runtime::spawn_blocking(f).await.map_err(|e| LociError::internal(format!("The file task failed: {e}")))?
+}
+
+/// Entries of a directory in the sync folder (empty when it does not exist).
+#[tauri::command]
+async fn sync_folder_list(root: String, path: Vec<String>) -> Result<Vec<FolderEntry>, LociError> {
+    let dir = sync_path(&root, &path)?;
+    blocking(move || {
+        let Ok(entries) = std::fs::read_dir(&dir) else { return Ok(Vec::new()) };
+        let mut out = Vec::new();
+        for e in entries.flatten() {
+            let Ok(name) = e.file_name().into_string() else { continue };
+            let dir = e.file_type().map(|t| t.is_dir()).unwrap_or(false);
+            out.push(FolderEntry { name, dir });
+        }
+        Ok(out)
+    })
+    .await
+}
+
+/// A file in the sync folder as raw bytes (empty when missing).
+#[tauri::command]
+async fn sync_folder_read(root: String, path: Vec<String>) -> Result<Response, LociError> {
+    let file = sync_path(&root, &path)?;
+    let bytes = blocking(move || Ok(std::fs::read(&file).unwrap_or_default())).await?;
+    Ok(Response::new(bytes))
+}
+
+/// Writes a file in the sync folder (temp file + rename, so readers never see half of it).
+/// Body: the bytes; headers: `x-loci-root`, `x-loci-path` (JSON list), both URI-encoded.
+#[tauri::command]
+async fn sync_folder_write(request: Request<'_>) -> Result<(), LociError> {
+    let bytes = raw_body(&request)?;
+    let header = |name: &str| request.headers().get(name).and_then(|v| v.to_str().ok()).map(percent_decode);
+    let root = header("x-loci-root").ok_or_else(|| LociError::invalid("No sync folder given"))?;
+    let path: Vec<String> = serde_json::from_str(&header("x-loci-path").unwrap_or_default())
+        .map_err(|_| LociError::invalid("No sync file path given"))?;
+    let file = sync_path(&root, &path)?;
+    blocking(move || {
+        if let Some(parent) = file.parent() {
+            std::fs::create_dir_all(parent)?;
+        }
+        let name = file.file_name().and_then(|n| n.to_str()).unwrap_or("file");
+        let tmp = file.with_file_name(format!(".{name}.{}.tmp", uuid::Uuid::new_v4().simple()));
+        std::fs::write(&tmp, &bytes)?;
+        if let Err(e) = std::fs::rename(&tmp, &file) {
+            let _ = std::fs::remove_file(&tmp);
+            return Err(e.into());
+        }
+        Ok(())
+    })
+    .await
+}
+
+/// Removes a file from the sync folder (no-op when missing).
+#[tauri::command]
+async fn sync_folder_remove(root: String, path: Vec<String>) -> Result<(), LociError> {
+    let file = sync_path(&root, &path)?;
+    blocking(move || {
+        match std::fs::remove_file(&file) {
+            Err(e) if e.kind() != std::io::ErrorKind::NotFound => return Err(e.into()),
+            _ => {}
+        }
+        Ok(())
+    })
+    .await
+}
+
+/// Folder picker for the sync folder (desktop); None when cancelled.
+#[tauri::command]
+async fn pick_sync_folder(app: tauri::AppHandle) -> Result<Option<String>, LociError> {
+    blocking(move || pick_folder(&app)).await
+}
+
+#[cfg(not(target_os = "android"))]
+fn pick_folder(app: &tauri::AppHandle) -> Result<Option<String>, LociError> {
+    use tauri_plugin_dialog::DialogExt;
+    let Some(picked) = app.dialog().file().set_title("Sync folder").blocking_pick_folder() else { return Ok(None) };
+    let path = picked.into_path().map_err(|e| LociError::io(format!("Unusable folder: {e}")))?;
+    Ok(Some(path.display().to_string()))
+}
+
+#[cfg(target_os = "android")]
+fn pick_folder(_app: &tauri::AppHandle) -> Result<Option<String>, LociError> {
+    Ok(None)
 }
 
 /// Called by the frontend once Home (or Welcome) is interactive; logs the cold-start time and
@@ -354,7 +468,19 @@ pub fn run() {
                 }
             }
         })
-        .invoke_handler(tauri::generate_handler![stage_bytes, rpc, rpc_bytes, save_bytes, data_dir, app_ready])
+        .invoke_handler(tauri::generate_handler![
+            stage_bytes,
+            rpc,
+            rpc_bytes,
+            save_bytes,
+            data_dir,
+            app_ready,
+            sync_folder_list,
+            sync_folder_read,
+            sync_folder_write,
+            sync_folder_remove,
+            pick_sync_folder
+        ])
         .run(tauri::generate_context!())
         .expect("error while running Loci");
 }

@@ -898,6 +898,24 @@ class MockCollection implements CollectionApi {
     this.decks.clear(); this.deckCounts.clear(); this.notes.clear(); this.cards.clear(); this.revlog = []; this.queue = []; this.undoStack = [];
     this.changed('decks', 'notes', 'cards', 'tags', 'backups');
   }
+
+  // ───────── sync ─────────
+  private syncFolder: string | null = null;
+  private lastSync: number | null = null;
+  async syncStatus(): Promise<T.SyncStatus> {
+    await this.wait(40);
+    return { enabled: this.syncFolder !== null || this.lastSync !== null, deviceId: 'a1b2c3d4e5f60718', collectionId: 'mock', folder: this.syncFolder, lastSync: this.lastSync, peers: [], formerDevices: [] };
+  }
+  async setSyncFolder(folder: string | null): Promise<T.SyncStatus> { this.syncFolder = folder; return this.syncStatus(); }
+  async exportSyncBundle(): Promise<Uint8Array> { await this.wait(300); return new TextEncoder().encode('PK\u0003\u0004 mock sync'); }
+  async mergeSyncBundle(): Promise<T.SyncReport> {
+    await this.wait(400);
+    this.lastSync = Math.floor(Date.now() / 1000);
+    this.changed('decks', 'notes', 'cards');
+    return { fromDevice: '0f1e2d3c4b5a6978', rowsIn: 12, conflictsResolved: 0, reviewsAdded: 30, mediaAdded: 0, mediaNeeded: [], complete: true };
+  }
+  async syncMediaState(): Promise<T.SyncMediaState> { return { have: [], need: [] }; }
+  async addSyncMedia(): Promise<number> { return 0; }
 }
 
 /** Mock implementation of the worker client contract. */

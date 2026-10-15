@@ -35,7 +35,7 @@ export interface Transport {
   saveFile(bytes: Uint8Array, filename: string, mime: string): Promise<string | null>;
 }
 
-const REPLACES_COLLECTION = new Set<RpcMethod>(['importPackage', 'restoreBackup', 'resetCollection', 'checkMedia']);
+const REPLACES_COLLECTION = new Set<RpcMethod>(['importPackage', 'restoreBackup', 'resetCollection', 'checkMedia', 'mergeSyncBundle', 'addSyncMedia']);
 
 const MIME: Record<string, string> = {
   png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', webp: 'image/webp', avif: 'image/avif',

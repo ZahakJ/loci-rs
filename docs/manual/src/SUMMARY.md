@@ -11,4 +11,4 @@
 - [Performance record](performance.md)
 - [Changelog](changelog.md)
 - [Roadmap](roadmap.md)
-- [Sync plan](sync.md)
+- [Sync](sync.md)

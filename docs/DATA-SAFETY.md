@@ -71,6 +71,13 @@ extending today's limits, and an *Optimise* that adopted new parameters (the pre
 parameters and every refreshed memory state come back; automatic optimisation is not put on the
 stack, so `z` while studying keeps undoing answers). Undo restores the exact rows that were changed.
 
+### Sync
+Merging another device's sync file (`docs/SYNC.md`) is one transaction, preceded by an automatic
+backup whenever it will change something this device has not backed up yet. Reviews are never
+dropped by a merge (only *undo* on the device that made a review removes it). A merge that changed
+anything clears the undo stack, so undo never reverts another device's work. Restoring a backup
+gives the collection a new device id and makes the restored state the newest everywhere.
+
 ### Export, anywhere, any time
 - **Anki package (.apkg):** a deck with its subdecks or the whole collection, with or without
   scheduling and media, in the legacy layout every Anki version from 2.1 to 26.x and AnkiDroid
@@ -101,6 +108,7 @@ why the full-backup download exists: keep a recent copy outside the browser.
 | Browser storage was cleared or evicted | The app starts empty. | *Import* your full-backup download (*Replace*), or your last .apkg export. |
 | Loci is open in another tab | The second tab refuses to open the database. | Close the other tab and reload. |
 | Media files are missing | Cards show without them; *Check media* lists missing and unused files. | Re-import the original package: identical files are deduplicated, missing ones restored. |
+| A sync merged something unwanted | An automatic backup was written before the merge. | *Backups*: restore the one from just before the sync; the next sync makes it the current state everywhere. |
 | A package fails to import | Nothing is written; the error says why (not a package, damaged, newer Anki). | Re-export from Anki; try the *.colpkg* if the *.apkg* fails. |
 
 From the command line (development collection):
@@ -126,6 +134,7 @@ node --experimental-strip-types scripts/loci.ts export out.apkg --dir <dir>
 | Rotation policy, backup listing, pre-restore backups, restore | `tests/unit/collection/backup.test.ts` |
 | Integrity check and repairs | `tests/unit/collection/integrity.test.ts` |
 | Undo stack mechanics (snapshots, cap) | `tests/unit/collection/undo-cards.test.ts` |
+| Sync: merge order never matters, reviews are never lost, backup before merge, restore wins | `crates/loci-core/src/sync/tests.rs` |
 | The CLI imports, studies, exports, backs up and checks integrity | `tests/unit/integration/cli.test.ts` |
 
 Not covered by unit tests (browser-only): the the app-data directory paths of the worker (sqlite-wasm's

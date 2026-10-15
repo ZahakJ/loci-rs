@@ -326,3 +326,31 @@ export interface CollectionSettings {
   showKeyboardHints: boolean; reducedMotion: 'system' | 'on' | 'off';
   typedAnswerIgnoreCase: boolean; typedAnswerIgnoreDiacritics: boolean;
 }
+
+// ───────────────────────── sync ─────────────────────────
+export interface SyncPeer { deviceId: string; lastSeen: Seconds }
+export interface SyncStatus {
+  /** Sync has been used on this collection. */
+  enabled: boolean;
+  deviceId: string | null;
+  collectionId: string;
+  /** This device's sync folder: a path, or a folder name in the browser. */
+  folder: string | null;
+  lastSync: Seconds | null;
+  peers: SyncPeer[];
+  /** Ids this collection had before a restore; their files in a sync folder are stale. */
+  formerDevices: string[];
+}
+export interface SyncExportOptions {
+  /** For a sync folder: leave out what the listed devices already have, and media files. */
+  folder?: boolean;
+  peers?: string[];
+}
+export interface SyncMediaRef { name: string; sha1: string }
+export interface SyncReport {
+  fromDevice: string; rowsIn: number; conflictsResolved: number; reviewsAdded: number;
+  mediaAdded: number; mediaNeeded: SyncMediaRef[];
+  /** False when the other device left out things this one has not seen yet; the next sync fills them in. */
+  complete: boolean;
+}
+export interface SyncMediaState { have: SyncMediaRef[]; need: SyncMediaRef[] }

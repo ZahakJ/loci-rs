@@ -43,7 +43,7 @@ themes, English UI with i18n plumbing, RTL and maths rendering, a11y baseline.
 **[changed in Rust]** Native executables for Linux, Windows and macOS and an Android
 APK replace "PWA install"; iOS is out (no device, no signing).
 
-Out (designed, documented in `recall/docs/DEFERRED.md`): sync, iOS,
+Out (designed, documented in `docs/DEFERRED.md`): iOS,
 AI-assisted card creation, shared-deck library, plugin API, change-note-type, filtered
 decks as persistent objects (import converts them back to home decks; a lightweight
 *Custom session* covers the common uses), FSRS-7.
@@ -359,6 +359,7 @@ to spaced repetition (opened in the system browser). **[changed in 0.2]**
    write `.anki21b`.
 3. FSRS on by default, SM-2 available. Auto-optimisation on by default.
 4. Filtered decks are not persistent objects in v1.
-5. Sync is deferred, but every table carries `usn` and `graves` exist, and
-   `recall/docs/SYNC.md` has the plan.
+5. Sync needs no account or server: devices exchange sync files through a folder the user
+   picks or by hand, merged per row by hybrid-logical-clock stamps (`docs/SYNC.md`).
+   **[changed: sync built]**
 6. The TypeScript app's *full backup* zip imports here unchanged; that is the migration path.

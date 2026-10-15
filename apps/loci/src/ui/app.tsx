@@ -69,6 +69,7 @@ export function App() {
         if (empty && (r === '#/' || r === '#' || r === '')) navigate('#/welcome', { replace: true });
         setBoot('ready');
         void import('../bridge').then((b) => b.reportReady());
+        void import('./sync/sync').then((m) => m.installAutoSync());
       } catch (e) {
         if (!alive) return;
         setBootError(errorMessage(e));

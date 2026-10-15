@@ -8,6 +8,7 @@ import { t } from '@core/i18n/i18n';
 import type { AnswerResult, Flag, Rating, SessionSummary as Summary, StudyCard, StudyCounts } from '@core/types';
 import { CardQueue, CardType, NotetypeKind } from '@core/types';
 import { EXTEND_TODAY, api, errorMessage, extendTodayLimits, useApiHas, useQuery } from '@ui/api';
+import { syncAfterStudy } from '../../sync/sync';
 import { CardFrame, type CardFrameHandle, type CardRenderInfo, type CardSide } from '../../card/CardFrame';
 import { oneByOneInit, oneByOnePending, oneByOneReducer } from '../../card/oneByOne';
 import { Button } from '../../design/primitives/Button';
@@ -156,6 +157,7 @@ function StudySession({ deckId, custom, onRestart }: { deckId: number | null; cu
   const finish = useCallback(async (prefix?: string) => {
     try {
       const sum = await api.endStudy();
+      if (sum.cards > 0) syncAfterStudy();
       sessionOpen.current = false;
       setLeaving(false);
       setCurrent(null);
@@ -199,7 +201,7 @@ function StudySession({ deckId, custom, onRestart }: { deckId: number | null; cu
   useEffect(() => { useUi.getState().resetStudyHints(); }, []);
 
   // End the session when leaving the screen.
-  useEffect(() => () => { if (sessionOpen.current) { sessionOpen.current = false; void api.endStudy().catch(() => undefined); } }, []);
+  useEffect(() => () => { if (sessionOpen.current) { sessionOpen.current = false; void api.endStudy().then((sum) => { if (sum.cards > 0) syncAfterStudy(); }, () => undefined); } }, []);
 
   useEffect(() => { document.title = `${deckName ? deckName.split('::').pop() : t('studyScreen.title')} · Loci`; }, [deckName]);
 
@@ -438,7 +440,7 @@ function StudySession({ deckId, custom, onRestart }: { deckId: number | null; cu
   }, [editNote, current, leech, status, advanceAfterRemoval]);
 
   const leave = useCallback(() => {
-    if (sessionOpen.current) { sessionOpen.current = false; void api.endStudy().catch(() => undefined); }
+    if (sessionOpen.current) { sessionOpen.current = false; void api.endStudy().then((sum) => { if (sum.cards > 0) syncAfterStudy(); }, () => undefined); }
     navigate('#/');
   }, []);
 

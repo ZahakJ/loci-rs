@@ -13,7 +13,7 @@ pub mod tables;
 #[cfg(test)]
 mod tests;
 
-use crate::backup::{backup_now, rotation::BackupFileKind};
+use crate::backup::{backup_now, last_change_seconds, rotation::BackupFileKind};
 use crate::collection::internals::meta;
 use crate::collection::media::MEDIA_PREFIX;
 use crate::collection::Collection;
@@ -249,7 +249,14 @@ impl Collection {
         state::enable(core.db())?;
         state::stamp_pending(core)?;
         let (steps, conflicts, complete) = merge::plan(core, &b)?;
-        if !steps.is_empty() {
+        // A copy of this device's collection before the merge, unless the newest backup already
+        // is one (several files merged in a row).
+        let last_backup = core.get_meta(meta::LAST_BACKUP)?.and_then(|v| v.parse::<f64>().ok()).map(|v| v as i64);
+        let changed_since = match last_backup {
+            Some(at) => last_change_seconds(core)?.is_some_and(|c| c > at),
+            None => true,
+        };
+        if !steps.is_empty() && changed_since {
             backup_now(core, BackupFileKind::Auto)?;
         }
         let out = merge::apply(core, &b, &steps, complete)?;
