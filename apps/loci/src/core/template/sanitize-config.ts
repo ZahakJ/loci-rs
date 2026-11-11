@@ -49,6 +49,19 @@ export const CARD_SANITIZE_CONFIG: Config = {
   RETURN_TRUSTED_TYPE: false,
 };
 
+/**
+ * Field HTML in the note editor. The editor is part of the app's own page (no shadow root), and
+ * field values come from imported decks and synced collections, so it gets the card allowlist
+ * minus what only a rendered card needs: no buttons, and no ids that could collide with the app's.
+ */
+export const EDITOR_SANITIZE_CONFIG: Config = {
+  ...CARD_SANITIZE_CONFIG,
+  ALLOWED_TAGS: (CARD_SANITIZE_CONFIG.ALLOWED_TAGS as string[]).filter((t) => t !== 'button'),
+  ALLOWED_ATTR: (CARD_SANITIZE_CONFIG.ALLOWED_ATTR as string[]).filter((a) => a !== 'id'),
+  FORBID_TAGS: [...(CARD_SANITIZE_CONFIG.FORBID_TAGS as string[]), 'button'],
+  FORBID_ATTR: [...(CARD_SANITIZE_CONFIG.FORBID_ATTR as string[]), 'id'],
+};
+
 /** Links on cards may only go to http(s), mailto or an in-card fragment. */
 export function isAllowedHref(href: string): boolean {
   return /^(?:https?:|mailto:|#)/i.test(href.trim());

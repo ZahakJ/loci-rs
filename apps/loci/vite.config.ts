@@ -1,5 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { pwa } from './scripts/pwa.ts';
 
@@ -7,6 +9,22 @@ const r = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 const host = process.env.TAURI_DEV_HOST;
 // The browser build (WebAssembly engine, PWA) served under GitHub Pages at /loci-rs/app/.
 const web = process.env.VITE_LOCI_TARGET === 'web';
+
+/**
+ * The app's Content-Security-Policy (src-tauri/tauri.conf.json) for `vite preview`, so the e2e suite
+ * runs the production build under the same policy. Two differences: the engine is reached over the
+ * local HTTP bridge instead of Tauri IPC, and the inline theme script in index.html is allowed by
+ * hash (Tauri adds that hash itself when it bundles the page).
+ */
+function previewCsp(): string {
+  const conf = JSON.parse(readFileSync(r('./src-tauri/tauri.conf.json'), 'utf8')) as { app: { security: { csp: string } } };
+  const inline = [...readFileSync(r('./index.html'), 'utf8').matchAll(/<script>([\s\S]*?)<\/script>/g)]
+    .map((m) => `'sha256-${createHash('sha256').update(m[1]).digest('base64')}'`);
+  const bridge = process.env.VITE_LOCI_BRIDGE_URL || 'http://127.0.0.1:5741';
+  return conf.app.security.csp
+    .replace("script-src 'self'", `script-src 'self' ${inline.join(' ')}`)
+    .replace(/connect-src ([^;]*)/, `connect-src $1 ${bridge}`);
+}
 
 // Tauri dev server: fixed port, no screen clearing, mobile host when the Android dev loop sets it.
 export default defineConfig({
@@ -31,6 +49,7 @@ export default defineConfig({
     hmr: host ? { protocol: 'ws', host, port: 5743 } : undefined,
     watch: { ignored: ['**/src-tauri/**'] },
   },
+  preview: web ? undefined : { headers: { 'Content-Security-Policy': previewCsp() } },
   envPrefix: ['VITE_', 'TAURI_ENV_*'],
   build: {
     outDir: web ? 'dist-web' : 'dist',

@@ -13,7 +13,9 @@ the bytes.
   directory), merges them, rewrites its own, copies media it has that the folder lacks and takes
   media it lacks. Runs on open, on close, after a study session and on *Sync now*. The
   orchestration is `apps/loci/src/ui/sync/folderSync.ts`; folder I/O is Tauri commands
-  (`sync_folder_*`, desktop) or a `FileSystemDirectoryHandle` (browser).
+  (`sync_folder_*`, desktop) or a `FileSystemDirectoryHandle` (browser). The shell accepts only
+  the folder picked in its own dialog (remembered in `<app data>/sync-folder`) and only paths
+  under its `loci-sync/`, never through a symbolic link.
 - **File hand-off** (every platform): *Save sync file* (share or download) and *Open sync
   file* (merge). Carries every row and the media files the other side may lack.
 

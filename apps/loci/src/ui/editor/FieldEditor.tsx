@@ -285,7 +285,7 @@ export function FieldEditor({
       if (isSource) { insertIntoSource(`<a href="${url.replace(/"/g, '&quot;')}">${text || url}</a>`); return; }
       restoreSelection();
       const sel = window.getSelection();
-      if (sel && sel.isCollapsed) document.execCommand('insertHTML', false, `<a href="${url.replace(/"/g, '&quot;')}">${(text || url).replace(/</g, '&lt;')}</a>`);
+      if (sel && sel.isCollapsed) document.execCommand('insertHTML', false, editorHtml(`<a href="${url.replace(/"/g, '&quot;')}">${(text || url).replace(/</g, '&lt;')}</a>`));
       else document.execCommand('createLink', false, url);
       sync();
     },

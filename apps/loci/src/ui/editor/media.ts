@@ -4,6 +4,9 @@
  * shared card resolver (`@ui/card/media`), with the original name kept in `data-loci-src` so
  * saving writes the name back. `[sound:x]` stays text.
  */
+import DOMPurify from 'dompurify';
+import { sanitizeCardHtml, type HtmlSanitizer } from '@core/template/render';
+import { EDITOR_SANITIZE_CONFIG } from '@core/template/sanitize-config';
 import { api } from '@ui/api';
 import { resolveMediaRef } from '@ui/card/media';
 import { SEL_END, SEL_START } from './cloze';
@@ -12,6 +15,15 @@ import { pastedFileName } from './paste';
 export const isUrlSrc = (src: string): boolean => /^(?:data|blob|https?):/i.test(src.trim());
 
 const MEDIA_SEL = 'img, audio, video, source';
+
+/**
+ * Field HTML made safe for the live editor. Field values are untrusted (imported decks, synced
+ * collections, pasted HTML): no script, no event handlers, no javascript: links, nothing that
+ * loads a remote stylesheet. Everything that reaches the editor DOM goes through here.
+ */
+export function sanitizeEditorHtml(html: string): string {
+  return sanitizeCardHtml(html, DOMPurify as unknown as HtmlSanitizer, EDITOR_SANITIZE_CONFIG);
+}
 
 /**
  * Moves bare media names from `src` to `data-loci-src` under `root`, leaving no `src`, so the
@@ -30,18 +42,18 @@ export function deferMediaSrc(root: ParentNode): void {
 /** `html` with bare media names deferred (see deferMediaSrc), for execCommand('insertHTML'). */
 export function editorHtml(html: string): string {
   const tpl = document.createElement('template');
-  tpl.innerHTML = html;
+  tpl.innerHTML = sanitizeEditorHtml(html);
   deferMediaSrc(tpl.content);
   return tpl.innerHTML;
 }
 
 /**
- * Replaces the editor's content with stored HTML: parsed into an inert <template>, media
+ * Replaces the editor's content with stored HTML: sanitised, parsed into an inert <template>, media
  * deferred there, then attached and hydrated, so no bare name is ever requested.
  */
 export function setEditorHtml(el: HTMLElement, html: string): void {
   const tpl = document.createElement('template');
-  tpl.innerHTML = html;
+  tpl.innerHTML = sanitizeEditorHtml(html);
   deferMediaSrc(tpl.content);
   el.replaceChildren(tpl.content);
   hydrateMedia(el);

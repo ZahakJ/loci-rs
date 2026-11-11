@@ -16,16 +16,16 @@ export interface HtmlSanitizer {
  * When the sanitizer supports hooks, links are restricted to http(s)/mailto/# and style
  * attributes that load remote resources are dropped.
  */
-export function sanitizeCardHtml(html: string, purify: HtmlSanitizer): string {
+export function sanitizeCardHtml(html: string, purify: HtmlSanitizer, config: PurifyConfig = CARD_SANITIZE_CONFIG): string {
   const hook = (node: Element, data: { attrName: string; attrValue: string; keepAttr: boolean }) => {
     const name = data.attrName.toLowerCase();
     if (name === 'href' || name === 'xlink:href') {
       if (node.nodeName.toLowerCase() === 'a' ? !isAllowedHref(data.attrValue) : !data.attrValue.startsWith('#')) data.keepAttr = false;
     } else if (name === 'style' && !isSafeStyleAttr(data.attrValue)) data.keepAttr = false;
   };
-  if (!purify.addHook) return purify.sanitize(html, CARD_SANITIZE_CONFIG);
+  if (!purify.addHook) return purify.sanitize(html, config);
   purify.addHook('uponSanitizeAttribute', hook);
-  try { return purify.sanitize(html, CARD_SANITIZE_CONFIG); }
+  try { return purify.sanitize(html, config); }
   finally { purify.removeHook?.('uponSanitizeAttribute'); }
 }
 

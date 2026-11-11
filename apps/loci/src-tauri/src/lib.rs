@@ -8,7 +8,10 @@
 //! The collection lives in the platform app-data directory (`app_data_dir()`, which is the app's
 //! internal storage on Android): `collection.sqlite`, `media/`, `backups/`. Closing the window
 //! writes an automatic backup if anything changed. The `sync_folder_*` commands give the webview's
-//! folder sync (`src/ui/sync/`) access to `<sync folder>/loci-sync/` and nothing else.
+//! folder sync (`src/ui/sync/`) access to `<sync folder>/loci-sync/` and nothing else, where the
+//! sync folder is the one the user picked in the native dialog (see `sync_folder.rs`).
+
+mod sync_folder;
 
 use loci_core::rpc::Engine;
 use loci_core::types::Progress;
@@ -28,6 +31,8 @@ pub struct AppState {
     engine: Mutex<Option<Engine>>,
     staged: Mutex<HashMap<String, Vec<u8>>>,
     data_dir: PathBuf,
+    /// The sync folder the user picked in the native dialog; the only one `sync_folder_*` accept.
+    sync_folder: Mutex<Option<PathBuf>>,
 }
 
 type Shared = Arc<AppState>;
@@ -175,23 +180,11 @@ fn percent_decode(s: &str) -> String {
     String::from_utf8(out).unwrap_or_else(|_| s.to_string())
 }
 
-/// Sync folder access (docs/SYNC.md). `root` is the folder the user picked; `path` is a list of
-/// names that must start with `loci-sync`, so nothing outside `<root>/loci-sync/` is touched.
-fn sync_path(root: &str, path: &[String]) -> Result<PathBuf, LociError> {
-    let mut p = PathBuf::from(root);
-    if !p.is_absolute() {
-        return Err(LociError::invalid("The sync folder must be an absolute path"));
-    }
-    if path.first().map(String::as_str) != Some("loci-sync") {
-        return Err(LociError::invalid("Sync files live in the loci-sync folder"));
-    }
-    for seg in path {
-        if seg.is_empty() || seg == "." || seg == ".." || seg.contains(['/', '\\', '\0']) {
-            return Err(LociError::invalid(format!("Unusable name in the sync folder: {seg:?}")));
-        }
-        p.push(seg);
-    }
-    Ok(p)
+/// Sync folder access (docs/SYNC.md): `root` must be the folder the user picked, `path` a list of
+/// names that starts with `loci-sync`, so nothing outside `<root>/loci-sync/` is touched.
+fn sync_path(state: &AppState, root: &str, path: &[String]) -> Result<PathBuf, LociError> {
+    let picked = state.sync_folder.lock().map_err(|_| LociError::internal("The sync folder lock is poisoned"))?;
+    sync_folder::resolve(picked.as_deref(), root, path)
 }
 
 #[derive(serde::Serialize)]
@@ -206,8 +199,8 @@ async fn blocking<T: Send + 'static>(f: impl FnOnce() -> Result<T, LociError> + 
 
 /// Entries of a directory in the sync folder (empty when it does not exist).
 #[tauri::command]
-async fn sync_folder_list(root: String, path: Vec<String>) -> Result<Vec<FolderEntry>, LociError> {
-    let dir = sync_path(&root, &path)?;
+async fn sync_folder_list(state: State<'_, Shared>, root: String, path: Vec<String>) -> Result<Vec<FolderEntry>, LociError> {
+    let dir = sync_path(&state, &root, &path)?;
     blocking(move || {
         let Ok(entries) = std::fs::read_dir(&dir) else { return Ok(Vec::new()) };
         let mut out = Vec::new();
@@ -223,8 +216,8 @@ async fn sync_folder_list(root: String, path: Vec<String>) -> Result<Vec<FolderE
 
 /// A file in the sync folder as raw bytes (empty when missing).
 #[tauri::command]
-async fn sync_folder_read(root: String, path: Vec<String>) -> Result<Response, LociError> {
-    let file = sync_path(&root, &path)?;
+async fn sync_folder_read(state: State<'_, Shared>, root: String, path: Vec<String>) -> Result<Response, LociError> {
+    let file = sync_path(&state, &root, &path)?;
     let bytes = blocking(move || Ok(std::fs::read(&file).unwrap_or_default())).await?;
     Ok(Response::new(bytes))
 }
@@ -232,13 +225,13 @@ async fn sync_folder_read(root: String, path: Vec<String>) -> Result<Response, L
 /// Writes a file in the sync folder (temp file + rename, so readers never see half of it).
 /// Body: the bytes; headers: `x-loci-root`, `x-loci-path` (JSON list), both URI-encoded.
 #[tauri::command]
-async fn sync_folder_write(request: Request<'_>) -> Result<(), LociError> {
+async fn sync_folder_write(state: State<'_, Shared>, request: Request<'_>) -> Result<(), LociError> {
     let bytes = raw_body(&request)?;
     let header = |name: &str| request.headers().get(name).and_then(|v| v.to_str().ok()).map(percent_decode);
     let root = header("x-loci-root").ok_or_else(|| LociError::invalid("No sync folder given"))?;
     let path: Vec<String> = serde_json::from_str(&header("x-loci-path").unwrap_or_default())
         .map_err(|_| LociError::invalid("No sync file path given"))?;
-    let file = sync_path(&root, &path)?;
+    let file = sync_path(&state, &root, &path)?;
     blocking(move || {
         if let Some(parent) = file.parent() {
             std::fs::create_dir_all(parent)?;
@@ -257,8 +250,8 @@ async fn sync_folder_write(request: Request<'_>) -> Result<(), LociError> {
 
 /// Removes a file from the sync folder (no-op when missing).
 #[tauri::command]
-async fn sync_folder_remove(root: String, path: Vec<String>) -> Result<(), LociError> {
-    let file = sync_path(&root, &path)?;
+async fn sync_folder_remove(state: State<'_, Shared>, root: String, path: Vec<String>) -> Result<(), LociError> {
+    let file = sync_path(&state, &root, &path)?;
     blocking(move || {
         match std::fs::remove_file(&file) {
             Err(e) if e.kind() != std::io::ErrorKind::NotFound => return Err(e.into()),
@@ -269,10 +262,15 @@ async fn sync_folder_remove(root: String, path: Vec<String>) -> Result<(), LociE
     .await
 }
 
-/// Folder picker for the sync folder (desktop); None when cancelled.
+/// Folder picker for the sync folder (desktop); None when cancelled. The picked folder becomes the
+/// only one the `sync_folder_*` commands accept, on this run and the next.
 #[tauri::command]
-async fn pick_sync_folder(app: tauri::AppHandle) -> Result<Option<String>, LociError> {
-    blocking(move || pick_folder(&app)).await
+async fn pick_sync_folder(app: tauri::AppHandle, state: State<'_, Shared>) -> Result<Option<String>, LociError> {
+    let Some(folder) = blocking(move || pick_folder(&app)).await? else { return Ok(None) };
+    let path = PathBuf::from(&folder);
+    sync_folder::remember_picked(&state.data_dir, &path)?;
+    *state.sync_folder.lock().map_err(|_| LociError::internal("The sync folder lock is poisoned"))? = Some(path);
+    Ok(Some(folder))
 }
 
 #[cfg(not(target_os = "android"))]
@@ -458,7 +456,13 @@ pub fn run() {
             std::fs::create_dir_all(&data_dir)?;
             let engine = Engine::open(&data_dir).map_err(|e| format!("Cannot open the collection: {e}"))?;
             log::info!("Loci collection at {}", data_dir.display());
-            app.manage(Arc::new(AppState { engine: Mutex::new(Some(engine)), staged: Mutex::new(HashMap::new()), data_dir }));
+            let sync_folder = Mutex::new(sync_folder::load_picked(&data_dir));
+            app.manage(Arc::new(AppState {
+                engine: Mutex::new(Some(engine)),
+                staged: Mutex::new(HashMap::new()),
+                data_dir,
+                sync_folder,
+            }));
             Ok(())
         })
         .on_window_event(|window, event| {
